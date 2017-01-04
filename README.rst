@@ -1,8 +1,8 @@
 .. To build this file locally ensure docutils Python package is installed and run:
    $ rst2html.py README.rst README.html
 
-web3j-quorum: Java integration with Quorum
-==========================================
+web3j-quorum: Java integration library for Quorum
+=================================================
 
 web3j-quorum is an extension to `web3j <https://github.com/web3j/web3j>`_ providing support for
 `JP Morgan's Quorum <https://github.com/jpmorganchase/quorum>`_ API.
