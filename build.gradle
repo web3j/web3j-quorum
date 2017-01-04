@@ -1,0 +1,153 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3'
+    }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+apply plugin: 'java'
+// Required for JFrog Artifactory repository
+apply plugin: 'jacoco'
+apply plugin: 'maven-publish'
+
+// Required for Maven Nexus repository
+apply plugin: 'maven'
+apply plugin: 'signing'
+apply plugin: 'idea'
+
+group 'org.web3j'
+version '0.1'
+
+
+sourceCompatibility = 1.8
+
+jacoco {
+    toolVersion = '0.7.7.201606060606' // See http://www.eclemma.org/jacoco/.
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+ext {
+    ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
+    ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
+}
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'org.web3j:core:1.1.1'
+    testCompile 'junit:junit:4.11',
+            'org.mockito:mockito-core:1.10.19',
+            'org.web3j:core:1.1.1:tests'
+}
+
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar {
+                classifier 'sources'
+            }
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    publications = ['mavenJava']
+    publish = true
+    pkg {
+        repo = 'maven'
+        name = 'org.web3j'
+        desc = 'web3j Quorum API'
+        userOrg = 'web3j'
+        licenses = ['Apache-2.0']
+        issueTrackerUrl = 'https://github.com/web3j/quorum/issues'
+        vcsUrl = 'https://github.com/web3j/quorum.git'
+        websiteUrl = 'http://web3j.org'
+        publicDownloadNumbers = true
+    }
+}
+
+
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+signing {
+    required { gradle.taskGraph.hasTask('uploadArchives') }  // only execute as part of this task
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                authentication(
+                        userName: ossrhUsername,
+                        password: ossrhPassword
+                )
+            }
+
+            pom.project {
+                name 'web3j'
+                packaging 'jar'
+                description 'web3j Quorum API'
+                url 'http://web3j.org'
+
+                scm {
+                    connection 'scm:git:https://github.com/web3j/quorum.git'
+                    url 'https://github.com/web3j/quorum.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'conor10'
+                        name 'Conor Svensson'
+                        email 'conor10@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
