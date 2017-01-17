@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import org.web3j.protocol.ResponseTester;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
-import org.web3j.protocol.parity.methods.response.VoidResponse;
+import org.web3j.protocol.core.methods.response.VoidResponse;
 import org.web3j.quorum.methods.response.*;
 
 import static junit.framework.TestCase.assertTrue;
