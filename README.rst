@@ -21,6 +21,8 @@ Features
 - Support for Quorum's private transactions
 - `QuorumChain API <https://github.com/jpmorganchase/quorum/blob/master/docs/api.md#quorumchain-apis>`_
   implementation
+- Auto-generation of Quorum smart contract wrappers to create, deploy, transact with and call smart
+  contracts from native Java code, with full transaction privacy support
 
 Getting started
 ---------------
@@ -37,7 +39,7 @@ Java 8:
    <dependency>
      <groupId>org.web3j</groupId>
      <artifactId>quorum</artifactId>
-     <version>0.1</version>
+     <version>0.2.0</version>
    </dependency>
 
 Gradle
@@ -47,7 +49,7 @@ Java 8:
 
 .. code-block:: groovy
 
-   compile ('org.web3j:quorum:0.1')
+   compile ('org.web3j:quorum:0.2.0')
 
 
 Run Quorum
@@ -85,3 +87,39 @@ To send synchronous requests:
    Quorum quorum = Quorum.build(new HttpService("http://localhost:22001"));
    QuorumNodeInfo quorumNodeInfo = quorum.quorumNodeInfo().send();
    String voteAccount = quorumNodeInfo.getNodeInfo().getVoteAccount();
+
+
+IPC
+---
+
+web3j also supports fast inter-process communication (IPC) via file sockets to clients running on
+the same host as web3j. To connect simply use *IpcService* instead of *HttpService* when you
+create your service:
+
+.. code-block:: java
+
+   Quorum quorum = Quorum.build(new IpcService("/path/to/socketfile"));
+   ...
+
+
+Smart Contract Wrappers
+-----------------------
+
+You can generate Quorum compatible smart contract wrappers using the
+`QuorumFunctionWrapperGenerator <https://github.com/web3j/quorum/blob/master/src/main/java/org/web3j/quorum/codegen/QuorumFunctionWrapperGenerator.java>`_:
+
+.. code-block:: bash
+
+   org.web3j.quorum.codegen.QuorumFunctionWrapperGenerator /path/to/<smart-contract>.bin /path/to/<smart-contract>.abi -o /path/to/src/main/java -p com.your.organisation.name
+
+Where the *bin* and *abi* are obtained as per
+`compiling-solidity <http://docs.web3j.io/smart_contracts.html#compiling-solidity-source-code>`_
+or via `Cakeshop <https://github.com/jpmorganchase/cakeshop/wiki/Contracts>`_.
+
+These wrappers are similar to the web3j smart contract wrappers with the exception that the
+transactions are signed by the Quorum nodes rather then by web3j. They also support the privateFor
+field on transactions.
+
+See the `web3j documentation <http://docs.web3j.io/smart_contracts.html>`_ for a detailed overview
+of smart contracts and web3j.
+

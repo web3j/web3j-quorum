@@ -9,7 +9,7 @@ import org.web3j.protocol.core.JsonRpc2_0Web3j;
 import org.web3j.protocol.core.Request;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
-import org.web3j.protocol.parity.methods.response.VoidResponse;
+import org.web3j.protocol.core.methods.response.VoidResponse;
 import org.web3j.quorum.methods.request.*;
 import org.web3j.quorum.methods.response.*;
 import org.web3j.utils.Numeric;

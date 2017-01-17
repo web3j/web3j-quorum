@@ -20,9 +20,10 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'idea'
+apply plugin: 'io.codearte.nexus-staging'
 
 group 'org.web3j'
-version '0.1'
+version '0.2.0'
 
 
 sourceCompatibility = 1.8
@@ -49,10 +50,10 @@ repositories {
 }
 
 dependencies {
-    compile 'org.web3j:core:1.1.1'
+    compile 'org.web3j:core:1.1.2'
     testCompile 'junit:junit:4.11',
             'org.mockito:mockito-core:1.10.19',
-            'org.web3j:core:1.1.1:tests'
+            'org.web3j:core:1.1.2:tests'
 }
 
 tasks.withType(Test) {
@@ -98,7 +99,6 @@ bintray {
         publicDownloadNumbers = true
     }
 }
-
 
 artifacts {
     archives sourcesJar, javadocJar
@@ -151,3 +151,17 @@ uploadArchives {
     }
 }
 
+task release {
+    dependsOn 'clean'
+    dependsOn 'build'
+    dependsOn 'uploadArchives'
+    dependsOn 'closeAndPromoteRepository'
+    dependsOn 'bintrayUpload'
+
+    tasks.findByName('build').mustRunAfter 'clean'
+
+    tasks.findByName('uploadArchives').mustRunAfter 'build'
+    tasks.findByName('closeAndPromoteRepository').mustRunAfter 'uploadArchives'
+
+    tasks.findByName('bintrayUpload').mustRunAfter 'build'
+}
