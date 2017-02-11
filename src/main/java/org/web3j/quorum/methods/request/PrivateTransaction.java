@@ -7,6 +7,10 @@ import org.web3j.protocol.core.methods.request.Transaction;
 
 /**
  * Quorum's Transaction object.
+ *
+ * <p>This is almost identical to the Ethereum
+ * {@link org.web3j.protocol.core.methods.request.Transaction} with the exception that it provides
+ * the privateFor field and does not contain a gas price.
  */
 public class PrivateTransaction extends Transaction {
 

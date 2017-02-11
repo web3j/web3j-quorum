@@ -21,8 +21,8 @@ Features
 - Support for Quorum's private transactions
 - `QuorumChain API <https://github.com/jpmorganchase/quorum/blob/master/docs/api.md#quorumchain-apis>`_
   implementation
-- Auto-generation of Quorum smart contract wrappers to create, deploy, transact with and call smart
-  contracts from native Java code, with full transaction privacy support
+- Works out the box with web3j's
+  `smart contract wrappers <http://docs.web3j.io/smart_contracts.html#solidity-smart-contract-wrappers>`_
 
 Getting started
 ---------------
@@ -39,7 +39,7 @@ Java 8:
    <dependency>
      <groupId>org.web3j</groupId>
      <artifactId>quorum</artifactId>
-     <version>0.2.0</version>
+     <version>0.3.0</version>
    </dependency>
 
 Gradle
@@ -49,7 +49,7 @@ Java 8:
 
 .. code-block:: groovy
 
-   compile ('org.web3j:quorum:0.2.0')
+   compile ('org.web3j:quorum:0.3.0')
 
 
 Run Quorum
@@ -105,16 +105,21 @@ create your service:
 Smart Contract Wrappers
 -----------------------
 
-You can generate Quorum compatible smart contract wrappers using the
-`QuorumFunctionWrapperGenerator <https://github.com/web3j/quorum/blob/master/src/main/java/org/web3j/quorum/codegen/QuorumFunctionWrapperGenerator.java>`_:
+`Smart contract wrappers <http://docs.web3j.io/smart_contracts.html#solidity-smart-contract-wrappers>`_
+generated using web3j 2.0+ work out the box with with web3j-quorum.
 
-.. code-block:: bash
+The only difference is that you'll need to use the
+`Quorum ClientTransactionManager <https://github.com/web3j/quorum/tree/master/src/main/java/org/web3j/quorum/tx/ClientTransactionManager.java>`_:
 
-   org.web3j.quorum.codegen.QuorumFunctionWrapperGenerator /path/to/<smart-contract>.bin /path/to/<smart-contract>.abi -o /path/to/src/main/java -p com.your.organisation.name
+.. code-block:: java
 
-Where the *bin* and *abi* are obtained as per
-`compiling-solidity <http://docs.web3j.io/smart_contracts.html#compiling-solidity-source-code>`_
-or via `Cakeshop <https://github.com/jpmorganchase/cakeshop/wiki/Contracts>`_.
+   ClientTransactionManager transactionManager = new ClientTransactionManager(
+           web3j, "0x<from-address>", Arrays.asList("0x<privateFor-addr>", ...);
+   YourSmartContract contract = YourSmartContract.deploy(
+       <web3j>, <transactionManager>, GAS_PRICE, GAS_LIMIT,
+       <initialValue>,
+       <param1>, ..., <paramN>);
+
 
 These wrappers are similar to the web3j smart contract wrappers with the exception that the
 transactions are signed by the Quorum nodes rather then by web3j. They also support the privateFor
