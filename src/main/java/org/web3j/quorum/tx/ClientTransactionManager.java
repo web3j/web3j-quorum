@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.exceptions.TransactionTimeoutException;
+import org.web3j.quorum.Quorum;
 import org.web3j.quorum.methods.request.PrivateTransaction;
 import org.web3j.tx.TransactionManager;
 
@@ -15,13 +16,16 @@ import org.web3j.tx.TransactionManager;
  */
 public class ClientTransactionManager implements TransactionManager {
 
-    private final Web3j web3j;
+    private final Quorum quorum;
     private final String fromAddress;
     private List<String> privateFor;
 
     public ClientTransactionManager(
             Web3j web3j, String fromAddress, List<String> privateFor) {
-        this.web3j = web3j;
+        if (!(web3j instanceof Quorum)) {
+            throw new UnsupportedOperationException("Quorum quorum instance must be used");
+        }
+        this.quorum = (Quorum) web3j;
         this.fromAddress = fromAddress;
         this.privateFor = privateFor;
     }
@@ -43,7 +47,7 @@ public class ClientTransactionManager implements TransactionManager {
         PrivateTransaction transaction = new PrivateTransaction(
                 fromAddress, null, gasLimit, to, value, data, privateFor);
 
-        return web3j.ethSendTransaction(transaction)
+        return quorum.ethSendTransaction(transaction)
                 .sendAsync().get();
     }
 }
