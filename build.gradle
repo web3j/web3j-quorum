@@ -23,7 +23,7 @@ apply plugin: 'idea'
 apply plugin: 'io.codearte.nexus-staging'
 
 group 'org.web3j'
-version '0.3.1'
+version '0.4.0'
 
 
 sourceCompatibility = 1.8
@@ -50,10 +50,10 @@ repositories {
 }
 
 dependencies {
-    compile 'org.web3j:core:2.0.2'
+    compile 'org.web3j:core:2.1.0'
     testCompile 'junit:junit:4.11',
             'org.mockito:mockito-core:1.10.19',
-            'org.web3j:core:2.0.2:tests'
+            'org.web3j:core:2.1.0:tests'
 }
 
 tasks.withType(Test) {
@@ -95,7 +95,7 @@ bintray {
         licenses = ['Apache-2.0']
         issueTrackerUrl = 'https://github.com/web3j/quorum/issues'
         vcsUrl = 'https://github.com/web3j/quorum.git'
-        websiteUrl = 'http://web3j.org'
+        websiteUrl = 'http://web3j.io'
         publicDownloadNumbers = true
     }
 }
