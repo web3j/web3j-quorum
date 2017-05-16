@@ -93,12 +93,17 @@ IPC
 ---
 
 web3j also supports fast inter-process communication (IPC) via file sockets to clients running on
-the same host as web3j. To connect simply use *IpcService* instead of *HttpService* when you
-create your service:
+the same host as web3j. To connect simply use *UnixIpcService* or *WindowsIpcService* instead of
+*HttpService* when you create your service:
 
 .. code-block:: java
 
-   Quorum quorum = Quorum.build(new IpcService("/path/to/socketfile"));
+   // OS X/Linux/Unix:
+   Quorum quorum = Quorum.build(new UnixIpcService("/path/to/socketfile"));
+   ...
+
+   // Windows
+   Quorum quorum = Quorum.build(new WindowsIpcService("/path/to/namedpipefile"));
    ...
 
 
@@ -114,7 +119,7 @@ The only difference is that you'll need to use the
 .. code-block:: java
 
    ClientTransactionManager transactionManager = new ClientTransactionManager(
-           web3j, "0x<from-address>", Arrays.asList("0x<privateFor-addr>", ...);
+           web3j, "0x<from-address>", Arrays.asList("<privateFor-public-key>", ...);
    YourSmartContract contract = YourSmartContract.deploy(
        <web3j>, <transactionManager>, GAS_PRICE, GAS_LIMIT,
        <initialValue>,
