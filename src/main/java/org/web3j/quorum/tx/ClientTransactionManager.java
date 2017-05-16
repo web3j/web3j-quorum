@@ -1,12 +1,11 @@
 package org.web3j.quorum.tx;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
-import org.web3j.protocol.exceptions.TransactionTimeoutException;
 import org.web3j.quorum.Quorum;
 import org.web3j.quorum.methods.request.PrivateTransaction;
 import org.web3j.tx.TransactionManager;
@@ -57,12 +56,11 @@ public class ClientTransactionManager extends TransactionManager {
     public EthSendTransaction sendTransaction(
             BigInteger gasPrice, BigInteger gasLimit, String to,
             String data, BigInteger value)
-            throws ExecutionException, InterruptedException, TransactionTimeoutException {
+            throws IOException {
 
         PrivateTransaction transaction = new PrivateTransaction(
                 fromAddress, null, gasLimit, to, value, data, privateFor);
 
-        return quorum.ethSendTransaction(transaction)
-                .sendAsync().get();
+        return quorum.ethSendTransaction(transaction).send();
     }
 }
