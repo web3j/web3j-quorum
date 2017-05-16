@@ -2,7 +2,7 @@ package org.web3j.quorum;
 
 import java.math.BigInteger;
 import java.util.Collections;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.core.JsonRpc2_0Web3j;
@@ -24,8 +24,9 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
     }
 
     public JsonRpc2_0Quorum(
-            Web3jService web3jService, long pollingInterval, ExecutorService executorService) {
-        super(web3jService, pollingInterval, executorService);
+            Web3jService web3jService, long pollingInterval,
+            ScheduledExecutorService scheduledExecutorService) {
+        super(web3jService, pollingInterval, scheduledExecutorService);
     }
 
     @Override
