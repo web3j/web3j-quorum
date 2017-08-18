@@ -30,11 +30,6 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
     }
 
     @Override
-    public Request<?, EthSendTransaction> ethSendTransaction(Transaction transaction) {
-        throw new UnsupportedOperationException("Quorum requires PrivateTransaction types");
-    }
-
-    @Override
     public Request<?, EthSendTransaction> ethSendRawTransaction(
             String signedTransactionData) {
         throw new UnsupportedOperationException("Quorum requires PrivateTransaction types");
