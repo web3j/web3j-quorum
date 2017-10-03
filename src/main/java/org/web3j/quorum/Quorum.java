@@ -35,4 +35,6 @@ public interface Quorum extends Web3j {
     Request<?, BlockMaker> quorumIsBlockMaker(String address);
 
     Request<?, Voter> quorumIsVoter(String address);
+
+    Request<?, PrivatePayload> quorumGetPrivatePayload(String address);
 }

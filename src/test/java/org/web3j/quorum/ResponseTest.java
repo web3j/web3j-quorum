@@ -86,4 +86,12 @@ public class ResponseTest extends ResponseTester {
         assertTrue(voter.isVoter());
     }
 
+    @Test
+    public void testPrivatePayload() {
+        buildResponse("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x\"}");
+
+        PrivatePayload privatePayload = deserialiseResponse(PrivatePayload.class);
+        assertThat(privatePayload.getPrivatePayload(), is("0x"));
+    }
+
 }
