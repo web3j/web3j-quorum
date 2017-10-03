@@ -127,10 +127,10 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
     }
 
     @Override
-    public Request<?, PrivatePayload> quorumGetPrivatePayload(String address) {
+    public Request<?, PrivatePayload> quorumGetPrivatePayload(String hexDigest) {
         return new Request<>(
                 "quorum_getPrivatePayload",
-                Collections.singletonList(address),
+                Collections.singletonList(hexDigest),
                 ID,
                 web3jService,
                 PrivatePayload.class);

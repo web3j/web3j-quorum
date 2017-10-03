@@ -36,5 +36,5 @@ public interface Quorum extends Web3j {
 
     Request<?, Voter> quorumIsVoter(String address);
 
-    Request<?, PrivatePayload> quorumGetPrivatePayload(String address);
+    Request<?, PrivatePayload> quorumGetPrivatePayload(String hexDigest);
 }
