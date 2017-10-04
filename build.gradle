@@ -89,7 +89,7 @@ bintray {
     publish = true
     pkg {
         repo = 'maven'
-        name = 'org.web3j'
+        name = 'quorum'
         desc = 'web3j Quorum API'
         userOrg = 'web3j'
         licenses = ['Apache-2.0']
