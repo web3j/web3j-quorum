@@ -125,4 +125,14 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
                 web3jService,
                 Voter.class);
     }
+
+    @Override
+    public Request<?, PrivatePayload> quorumGetPrivatePayload(String hexDigest) {
+        return new Request<>(
+                "quorum_getPrivatePayload",
+                Collections.singletonList(hexDigest),
+                ID,
+                web3jService,
+                PrivatePayload.class);
+    }
 }
