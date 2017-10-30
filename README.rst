@@ -39,7 +39,7 @@ Java 8:
    <dependency>
      <groupId>org.web3j</groupId>
      <artifactId>quorum</artifactId>
-     <version>0.6.0</version>
+     <version>0.7.0</version>
    </dependency>
 
 Gradle
@@ -49,7 +49,7 @@ Java 8:
 
 .. code-block:: groovy
 
-   compile ('org.web3j:quorum:0.6.0')
+   compile ('org.web3j:quorum:0.7.0')
 
 
 Run Quorum
@@ -122,8 +122,7 @@ The only difference is that you'll need to use the
            web3j, "0x<from-address>", Arrays.asList("<privateFor-public-key>", ...);
    YourSmartContract contract = YourSmartContract.deploy(
        <web3j>, <transactionManager>, GAS_PRICE, GAS_LIMIT,
-       <initialValue>,
-       <param1>, ..., <paramN>);
+       <param1>, ..., <paramN>).send();
 
 
 These wrappers are similar to the web3j smart contract wrappers with the exception that the

@@ -7,11 +7,16 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.core.JsonRpc2_0Web3j;
 import org.web3j.protocol.core.Request;
-import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.VoidResponse;
-import org.web3j.quorum.methods.request.*;
-import org.web3j.quorum.methods.response.*;
+import org.web3j.quorum.methods.request.PrivateTransaction;
+import org.web3j.quorum.methods.response.BlockMaker;
+import org.web3j.quorum.methods.response.CanonicalHash;
+import org.web3j.quorum.methods.response.MakeBlock;
+import org.web3j.quorum.methods.response.PrivatePayload;
+import org.web3j.quorum.methods.response.QuorumNodeInfo;
+import org.web3j.quorum.methods.response.Vote;
+import org.web3j.quorum.methods.response.Voter;
 import org.web3j.utils.Numeric;
 
 /**

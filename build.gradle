@@ -23,7 +23,7 @@ apply plugin: 'idea'
 apply plugin: 'io.codearte.nexus-staging'
 
 group 'org.web3j'
-version '0.6.0'
+version '0.7.0'
 
 
 sourceCompatibility = 1.8
@@ -41,19 +41,20 @@ jacocoTestReport {
 ext {
     ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
     ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
+
+    web3jVersion = '3.0.1'
 }
 
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
-    compile 'org.web3j:core:2.3.1'
+    compile "org.web3j:core:$web3jVersion"
     testCompile 'junit:junit:4.11',
             'org.mockito:mockito-core:1.10.19',
-            'org.web3j:core:2.3.1:tests'
+            "org.web3j:core:$web3jVersion:tests"
 }
 
 tasks.withType(Test) {
