@@ -38,59 +38,9 @@ public class RequestTest extends RequestTester {
     }
 
     @Test
-    public void testNodeInfo() throws Exception {
-        web3j.quorumNodeInfo().send();
+    public void testGetPrivateTransaction() throws Exception {
+        web3j.quorumGetPrivatePayload("0x").send();
 
-        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"quorum_nodeInfo\",\"params\":[],\"id\":1}");
-    }
-
-    @Test
-    public void testCanonicalHash() throws Exception {
-        web3j.quorumCanonicalHash(BigInteger.ONE).send();
-
-        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"quorum_canonicalHash\",\"params\":[\"0x1\"],\"id\":1}");
-    }
-
-    @Test
-    public void testVote() throws Exception {
-        web3j.quorumVote("0xd0b10f3352b5a3dcbddac2c282a18b01a3b5fe52cc3c7022b2fff7cbf0fce3a6")
-                .send();
-
-        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"quorum_vote\",\"params\":[\"0xd0b10f3352b5a3dcbddac2c282a18b01a3b5fe52cc3c7022b2fff7cbf0fce3a6\"],\"id\":1}");
-    }
-
-    @Test
-    public void testMakeBlock() throws Exception {
-        web3j.quorumMakeBlock().send();
-
-        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"quorum_makeBlock\",\"params\":[],\"id\":1}");
-    }
-
-    @Test
-    public void testPauseBlockMaker() throws Exception {
-        web3j.quorumPauseBlockMaker().send();
-
-        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"quorum_pauseBlockMaker\",\"params\":[],\"id\":1}");
-    }
-
-    @Test
-    public void testResumeBlockMaker() throws Exception {
-        web3j.quorumResumeBlockMaker().send();
-
-        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"quorum_resumeBlockMaker\",\"params\":[],\"id\":1}");
-    }
-
-    @Test
-    public void testIsBlockMaker() throws Exception {
-        web3j.quorumIsBlockMaker("0xca843569e3427144cead5e4d5999a3d0ccf92b8e").send();
-
-        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"quorum_isBlockMaker\",\"params\":[\"0xca843569e3427144cead5e4d5999a3d0ccf92b8e\"],\"id\":1}");
-    }
-
-    @Test
-    public void testIsVoter() throws Exception {
-        web3j.quorumIsVoter("0x0fbdc686b912d7722dc86510934589e0aaf3b55a").send();
-
-        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"quorum_isVoter\",\"params\":[\"0x0fbdc686b912d7722dc86510934589e0aaf3b55a\"],\"id\":1}");
+        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"eth_getQuorumPayload\",\"params\":[\"0x\"],\"id\":1}");
     }
 }
