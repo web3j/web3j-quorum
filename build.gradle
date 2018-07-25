@@ -42,7 +42,7 @@ ext {
     ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
     ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
 
-    web3jVersion = '3.4.0'
+    web3jVersion = '3.5.0'
     junitVersion = '4.11'
     logbackVersion = '1.2.3'
     mockitoVersion = '1.10.19'
