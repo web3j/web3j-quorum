@@ -29,7 +29,7 @@ import static org.web3j.tx.ManagedTransaction.GAS_PRICE;
  * <code>git clone https://github.com/blk-io/crux.git</code>
  * <code>docker-compose -f docker/quorum-crux/docker-compose.yaml up</code>
  *
- * <p>Then you're good to go
+ * <p>Then you're good to go!
  */
 @Ignore
 public class QuorumIT {
@@ -129,8 +129,6 @@ public class QuorumIT {
         TransactionReceipt aliceTransferReceipt = contract.transfer(
                 destNode.getAddress(), transferQuantity).send();
 
-        // Sometimes the logs are empty even though they shouldn't be causing a NPE to be thrown here
-        // See https://github.com/jpmorganchase/quorum/issues/400
         HumanStandardToken.TransferEventResponse aliceTransferEventValues =
                 contract.getTransferEvents(aliceTransferReceipt).get(0);
 
@@ -160,8 +158,6 @@ public class QuorumIT {
         TransactionReceipt approveReceipt = contract.approve(
                 destNode.getAddress(), transferQuantity).send();
 
-        // Sometimes the logs are empty even though they shouldn't be causing a NPE to be thrown here
-        // See https://github.com/jpmorganchase/quorum/issues/400
         HumanStandardToken.ApprovalEventResponse approvalEventValues =
                 contract.getApprovalEvents(approveReceipt).get(0);
 
