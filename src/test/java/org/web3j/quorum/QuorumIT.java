@@ -86,7 +86,9 @@ public class QuorumIT {
         ClientTransactionManager transactionManager =
                 new ClientTransactionManager(
                         quorum,
-                        sourceNode.getAddress(), destNode.getPublicKeys());
+                        sourceNode.getAddress(),
+                        sourceNode.getPublicKeys().get(0),
+                        destNode.getPublicKeys());
 
         String greeting = "Hello Quorum world! [" + requestId + "]";
         Greeter contract = Greeter.deploy(
@@ -105,7 +107,9 @@ public class QuorumIT {
         ClientTransactionManager transactionManager =
                 new ClientTransactionManager(
                         quorum,
-                        sourceNode.getAddress(), destNode.getPublicKeys());
+                        sourceNode.getAddress(),
+                        sourceNode.getPublicKeys().get(0),
+                        destNode.getPublicKeys());
 
         BigInteger aliceQty = BigInteger.valueOf(1_000_000);
         final String aliceAddress = sourceNode.getAddress();

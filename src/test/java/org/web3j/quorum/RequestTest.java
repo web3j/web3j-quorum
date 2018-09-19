@@ -30,11 +30,12 @@ public class RequestTest extends RequestTester {
                         "TO",
                         BigInteger.TEN,
                         "DATA",
-                        Arrays.asList("private1", "private2")
+                        "privateFrom",
+                        Arrays.asList("privateFor1", "privateFor2")
                 )
         ).send();
 
-        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFor\":[\"private1\",\"private2\"]}],\"id\":1}");
+        verifyResult("{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
     }
 
     @Test

@@ -20,10 +20,12 @@ public class ClientTransactionManager extends TransactionManager {
 
     private final Quorum quorum;
     private final String fromAddress;
+    private final String privateFrom;
     private List<String> privateFor;
 
     public ClientTransactionManager(
-            Web3j web3j, String fromAddress, List<String> privateFor,
+            Web3j web3j, String fromAddress,
+            String privateFrom, List<String> privateFor,
             int attempts, int sleepDuration) {
         super(web3j, attempts, sleepDuration, fromAddress);
         if (!(web3j instanceof Quorum)) {
@@ -31,12 +33,31 @@ public class ClientTransactionManager extends TransactionManager {
         }
         this.quorum = (Quorum) web3j;
         this.fromAddress = fromAddress;
+        this.privateFrom = privateFrom;
         this.privateFor = privateFor;
     }
 
     public ClientTransactionManager(
+            Web3j web3j, String fromAddress, String privateFrom, List<String> privateFor) {
+        this(web3j, fromAddress, privateFrom, privateFor, ATTEMPTS, SLEEP_DURATION);
+    }
+
+    @Deprecated
+    public ClientTransactionManager(
+            Web3j web3j, String fromAddress,
+            List<String> privateFor,
+            int attempts, int sleepDuration) {
+        this(web3j, fromAddress, null, privateFor, attempts, sleepDuration);;
+    }
+
+    @Deprecated
+    public ClientTransactionManager(
             Web3j web3j, String fromAddress, List<String> privateFor) {
-        this(web3j, fromAddress, privateFor, ATTEMPTS, SLEEP_DURATION);
+        this(web3j, fromAddress, null, privateFor);
+    }
+
+    public String getPrivateFrom() {
+        return privateFrom;
     }
 
     public List<String> getPrivateFor() {
@@ -54,7 +75,7 @@ public class ClientTransactionManager extends TransactionManager {
             throws IOException {
 
         PrivateTransaction transaction = new PrivateTransaction(
-                fromAddress, null, gasLimit, to, value, data, privateFor);
+                fromAddress, null, gasLimit, to, value, data, privateFrom, privateFor);
 
         return quorum.ethSendTransaction(transaction).send();
     }
