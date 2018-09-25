@@ -1,9 +1,11 @@
 buildscript {
+    ext.kotlin_version = '1.2.71'
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -12,6 +14,7 @@ plugins {
 }
 
 apply plugin: 'java'
+apply plugin: 'kotlin'
 // Required for JFrog Artifactory repository
 apply plugin: 'jacoco'
 apply plugin: 'maven-publish'
@@ -54,12 +57,20 @@ repositories {
 }
 
 dependencies {
-    compile "org.web3j:core:$web3jVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version",
+            "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0",
+            "org.slf4j:slf4j-api:1.7.25",
+            "org.web3j:core:$web3jVersion"
     testCompile 'junit:junit:4.11',
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
             'org.mockito:mockito-core:1.10.19',
+            "junit:junit:4.12",
+            "ch.qos.logback:logback-core:1.2.3",
+            "ch.qos.logback:logback-classic:1.2.3",
+            "org.assertj:assertj-core:3.8.0",
             "org.web3j:core:$web3jVersion:tests"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 tasks.withType(Test) {
@@ -170,4 +181,14 @@ task release {
     tasks.findByName('closeAndPromoteRepository').mustRunAfter 'uploadArchives'
 
     tasks.findByName('bintrayUpload').mustRunAfter 'build'
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
