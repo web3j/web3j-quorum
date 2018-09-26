@@ -40,7 +40,7 @@ class QuorumTransactionManager(
         return credentials.address
     }
     val constellation = Constellation(
-            IpcService(UnixDomainSocket("/Users/Conor/code/java/blk/3nodes-quorum/qdata/tm1.ipc")))
+            IpcService(UnixDomainSocket("/Users/sebastianraba/Desktop/work/web3j-quorum/constellation/data/constellation.ipc")))
     override fun signAndSend(rawTransaction: RawTransaction): EthSendTransaction {
         // See notes on this at https://github.com/jpmorganchase/quorum/pull/146
         val signedMessage: ByteArray

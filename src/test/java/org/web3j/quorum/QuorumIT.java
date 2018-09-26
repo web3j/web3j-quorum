@@ -69,7 +69,7 @@ public class QuorumIT {
 
         // Send transactions between all sets of nodes
         for (int count = 0; count < 1; count++) {
-            for (int i = 0; i < nodes.size(); i++) {
+            for (int i = 0; i <= 0; i++) {
                 Node sourceNode = nodes.get(i);
                 Node destNode = nodes.get((i + 1) % nodes.size());
 

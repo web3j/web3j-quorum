@@ -24,9 +24,12 @@ public class ClientTransactionManager extends TransactionManager {
     private List<String> privateFor;
 
     public ClientTransactionManager(
-            Web3j web3j, String fromAddress,
-            String privateFrom, List<String> privateFor,
-            int attempts, int sleepDuration) {
+            Web3j web3j,
+            String fromAddress,
+            String privateFrom,
+            List<String> privateFor,
+            int attempts,
+            int sleepDuration) {
         super(web3j, attempts, sleepDuration, fromAddress);
         if (!(web3j instanceof Quorum)) {
             throw new UnsupportedOperationException("Quorum quorum instance must be used");
