@@ -78,7 +78,7 @@ public class RawTransactionManagerTest {
                 Node sourceNode = nodes.get(i);
                 Node destNode = nodes.get((i + 1) % nodes.size());
                 String requestId = Integer.toString(i);
-                runPrivateGreeterTest(sourceNode, destNode,requestId);
+                testRawTransactionsWithGreeterContract(sourceNode, destNode,requestId);
 
             }
         }
@@ -108,6 +108,8 @@ public class RawTransactionManagerTest {
                 BigInteger.ZERO,
                 Contract.GAS_LIMIT,
                 greeting).send();
+
+        Thread.sleep(10000);
 
         System.out.println(contract.getContractAddress());
         String test = contract.greet().send();
