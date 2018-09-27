@@ -6,6 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.core.JsonRpc2_0Web3j;
 import org.web3j.protocol.core.Request;
+import org.web3j.protocol.core.methods.response.EthSendRawTransaction;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.quorum.methods.request.PrivateTransaction;
 import org.web3j.quorum.methods.response.PrivatePayload;
@@ -28,7 +29,11 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
     @Override
     public Request<?, EthSendTransaction> ethSendRawTransaction(
             String signedTransactionData) {
-        throw new UnsupportedOperationException("Quorum requires PrivateTransaction types");
+        return new Request<>(
+                "eth_sendRawTransaction",
+                Collections.singletonList(signedTransactionData),
+                web3jService,
+                EthSendTransaction.class);
     }
 
     @Override

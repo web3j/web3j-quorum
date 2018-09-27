@@ -1,19 +1,29 @@
 package org.web3j.quorum;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.core.Is;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.qourum.tx.QuorumTransactionManager;
 import org.web3j.quorum.generated.Greeter;
+import org.web3j.quorum.tx.ClientTransactionManager;
 import org.web3j.tx.Contract;
+import org.web3j.tx.ManagedTransaction;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.DefaultGasProvider;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.web3j.tx.Contract.GAS_LIMIT;
+import static org.web3j.tx.ManagedTransaction.GAS_PRICE;
 
 /**
  * Useful integration tests for verifying Quorum deployments and transaction privacy.
@@ -27,7 +37,7 @@ import static org.junit.Assert.assertThat;
  */
 
 @Ignore
-public class NewTransactionManagerTest {
+public class RawTransactionManagerTest {
 
     // Node details are those of blk.io's Sample Quorum with Crux network, available at:
     // https://github.com/blk-io/crux/tree/master/docker/quorum-crux/
@@ -68,7 +78,7 @@ public class NewTransactionManagerTest {
                 Node sourceNode = nodes.get(i);
                 Node destNode = nodes.get((i + 1) % nodes.size());
                 String requestId = Integer.toString(i);
-                testRawTransactionsWithGreeterContract(sourceNode, destNode,requestId);
+                runPrivateGreeterTest(sourceNode, destNode,requestId);
 
             }
         }
@@ -87,21 +97,44 @@ public class NewTransactionManagerTest {
                 credentials,
                 sourceNode.getPublicKeys().get(0),
                 destNode.getPublicKeys(),
-                500,
-                2);
+                5000,
+                5);
 
         String greeting = "Hello Quorum world! [" + requestId + "]";
 
         Greeter contract = Greeter.deploy(
                 quorum,
                 transactionManager,
-                Contract.GAS_PRICE,
+                BigInteger.ZERO,
                 Contract.GAS_LIMIT,
                 greeting).send();
 
-        assertThat(contract.greet().send(), is(greeting));
+        System.out.println(contract.getContractAddress());
+        String test = contract.greet().send();
+
+
+        assertThat(test , is(greeting));
     }
 
+    private void runPrivateGreeterTest(
+            Node sourceNode, Node destNode, String requestId) throws Exception {
+        Quorum quorum = Quorum.build(new HttpService(sourceNode.getUrl()));
+
+        ClientTransactionManager transactionManager =
+                new ClientTransactionManager(
+                        quorum,
+                        sourceNode.getAddress(),
+                        sourceNode.getPublicKeys().get(0),
+                        destNode.getPublicKeys());
+
+        String greeting = "Hello Quorum world! [" + requestId + "]";
+        Greeter contract = Greeter.deploy(
+                quorum, transactionManager,
+                GAS_PRICE, GAS_LIMIT,
+                greeting).send();
+
+        MatcherAssert.assertThat(contract.greet().send(), Is.is(greeting));
+    }
     public void testRawTransaction(Node sourceNode, Node destNode, String requestId) throws Exception {
 
     }

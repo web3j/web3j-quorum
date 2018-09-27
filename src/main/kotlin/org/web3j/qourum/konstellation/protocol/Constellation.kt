@@ -36,5 +36,8 @@ class Constellation(
     /**
      * Verify that our node is running
      */
-    fun upCheck() = ipcService.send("upcheck") == "I'm up!"
+    fun upCheck() : Boolean {
+        val test = ipcService.send("upcheck")
+        return test  == "I'm up!"
+    }
 }

@@ -27,7 +27,6 @@ object RequestBuilder {
             Host: k
             User-Agent: konstellation-client
 
-
         """.trimIndent()
     }
 }
