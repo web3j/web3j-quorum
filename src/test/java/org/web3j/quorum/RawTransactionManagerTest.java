@@ -1,27 +1,32 @@
 package org.web3j.quorum;
 
+import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.List;
 
 
+import org.assertj.core.internal.ByteArrays;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.core.Is;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
+import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.qourum.tx.QuorumTransactionManager;
 import org.web3j.quorum.generated.Greeter;
 import org.web3j.quorum.tx.ClientTransactionManager;
 import org.web3j.tx.Contract;
-import org.web3j.tx.ManagedTransaction;
-import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
+import org.web3j.utils.Numeric;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.web3j.qourum.util.Base64Kt.decode;
+import static org.web3j.qourum.util.Base64Kt.encode;
 import static org.web3j.tx.Contract.GAS_LIMIT;
 import static org.web3j.tx.ManagedTransaction.GAS_PRICE;
 
@@ -89,8 +94,13 @@ public class RawTransactionManagerTest {
                                                         String requestId) throws Exception {
 
         Quorum quorum = Quorum.build(new HttpService(sourceNode.getUrl()));
-        String account = quorum.ethAccounts().send().getAccounts().get(0);
-        Credentials credentials = Credentials.create(account);
+        String privateKey = "Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA=";
+
+        Credentials credentials = Credentials.create(Numeric.toHexString(decode(privateKey)));
+        credentials.getEcKeyPair().getPrivateKey();
+
+
+        System.out.println("HERE WE AREE " +  sourceNode.getAddress());
 
         QuorumTransactionManager transactionManager = new QuorumTransactionManager(
                 quorum,
@@ -100,18 +110,14 @@ public class RawTransactionManagerTest {
                 5000,
                 5);
 
-        String greeting = "Hello Quorum world! [" + requestId + "]";
 
+        String greeting = "Hello Quorum world! [" + requestId + "]";
         Greeter contract = Greeter.deploy(
-                quorum,
-                transactionManager,
-                BigInteger.ZERO,
-                Contract.GAS_LIMIT,
+                quorum, transactionManager,
+                GAS_PRICE, GAS_LIMIT,
                 greeting).send();
 
-        Thread.sleep(10000);
 
-        System.out.println(contract.getContractAddress());
         String test = contract.greet().send();
 
 
