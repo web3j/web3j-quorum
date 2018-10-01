@@ -16,8 +16,11 @@ import java.math.BigInteger
 
 
 class QuorumTransactionManager(
-        val web3j: Web3j, val credentials: Credentials, val publicKey: String,
-        var privateFor: List<String> = listOf(), val sleepDuration: Int = 500,
+        val web3j: Web3j,
+        val credentials: Credentials,
+        val publicKey: String,
+        var privateFor: List<String> = listOf(),
+        val sleepDuration: Int = 500,
         val attempts: Int = DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH) : RawTransactionManager(
                                                                     web3j, credentials,
                                                                     attempts, sleepDuration) {
