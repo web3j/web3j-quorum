@@ -23,7 +23,10 @@ import org.web3j.tx.Contract;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Numeric;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.list;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.web3j.qourum.util.Base64Kt.decode;
 import static org.web3j.qourum.util.Base64Kt.encode;
@@ -77,16 +80,40 @@ public class RawTransactionManagerTest {
     @Test
     public void testNodes() throws Exception {
 
-        // Send transactions between all sets of nodes
-        for (int count = 0; count < 1; count++) {
-            for (int i = 0; i < nodes.size(); i++) {
-                Node sourceNode = nodes.get(i);
-                Node destNode = nodes.get((i + 1) % nodes.size());
-                String requestId = Integer.toString(i);
-                testRawTransactionsWithGreeterContract(sourceNode, destNode,requestId);
+        Node sourceNode = nodes.get(0);
+        Node destNode = nodes.get((0 + 1) % nodes.size());
+        String requestId = Integer.toString(0);
+        testRawTransactionsWithGreeterContract(sourceNode, destNode,requestId);
 
-            }
-        }
+        // Send transactions between all sets of nodes
+//        for (int count = 0; count < 1; count++) {
+//            for (int i = 0; i < nodes.size(); i++) {
+//                Node sourceNode = nodes.get(i);
+//                Node destNode = nodes.get((i + 1) % nodes.size());
+//                String requestId = Integer.toString(i);
+//                testRawTransactionsWithGreeterContract(sourceNode, destNode,requestId);
+//
+//            }
+//        }
+    }
+
+    @Test
+    public void testGetFromAddress() {
+
+        String privateKey = "Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA=";
+        String publicKey = "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=";
+
+        String generatedPublicKey = Numeric.toHexString(new BigInteger(
+                "1031071325317065030348684664244876373174480300281" +
+                "853147649374919677139249886171269239951986429682177663307535150310029843431419004" +
+                "5906382543093182936607931").toByteArray());
+
+        Credentials credentials = Credentials.create(Numeric.toHexString(decode(privateKey)), generatedPublicKey);
+
+        String address = credentials.getAddress();
+
+        assertEquals("0xed9d02e382b34818e88b88a309c7fe71e65f419d", address);
+
     }
 
     public void testRawTransactionsWithGreeterContract (Node sourceNode,
@@ -94,13 +121,22 @@ public class RawTransactionManagerTest {
                                                         String requestId) throws Exception {
 
         Quorum quorum = Quorum.build(new HttpService(sourceNode.getUrl()));
-        String privateKey = "Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA=";
 
-        Credentials credentials = Credentials.create(Numeric.toHexString(decode(privateKey)));
-        credentials.getEcKeyPair().getPrivateKey();
+        String receiversPublicKey ="0xca843569e3427144cead5e4d5999a3d0ccf92b8e";
+        String sendersPrivateKey =
+                Numeric.toHexString(decode("Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA="));
+        String sendersPublicKey =
+                Numeric.toHexString(decode("BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo="));
+
+        Credentials credentials = Credentials.create(sendersPrivateKey, sendersPublicKey);
 
 
-        System.out.println("HERE WE AREE " +  sourceNode.getAddress());
+        List<String> publicKeyPrivateFor = Arrays.asList(
+                receiversPublicKey
+        );
+
+        List<String> listPrivateFor = Arrays.asList("1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg=",
+                "oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8=");
 
         QuorumTransactionManager transactionManager = new QuorumTransactionManager(
                 quorum,
@@ -114,9 +150,8 @@ public class RawTransactionManagerTest {
         String greeting = "Hello Quorum world! [" + requestId + "]";
         Greeter contract = Greeter.deploy(
                 quorum, transactionManager,
-                GAS_PRICE, GAS_LIMIT,
+                BigInteger.ZERO, GAS_LIMIT,
                 greeting).send();
-
 
         String test = contract.greet().send();
 
