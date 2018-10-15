@@ -23,6 +23,10 @@ class IpcService(val ioFacade: IOFacade) {
         return objectMapper.readValue(chunk, responseType)
     }
 
+    fun sendRaw(request: String, path: String, from: String, to: List<String>): String {
+        return sendRawJsonRequest(request, path, from, to)
+    }
+
     fun <S> send(request: S, path: String): Boolean {
         val payload = objectMapper.writeValueAsString(request)
         return sendJsonRequest(payload, path).isEmpty()
@@ -30,6 +34,11 @@ class IpcService(val ioFacade: IOFacade) {
 
     fun sendJsonRequest(payload: String, path: String): String {
         val data = RequestBuilder.encodeJsonRequest(path, payload)
+        return performIO(data)
+    }
+
+    fun sendRawJsonRequest(payload: String, path: String, from: String, to: List<String>): String {
+        val data = RequestBuilder.encodeRawJsonRequest(path, payload, from, to)
         return performIO(data)
     }
 

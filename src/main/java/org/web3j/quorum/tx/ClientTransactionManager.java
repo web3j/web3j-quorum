@@ -50,7 +50,7 @@ public class ClientTransactionManager extends TransactionManager {
             Web3j web3j, String fromAddress,
             List<String> privateFor,
             int attempts, int sleepDuration) {
-        this(web3j, fromAddress, null, privateFor, attempts, sleepDuration);;
+        this(web3j, fromAddress, null, privateFor, attempts, sleepDuration);
     }
 
     @Deprecated
