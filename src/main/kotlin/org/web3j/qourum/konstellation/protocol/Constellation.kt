@@ -10,6 +10,13 @@ class Constellation(
         val ipcService: IpcService) {
 
     /**
+     * Send a new raw payload to Constellation for secure enclave.
+     */
+    fun sendRawRequest(payload: String, from: String, to: List<String>): String {
+        return ipcService.sendRaw(payload, "sendraw", from, to)
+    }
+
+    /**
      * Send a new payload to Constellation for secure enclave.
      */
     fun sendRequest(payload: String, from: String, to: List<String>): SendResponse {
