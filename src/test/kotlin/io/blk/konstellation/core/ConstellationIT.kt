@@ -11,13 +11,23 @@ import org.junit.Ignore
 import org.junit.Test
 import org.web3j.protocol.ipc.UnixDomainSocket
 
+/**
+ * Useful integration tests for verifying Constellation transactions.
+ *
+ * <p>
+ *     To use, start up 2 constellation instances with valid config and
+ * hardcode the IPC path to connect to in constellationIpcPath1 and constellationIpcPath2
+ * variables below.
+ *
+ * <p>
+ */
 @Ignore
 class ConstellationIT {
 
-    val constellation1 = Constellation(
-            IpcService(UnixDomainSocket("/Users/sebastianraba/Desktop/work/web3j-quorum/constellation/data/constellation.ipc")))
-    val constellation2 = Constellation(
-            IpcService(UnixDomainSocket("/Users/sebastianraba/Desktop/work/web3j-quorum/constellation/data1/constellation.ipc")))
+    val constellationIpcPath1 = "<path-to-constellation-ipc-path>.ipc"
+    val constellationIpcPath2 = "<path-to-constellation-ipc-path>.ipc"
+    val constellation1 = Constellation(IpcService(UnixDomainSocket(constellationIpcPath1)))
+    val constellation2 = Constellation(IpcService(UnixDomainSocket(constellationIpcPath2)))
 
     @Test
     fun testUpCheck() {
