@@ -81,7 +81,7 @@ public class RawTransactionManagerTest {
                 Node destNode = nodes.get((i + 1) % nodes.size());
 
                 String keyFile = "keyfiles/key" + String.valueOf(i + 1);
-                String constellationSocketPath = "~/go/blk-io/src/github.com/constellation/data" + String.valueOf(i + 1) + "/constellation.ipc";
+                String constellationSocketPath = "<path-to-constellation-ipc-path>.ipc";
                 testRawTransactionsWithGreeterContract(sourceNode, destNode, keyFile, constellationSocketPath);
             }
         }
