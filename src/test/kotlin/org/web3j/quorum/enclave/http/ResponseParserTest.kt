@@ -1,4 +1,4 @@
-package io.blk.konstellation.http
+package org.web3j.quorum.enclave.http
 
 import org.assertj.core.api.Assertions.*
 import org.junit.Test

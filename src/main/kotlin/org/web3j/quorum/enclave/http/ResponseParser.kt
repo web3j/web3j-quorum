@@ -1,4 +1,4 @@
-package io.blk.konstellation.http
+package org.web3j.quorum.enclave.http
 
 import java.io.BufferedReader
 import java.io.StringReader

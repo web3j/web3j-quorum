@@ -1,15 +1,15 @@
-package org.web3j.qourum.tx
+package org.web3j.quorum.enclave.tx
 
-import io.blk.konstellation.ipc.IpcService
-import io.blk.konstellation.protocol.Constellation
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.response.EthSendTransaction
 import org.web3j.protocol.ipc.UnixDomainSocket
-import org.web3j.qourum.util.decode
-import org.web3j.qourum.util.encode
+import org.web3j.quorum.enclave.util.decode
+import org.web3j.quorum.enclave.util.encode
 import org.web3j.quorum.Quorum
+import org.web3j.quorum.enclave.ipc.IpcService
+import org.web3j.quorum.enclave.protocol.Constellation
 import org.web3j.tx.RawTransactionManager
 import org.web3j.utils.Numeric
 import java.math.BigInteger

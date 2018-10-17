@@ -1,4 +1,4 @@
-package io.blk.konstellation.ipc
+package org.web3j.quorum.enclave.ipc
 
 import org.web3j.protocol.ipc.IOFacade
 import java.io.IOException

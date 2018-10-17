@@ -1,15 +1,15 @@
-package io.blk.konstellation.core
+package org.web3j.quorum.enclave.core
 
-import io.blk.konstellation.PAYLOAD
-import io.blk.konstellation.ipc.IpcService
-import io.blk.konstellation.ipc.MockIOFacade
-import io.blk.konstellation.protocol.Constellation
-import io.blk.konstellation.TM1_PUBLIC_KEY
-import io.blk.konstellation.TM2_PUBLIC_KEY
 import org.junit.Test
 import org.junit.Assert.assertTrue
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
+import org.web3j.quorum.enclave.PAYLOAD
+import org.web3j.quorum.enclave.TM1_PUBLIC_KEY
+import org.web3j.quorum.enclave.TM2_PUBLIC_KEY
+import org.web3j.quorum.enclave.ipc.IpcService
+import org.web3j.quorum.enclave.ipc.MockIOFacade
+import org.web3j.quorum.enclave.protocol.Constellation
 
 class ConstellationTest {
 
@@ -19,9 +19,12 @@ class ConstellationTest {
     val key = "LE1xbvgYbXuKRJ5zcLVNc+UELD9OxGgcReAYHqXJfEB6gXVr5unZmogscY0KMPpun3L3aex/M23GjTkdvzAOFg=="
 
     val upCheckRequest = """
-            GET /upcheck HTTP/1.1
+            POST /upcheck HTTP/1.1
             Host: k
-            User-Agent: konstellation-client
+            User-Agent: constellation-client
+            Content-Type: application/json
+            Content-Length: 0
+
 
     """.trimIndent()
 
@@ -40,7 +43,7 @@ class ConstellationTest {
     val sendRequest = """
             POST /send HTTP/1.1
             Host: k
-            User-Agent: konstellation-client
+            User-Agent: constellation-client
             Content-Type: application/json
             Content-Length: 146
 
@@ -63,7 +66,7 @@ class ConstellationTest {
     val recieveRequest = """
             POST /receive HTTP/1.1
             Host: k
-            User-Agent: konstellation-client
+            User-Agent: constellation-client
             Content-Type: application/json
             Content-Length: 150
 
@@ -85,7 +88,7 @@ class ConstellationTest {
     val deleteRequest = """
             POST /delete HTTP/1.1
             Host: k
-            User-Agent: konstellation-client
+            User-Agent: constellation-client
             Content-Type: application/json
             Content-Length: 98
 

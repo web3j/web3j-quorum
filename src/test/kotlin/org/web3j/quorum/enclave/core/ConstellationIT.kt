@@ -1,15 +1,15 @@
-package io.blk.konstellation.core
+package org.web3j.quorum.enclave.core
 
-import io.blk.konstellation.ipc.IpcService
-import io.blk.konstellation.PAYLOAD
-import io.blk.konstellation.protocol.Constellation
-import io.blk.konstellation.TM1_PUBLIC_KEY
-import io.blk.konstellation.TM2_PUBLIC_KEY
 import org.assertj.core.api.Assertions.*
 import org.junit.Assert.assertTrue
 import org.junit.Ignore
 import org.junit.Test
 import org.web3j.protocol.ipc.UnixDomainSocket
+import org.web3j.quorum.enclave.PAYLOAD
+import org.web3j.quorum.enclave.TM1_PUBLIC_KEY
+import org.web3j.quorum.enclave.TM2_PUBLIC_KEY
+import org.web3j.quorum.enclave.ipc.IpcService
+import org.web3j.quorum.enclave.protocol.Constellation
 
 /**
  * Useful integration tests for verifying Constellation transactions.

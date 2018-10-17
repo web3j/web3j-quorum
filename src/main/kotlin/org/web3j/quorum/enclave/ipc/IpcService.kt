@@ -1,12 +1,12 @@
-package io.blk.konstellation.ipc
+package org.web3j.quorum.enclave.ipc
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.*
-import io.blk.konstellation.http.RequestBuilder
-import io.blk.konstellation.http.ResponseParser
 import org.slf4j.LoggerFactory
 import org.web3j.protocol.ipc.IOFacade
 import org.web3j.protocol.ipc.IpcService
+import org.web3j.quorum.enclave.http.RequestBuilder
+import org.web3j.quorum.enclave.http.ResponseParser
 
 /**
  * IPC service layer

@@ -1,7 +1,8 @@
-package io.blk.konstellation.protocol
+package org.web3j.quorum.enclave.protocol
 
-import io.blk.konstellation.*
-import io.blk.konstellation.ipc.IpcService
+import org.web3j.quorum.enclave.*
+import org.web3j.quorum.enclave.ipc.IpcService
+
 
 /**
  * Constellation API methods.

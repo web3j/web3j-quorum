@@ -1,4 +1,4 @@
-package io.blk.konstellation.http
+package org.web3j.quorum.enclave.http
 
 /**
  * HTTP Request builder.
@@ -14,7 +14,7 @@ object RequestBuilder {
         return """
             POST /$path HTTP/1.1
             Host: k
-            User-Agent: konstellation-client
+            User-Agent: constellation-client
             Content-Type: application/json
             Content-Length: $length
             c11n-from: $from
@@ -32,7 +32,7 @@ object RequestBuilder {
         return """
             POST /$path HTTP/1.1
             Host: k
-            User-Agent: konstellation-client
+            User-Agent: constellation-client
             Content-Type: application/json
             Content-Length: $length
 
@@ -44,7 +44,7 @@ object RequestBuilder {
         return """
             GET /$path HTTP/1.1
             Host: k
-            User-Agent: konstellation-client
+            User-Agent: constellation-client
 
         """.trimIndent()
     }
