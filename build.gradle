@@ -57,17 +57,16 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version",
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
             "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0",
             "org.slf4j:slf4j-api:1.7.25",
             "org.web3j:core:$web3jVersion"
-    testCompile "junit:junit:4.12",
+    testCompile 'junit:junit:4.12',
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
             'org.mockito:mockito-core:1.10.19',
             "org.assertj:assertj-core:3.8.0",
-            "org.web3j:core:$web3jVersion:tests",
-            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+            "org.web3j:core:$web3jVersion:tests"
 }
 
 tasks.withType(Test) {
