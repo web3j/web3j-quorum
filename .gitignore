@@ -40,3 +40,4 @@ docs/build
 # OS X
 .DS_Store
 
+out
