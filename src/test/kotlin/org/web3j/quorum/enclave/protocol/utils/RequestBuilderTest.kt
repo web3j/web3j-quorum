@@ -1,4 +1,4 @@
-package org.web3j.quorum.enclave.http
+package org.web3j.quorum.enclave.protocol.utils
 
 import org.assertj.core.api.Assertions.*
 import org.junit.Test

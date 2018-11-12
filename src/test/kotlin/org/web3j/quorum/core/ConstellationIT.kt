@@ -1,18 +1,17 @@
-package org.web3j.quorum.enclave.core
+package org.web3j.quorum.core
 
 import org.assertj.core.api.Assertions.*
 import org.junit.Assert.assertTrue
 import org.junit.Ignore
 import org.junit.Test
-import org.web3j.protocol.ipc.UnixDomainSocket
-import org.web3j.quorum.enclave.PAYLOAD
-import org.web3j.quorum.enclave.TM1_PUBLIC_KEY
-import org.web3j.quorum.enclave.TM2_PUBLIC_KEY
-import org.web3j.quorum.enclave.ipc.IpcService
-import org.web3j.quorum.enclave.protocol.Constellation
+import org.web3j.quorum.PAYLOAD
+import org.web3j.quorum.TM1_PUBLIC_KEY
+import org.web3j.quorum.TM2_PUBLIC_KEY
+import org.web3j.quorum.enclave.Constellation
+import org.web3j.quorum.enclave.protocol.ipc.UnixEnclaveIpcService
 
 /**
- * Useful integration tests for verifying Constellation transactions.
+ * Useful integration tests for verifying Enclave transactions.
  *
  * <p>
  *     To use, start up 2 constellation instances with valid config and
@@ -24,10 +23,10 @@ import org.web3j.quorum.enclave.protocol.Constellation
 @Ignore
 class ConstellationIT {
 
-    val constellationIpcPath1 = "<path-to-constellation-ipc-path>.ipc"
-    val constellationIpcPath2 = "<path-to-constellation-ipc-path>.ipc"
-    val constellation1 = Constellation(IpcService(UnixDomainSocket(constellationIpcPath1)))
-    val constellation2 = Constellation(IpcService(UnixDomainSocket(constellationIpcPath2)))
+    val constellationIpcPath1 = "/Users/puneetha17/go/blk-io/src/github.com/constellation/data/constellation.ipc"
+    val constellationIpcPath2 = "/Users/puneetha17/go/blk-io/src/github.com/constellation/data1/constellation.ipc"
+    val constellation1 = Constellation(UnixEnclaveIpcService(constellationIpcPath1))
+    val constellation2 = Constellation(UnixEnclaveIpcService(constellationIpcPath2))
 
     @Test
     fun testUpCheck() {
@@ -42,14 +41,17 @@ class ConstellationIT {
         val from = TM1_PUBLIC_KEY
         val to = TM2_PUBLIC_KEY
 
-        // from address should always be our Constellation node's public key
+        // from address should always be our Enclave node's public key
         val sendResponse = constellation1.sendRequest(payload, from, listOf(to))
+        println(sendResponse.key)
         val key = sendResponse.key
         assertThat(key).hasSize(88)
 
-        // to address should always be our Constellation node's public key
+        // to address should always be our Enclave node's public key
         // we can't obtain the payload from tm1, for background as to why this is
         // see https://github.com/jpmorganchase/constellation/issues/47
+
+
         val receiveResponse = constellation2.receiveRequest(key, TM2_PUBLIC_KEY)
         assertThat(receiveResponse.payload).isEqualTo(payload)
 
