@@ -1,4 +1,4 @@
-package org.web3j.quorum.enclave.http
+package org.web3j.quorum.enclave.protocol.utils
 
 /**
  * HTTP Request builder.

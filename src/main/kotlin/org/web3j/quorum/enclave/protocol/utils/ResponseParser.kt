@@ -1,4 +1,4 @@
-package org.web3j.quorum.enclave.http
+package org.web3j.quorum.enclave.protocol.utils
 
 import java.io.BufferedReader
 import java.io.StringReader
@@ -74,10 +74,10 @@ object ResponseParser {
     }
 
     fun parseChunkedResponse(rawResponse: String): String {
-        val response = ResponseParser.parseResponse(rawResponse)
+        val response = parseResponse(rawResponse)
         verifyResponseCode(response)
 
-        val chunks = ResponseParser.parseChunkedBody(response)
+        val chunks = parseChunkedBody(response)
         if (chunks.size == 1) {
             return chunks[0]
         } else if (chunks.isEmpty()) {

@@ -40,25 +40,25 @@ public class QuorumIT {
             "0xed9d02e382b34818e88b88a309c7fe71e65f419d",
             Arrays.asList(
                     "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo="),
-            "http://localhost:22001");
+            "utils://localhost:22001");
 
     private static final Node quorum2 = new Node(
             "0xca843569e3427144cead5e4d5999a3d0ccf92b8e",
             Arrays.asList(
                     "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="),
-            "http://localhost:22002");
+            "utils://localhost:22002");
 
     private static final Node quorum3 = new Node(
             "0x0fbdc686b912d7722dc86510934589e0aaf3b55a",
             Arrays.asList(
                     "1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg="),
-            "http://localhost:22003");
+            "utils://localhost:22003");
 
     private static final Node quorum4 = new Node(
             "0x9186eb3d20cbd1f5f992a950d808c4495153abd5",
             Arrays.asList(
                     "oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8="),
-            "http://localhost:22004");
+            "utils://localhost:22004");
 
     private static final List<Node> nodes = Arrays.asList(
             quorum1, quorum2, quorum3, quorum4);

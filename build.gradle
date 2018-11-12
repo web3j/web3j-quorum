@@ -109,6 +109,23 @@ publishing {
             artifact javadocJar {
                 classifier 'javadoc'
             }
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    publications = ['mavenJava']
+    publish = true
+    pkg {
+        repo = 'maven'
+        name = 'quorum'
+        desc = 'web3j Quorum API'
+        userOrg = 'web3j'
+        licenses = ['Apache-2.0']
+        issueTrackerUrl = 'https://github.com/web3j/quorum/issues'
+        vcsUrl = 'https://github.com/web3j/quorum.git'
+        websiteUrl = 'utils://web3j.io'
+        publicDownloadNumbers = true
+    }
+}
 
             pom {
                 name = project.name

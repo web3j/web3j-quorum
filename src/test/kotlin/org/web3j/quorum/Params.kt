@@ -1,4 +1,4 @@
-package org.web3j.quorum.enclave
+package org.web3j.quorum
 
 import java.util.*
 

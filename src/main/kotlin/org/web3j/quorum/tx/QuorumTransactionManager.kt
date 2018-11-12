@@ -1,15 +1,15 @@
-package org.web3j.quorum.enclave.tx
+package org.web3j.quorum.tx
 
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.response.EthSendTransaction
 import org.web3j.protocol.ipc.UnixDomainSocket
-import org.web3j.quorum.enclave.util.decode
-import org.web3j.quorum.enclave.util.encode
+import org.web3j.quorum.tx.util.decode
+import org.web3j.quorum.tx.util.encode
 import org.web3j.quorum.Quorum
-import org.web3j.quorum.enclave.ipc.IpcService
-import org.web3j.quorum.enclave.protocol.Constellation
+import org.web3j.quorum.enclave.protocol.ipc.EnclaveIpcService
+import org.web3j.quorum.enclave.Enclave
 import org.web3j.tx.RawTransactionManager
 import org.web3j.utils.Numeric
 import java.math.BigInteger
@@ -18,7 +18,7 @@ import java.math.BigInteger
 class QuorumTransactionManager(
         val web3j: Quorum, val credentials: Credentials, val publicKey: String,
         var privateFor: List<String> = listOf(),
-        val constellationSocketPath: String, val sleepDuration: Int = 500,
+        val enclave: Enclave, val sleepDuration: Int = 500,
         val attempts: Int = DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH) : RawTransactionManager(web3j, credentials,
         attempts, sleepDuration) {
 
@@ -41,9 +41,8 @@ class QuorumTransactionManager(
         if (privateFor.isNotEmpty()) {
             // only the data is encoded, must be converted to bytes
             val base64Encoded = encode(Numeric.hexStringToByteArray(rawTransaction.data))
-            val constellation = Constellation(IpcService(UnixDomainSocket(constellationSocketPath)))
 
-            val response = constellation.sendRequest(base64Encoded, publicKey, privateFor)
+            val response = enclave.sendRequest(base64Encoded, publicKey, privateFor)
             val responseDecoded = Numeric.toHexString(decode(response.key))
 
             val privateTransaction = RawTransaction.createTransaction(
