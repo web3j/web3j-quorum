@@ -22,3 +22,8 @@ class ReceiveResponse(
 class DeleteRequest(
         val key: String
 )
+
+class StoreRawRequest(
+        val payload: String,
+        val from: String
+)

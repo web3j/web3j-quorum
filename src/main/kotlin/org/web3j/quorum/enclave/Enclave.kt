@@ -35,8 +35,8 @@ abstract class Enclave(
     /**
      * Verify that our node is running
      */
-    fun upCheck() : Boolean {
-        val test = Service.send("upcheck")
+    open fun upCheck() : Boolean {
+        val test = Service.sendJsonRequest("", "upcheck")
         return test  == "I'm up!"
     }
 }

@@ -53,6 +53,7 @@ ext {
 
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -60,7 +61,9 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
             "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0",
             "org.slf4j:slf4j-api:1.7.25",
-            "org.web3j:core:$web3jVersion"
+            "org.web3j:core:$web3jVersion",
+            "org.glassfish.jersey.containers:jersey-container-servlet:2.25.1",
+            "javax.json:javax.json-api:1.0"
     testCompile 'junit:junit:4.12',
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",

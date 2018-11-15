@@ -15,6 +15,9 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.quorum.enclave.Constellation;
 import org.web3j.quorum.enclave.Enclave;
+import org.web3j.quorum.enclave.Tessera;
+import org.web3j.quorum.enclave.protocol.EnclaveService;
+import org.web3j.quorum.enclave.protocol.http.EnclaveHttpService;
 import org.web3j.quorum.enclave.protocol.ipc.EnclaveIpcService;
 import org.web3j.quorum.enclave.protocol.ipc.UnixEnclaveIpcService;
 import org.web3j.quorum.tx.QuorumTransactionManager;
@@ -85,11 +88,15 @@ public class RawTransactionManagerTest {
                 Node destNode = nodes.get((i + 1) % nodes.size());
 
                 String keyFile = "keyfiles/key" + String.valueOf(i + 1);
-                String constellationSocketPath = "<path-to-constellation-ipc-path>.ipc";
-                EnclaveIpcService ipcService = new UnixEnclaveIpcService(constellationSocketPath);
-                Constellation constellation = new Constellation(ipcService);
-                testRawTransactionsWithGreeterContract(sourceNode, destNode, keyFile, constellation);
-                runPrivateHumanStandardTokenTest(sourceNode, destNode, keyFile, constellation);
+//                String constellationSocketPath = "<path-to-constellation-ipc-path>.ipc";
+//                EnclaveIpcService ipcService = new UnixEnclaveIpcService(constellationSocketPath);
+//                Constellation constellation = new Constellation(ipcService);
+                String url = "http://localhost:8090";
+                EnclaveService service = new EnclaveHttpService(url, 8090);
+                Tessera tessera = new Tessera(service);
+                testRawTransactionsWithGreeterContract(sourceNode, destNode, keyFile, tessera);
+//                testRawTransactionsWithGreeterContract(sourceNode, destNode, keyFile, constellation);
+//                runPrivateHumanStandardTokenTest(sourceNode, destNode, keyFile, constellation);
             }
         }
     }
@@ -97,7 +104,7 @@ public class RawTransactionManagerTest {
     public void testRawTransactionsWithGreeterContract (Node sourceNode,
                                                         Node destNode,
                                                         String keyFile,
-                                                        Enclave constellationSocketPath) throws Exception {
+                                                        Enclave enclave) throws Exception {
 
         Quorum quorum = Quorum.build(new HttpService(sourceNode.getUrl()));
 
@@ -110,7 +117,7 @@ public class RawTransactionManagerTest {
                 credentials,
                 sourceNode.getPublicKeys().get(0),
                 destNode.getPublicKeys(),
-                constellationSocketPath,
+                enclave,
                 5000,
                 5);
 
@@ -127,7 +134,7 @@ public class RawTransactionManagerTest {
 
     private void runPrivateHumanStandardTokenTest(
             Node sourceNode, Node destNode, String keyFile,
-            Enclave constellationSocketPath) throws Exception {
+            Enclave enclave) throws Exception {
 
         Quorum quorum = Quorum.build(new HttpService(sourceNode.getUrl()));
 
@@ -140,7 +147,7 @@ public class RawTransactionManagerTest {
                 credentials,
                 sourceNode.getPublicKeys().get(0),
                 destNode.getPublicKeys(),
-                constellationSocketPath,
+                enclave,
                 5000,
                 5);
 
