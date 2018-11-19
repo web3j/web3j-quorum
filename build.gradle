@@ -45,7 +45,7 @@ ext {
     bintrayKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
     isSnapshotVersion = project.version.endsWith("-SNAPSHOT")
 
-    web3jVersion = '4.0.0'
+    web3jVersion = '4.0.1'
     junitVersion = '4.11'
     logbackVersion = '1.2.3'
     mockitoVersion = '1.10.19'
