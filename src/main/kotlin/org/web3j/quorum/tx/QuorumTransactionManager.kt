@@ -4,11 +4,9 @@ import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.response.EthSendTransaction
-import org.web3j.protocol.ipc.UnixDomainSocket
 import org.web3j.quorum.tx.util.decode
 import org.web3j.quorum.tx.util.encode
 import org.web3j.quorum.Quorum
-import org.web3j.quorum.enclave.protocol.ipc.EnclaveIpcService
 import org.web3j.quorum.enclave.Enclave
 import org.web3j.tx.RawTransactionManager
 import org.web3j.utils.Numeric
@@ -53,6 +51,10 @@ class QuorumTransactionManager(
             val privateMessage = TransactionEncoder.signMessage(privateTransaction, credentials)
 
             signedMessage = setPrivate(privateMessage)
+            val hexValue = Numeric.toHexString(signedMessage)
+
+            return web3j.ethSendRawPrivateTransaction(hexValue, privateFor).send()
+
         } else {
             signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials)
         }

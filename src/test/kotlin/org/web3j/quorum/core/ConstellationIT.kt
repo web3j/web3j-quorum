@@ -23,8 +23,8 @@ import org.web3j.quorum.enclave.protocol.ipc.UnixEnclaveIpcService
 @Ignore
 class ConstellationIT {
 
-    val constellationIpcPath1 = "/Users/puneetha17/go/blk-io/src/github.com/constellation/data/constellation.ipc"
-    val constellationIpcPath2 = "/Users/puneetha17/go/blk-io/src/github.com/constellation/data1/constellation.ipc"
+    val constellationIpcPath1 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data/constellation.ipc"
+    val constellationIpcPath2 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data1/constellation.ipc"
     val constellation1 = Constellation(UnixEnclaveIpcService(constellationIpcPath1))
     val constellation2 = Constellation(UnixEnclaveIpcService(constellationIpcPath2))
 

@@ -125,7 +125,7 @@ bintray {
         licenses = ['Apache-2.0']
         issueTrackerUrl = 'https://github.com/web3j/quorum/issues'
         vcsUrl = 'https://github.com/web3j/quorum.git'
-        websiteUrl = 'utils://web3j.io'
+        websiteUrl = 'http://web3j.io'
         publicDownloadNumbers = true
     }
 }
@@ -192,7 +192,10 @@ uploadArchives {
                     license {
                         name 'The Apache License, Version 2.0'
                         url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+<<<<<<< HEAD
                         distribution 'repo'
+=======
+>>>>>>> WIP support for new storeRaw endpoint of Quorum
                     }
                 }
 
