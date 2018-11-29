@@ -17,10 +17,12 @@ class EnclaveHttpService(private val url: String, private val port: Int) : Encla
         val payload = objectMapper.writeValueAsString(request)
         val client = ClientBuilder.newClient()
         val serverUri = UriBuilder.fromUri(url).port(port).build()
+        println(payload)
         val response = client.target(serverUri)
-                .path("/$path")
+                .path("/storeraw")
                 .request()
                 .post(Entity.entity<String>(payload, MediaType.APPLICATION_JSON))
+        println(response)
         val chunk = response.readEntity(String::class.java)
         return objectMapper.readValue(chunk, responseType)
     }

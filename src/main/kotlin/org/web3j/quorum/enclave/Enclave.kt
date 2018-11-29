@@ -1,5 +1,6 @@
 package org.web3j.quorum.enclave
 
+import org.web3j.protocol.core.methods.response.EthSendTransaction
 import org.web3j.quorum.enclave.protocol.EnclaveService
 
 
@@ -12,9 +13,7 @@ abstract class Enclave(
     /**
      * Send a new raw payload to Enclave for secure enclave.
      */
-    fun sendRawRequest(payload: String, from: String, to: List<String>): String {
-        return Service.sendRaw(payload, "sendraw", from, to)
-    }
+    abstract fun sendRawRequest(payload: String, privateFor: List<String>): EthSendTransaction
 
     /**
      * Send a new payload to Enclave for secure enclave.

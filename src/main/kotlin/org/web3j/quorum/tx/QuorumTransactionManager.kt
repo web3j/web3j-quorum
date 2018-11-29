@@ -39,7 +39,6 @@ class QuorumTransactionManager(
         if (privateFor.isNotEmpty()) {
             // only the data is encoded, must be converted to bytes
             val base64Encoded = encode(Numeric.hexStringToByteArray(rawTransaction.data))
-
             val response = enclave.sendRequest(base64Encoded, publicKey, privateFor)
             val responseDecoded = Numeric.toHexString(decode(response.key))
 
@@ -53,14 +52,14 @@ class QuorumTransactionManager(
             signedMessage = setPrivate(privateMessage)
             val hexValue = Numeric.toHexString(signedMessage)
 
-            return web3j.ethSendRawPrivateTransaction(hexValue, privateFor).send()
-
+            return enclave.sendRawRequest(hexValue, privateFor)
+//            return web3j.ethSendRawPrivateTransaction(hexValue, privateFor).send()
         } else {
             signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials)
         }
         val hexValue = Numeric.toHexString(signedMessage)
 
-        return web3j.ethSendRawTransaction(hexValue).send()
+        return enclave.sendRawRequest(hexValue, privateFor)
     }
 
     fun isPrivate(v: Int) =
