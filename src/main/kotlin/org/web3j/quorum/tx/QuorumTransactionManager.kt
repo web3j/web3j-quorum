@@ -47,14 +47,10 @@ class QuorumTransactionManager(
             val privateMessage = TransactionEncoder.signMessage(privateTransaction, credentials)
 
             signedMessage = setPrivate(privateMessage)
-            val hexValue = Numeric.toHexString(signedMessage)
-
-            return enclave.sendRawRequest(hexValue, privateFor)
         } else {
             signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials)
         }
         val hexValue = Numeric.toHexString(signedMessage)
-
         return enclave.sendRawRequest(hexValue, privateFor)
     }
 
