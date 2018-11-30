@@ -9,9 +9,9 @@ import org.web3j.quorum.TM1_PUBLIC_KEY
 import org.web3j.quorum.TM2_PUBLIC_KEY
 import org.web3j.quorum.enclave.Constellation
 import org.web3j.quorum.enclave.protocol.ipc.MockEnclaveIpcService
-import org.web3j.quorum.enclave.Enclave
+import org.web3j.quorum.quorumConstellation
 
-class ConstellationTest {
+class ConstellationEndpointsTest {
 
     val from = TM1_PUBLIC_KEY
     val to = TM2_PUBLIC_KEY
@@ -111,7 +111,7 @@ class ConstellationTest {
     @Before
     fun setUp() {
         enclaveIpcService = MockEnclaveIpcService()
-        constellation = Constellation(enclaveIpcService)
+        constellation = Constellation(enclaveIpcService, quorumConstellation)
     }
 
     @Test

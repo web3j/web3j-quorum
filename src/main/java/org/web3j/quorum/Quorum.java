@@ -7,6 +7,8 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.quorum.methods.request.*;
 import org.web3j.quorum.methods.response.*;
 
+import java.util.List;
+
 /**
  * JSON-RPC Request object building factory for Quorum.
  */
@@ -20,4 +22,6 @@ public interface Quorum extends Web3j {
     Request<?, PrivatePayload> quorumGetPrivatePayload(String hexDigest);
 
     Request<?, EthSendTransaction> ethSendRawTransaction(String signedTransactionData);
+
+    Request<?, EthSendTransaction> ethSendRawPrivateTransaction(String signedTransactionData, List<String> privateFor);
 }

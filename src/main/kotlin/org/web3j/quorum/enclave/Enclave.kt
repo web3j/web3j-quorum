@@ -1,5 +1,6 @@
 package org.web3j.quorum.enclave
 
+import org.web3j.protocol.core.methods.response.EthSendTransaction
 import org.web3j.quorum.enclave.protocol.EnclaveService
 
 
@@ -8,13 +9,20 @@ import org.web3j.quorum.enclave.protocol.EnclaveService
  */
 abstract class Enclave(
         private val Service: EnclaveService) {
+    /**
+     * Send a new raw payload to Enclave
+     */
+    abstract fun sendRawRequest(payload: String, privateFor: List<String>): EthSendTransaction
 
     /**
-     * Send a new raw payload to Enclave for secure enclave.
+     * Store raw transaction in the secure Enclave
      */
-    fun sendRawRequest(payload: String, from: String, to: List<String>): String {
-        return Service.sendRaw(payload, "sendraw", from, to)
-    }
+    abstract fun storeRawRequest(payload: String, from: String, to: List<String>): SendResponse
+
+    /**
+     * Verify that our node is running
+     */
+    abstract fun upCheck() : Boolean
 
     /**
      * Send a new payload to Enclave for secure enclave.
@@ -30,13 +38,5 @@ abstract class Enclave(
     fun receiveRequest(key: String, to: String): ReceiveResponse {
         val receiveRequest = ReceiveRequest(key, to)
         return Service.send(receiveRequest, "receive", ReceiveResponse::class.java)
-    }
-
-    /**
-     * Verify that our node is running
-     */
-    open fun upCheck() : Boolean {
-        val test = Service.sendJsonRequest("", "upcheck")
-        return test  == "I'm up!"
     }
 }

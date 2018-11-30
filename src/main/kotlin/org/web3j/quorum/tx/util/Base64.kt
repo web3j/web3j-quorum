@@ -2,7 +2,6 @@ package org.web3j.quorum.tx.util
 
 import java.util.*
 
-
 fun encode(payload: ByteArray) = Base64.getEncoder().encodeToString(payload)!!
 
 fun encode(payload: String) = encode(payload.toByteArray())

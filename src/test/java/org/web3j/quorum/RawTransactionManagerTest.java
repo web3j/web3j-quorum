@@ -25,6 +25,8 @@ import org.web3j.quorum.generated.Greeter;
 import org.web3j.quorum.generated.HumanStandardToken;
 import org.web3j.tx.gas.DefaultGasProvider;
 
+import javax.validation.groups.Default;
+
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -53,26 +55,26 @@ public class RawTransactionManagerTest {
     private static final Node quorum1 = new Node(
             "0xed9d02e382b34818e88b88a309c7fe71e65f419d",
             Arrays.asList(
-                    "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo="),
-            "utils://localhost:22001");
+                    "/+UuD63zItL1EbjxkKUljMgG8Z1w0AJ8pNOR4iq2yQc="),
+            "http://localhost:22001");
 
     private static final Node quorum2 = new Node(
             "0xca843569e3427144cead5e4d5999a3d0ccf92b8e",
             Arrays.asList(
-                    "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="),
-            "utils://localhost:22002");
+                    "yGcjkFyZklTTXrn8+WIkYwicA2EGBn9wZFkctAad4X0="),
+            "http://localhost:22002");
 
     private static final Node quorum3 = new Node(
             "0x0fbdc686b912d7722dc86510934589e0aaf3b55a",
             Arrays.asList(
-                    "1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg="),
-            "utils://localhost:22003");
+                    "jP4f+k/IbJvGyh0LklWoea2jQfmLwV53m9XoHVS4NSU="),
+            "http://localhost:22003");
 
     private static final Node quorum4 = new Node(
             "0x9186eb3d20cbd1f5f992a950d808c4495153abd5",
             Arrays.asList(
-                    "oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8="),
-            "utils://localhost:22004");
+                    "giizjhZQM6peq52O7icVFxdTmTYinQSUsvyhXzgZqkE="),
+            "http://localhost:22004");
 
     private static final List<Node> nodes = Arrays.asList(
             quorum1, quorum2, quorum3, quorum4);
@@ -88,15 +90,13 @@ public class RawTransactionManagerTest {
                 Node destNode = nodes.get((i + 1) % nodes.size());
 
                 String keyFile = "keyfiles/key" + String.valueOf(i + 1);
-//                String constellationSocketPath = "<path-to-constellation-ipc-path>.ipc";
-//                EnclaveIpcService ipcService = new UnixEnclaveIpcService(constellationSocketPath);
-//                Constellation constellation = new Constellation(ipcService);
                 String url = "http://localhost:8090";
                 EnclaveService service = new EnclaveHttpService(url, 8090);
-                Tessera tessera = new Tessera(service);
+                Quorum quorum = Quorum.build(new HttpService(sourceNode.getUrl()));
+                Tessera tessera = new Tessera(service, quorum);
                 testRawTransactionsWithGreeterContract(sourceNode, destNode, keyFile, tessera);
-//                testRawTransactionsWithGreeterContract(sourceNode, destNode, keyFile, constellation);
-//                runPrivateHumanStandardTokenTest(sourceNode, destNode, keyFile, constellation);
+                runPrivateHumanStandardTokenTest(sourceNode, destNode, keyFile, tessera);
+
             }
         }
     }
@@ -110,7 +110,6 @@ public class RawTransactionManagerTest {
 
         ClassLoader classLoader = getClass().getClassLoader();
         Credentials credentials = WalletUtils.loadCredentials("", new File(classLoader.getResource(keyFile).getFile()));
-
 
         QuorumTransactionManager transactionManager = new QuorumTransactionManager(
                 quorum,
@@ -156,7 +155,7 @@ public class RawTransactionManagerTest {
         final String bobAddress = destNode.getAddress();
 
         HumanStandardToken contract = HumanStandardToken.deploy(quorum, transactionManager,
-                GAS_PRICE, GAS_LIMIT,
+                BigInteger.ZERO, DefaultGasProvider.GAS_LIMIT,
                 aliceQty, "web3j tokens",
                 BigInteger.valueOf(18), "w3j$").send();
 
