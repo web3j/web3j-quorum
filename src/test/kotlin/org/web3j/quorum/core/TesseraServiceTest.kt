@@ -29,8 +29,7 @@ class TesseraServiceTest : Helper() {
         val payload = PAYLOAD
         val from = nodesT[0].publicKeys[0]
 
-        val storeResponse = storeRawTessera.storeRawRequest(payload, from)
-        println(storeResponse.key)
+        val storeResponse = tessera[0].storeRawRequest(payload, from, emptyList())
         val key = storeResponse.key
         assertThat(key).hasSize(88)
     }
@@ -38,18 +37,15 @@ class TesseraServiceTest : Helper() {
     @Test
     @Throws(Exception::class)
     fun testNodes() {
-        for (count in 0..0) {
-            for (i in 0..0) {
+        for (count in 0..3) {
+            for (i in 0..3) {
                 val sourceNode = nodesT[i]
                 val destNode = nodesT[(i + 1) % nodesT.size]
 
                 val keyFile = "keyfiles/key" + (i + 1).toString()
-                testRawTransactionsWithGreeterContract(sourceNode, destNode, keyFile, storeRawTessera)
-                runPrivateHumanStandardTokenTest(sourceNode, destNode, keyFile, storeRawTessera)
-
+                testRawTransactionsWithGreeterContract(sourceNode, destNode, keyFile, tessera[i])
+                runPrivateHumanStandardTokenTest(sourceNode, destNode, keyFile, tessera[i])
             }
         }
     }
-
-
 }

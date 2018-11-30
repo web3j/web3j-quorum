@@ -15,7 +15,9 @@ import org.web3j.tx.gas.DefaultGasProvider
 import java.io.File
 import java.math.BigInteger
 
-
+/**
+* Helper class that implements methods of the tests
+* */
 open class Helper {
 
     @Throws(Exception::class)
@@ -35,7 +37,7 @@ open class Helper {
                 sourceNode.publicKeys[0],
                 destNode.publicKeys,
                 enclave,
-                5000,
+                10000,
                 5)
 
         val greeting = "Hello Quorum world!"
@@ -66,7 +68,7 @@ open class Helper {
                 sourceNode.publicKeys[0],
                 destNode.publicKeys,
                 enclave,
-                5000,
+                10000,
                 5)
 
         var aliceQty = BigInteger.valueOf(1000000)
@@ -85,7 +87,6 @@ open class Helper {
         Assert.assertThat(contract.balanceOf(sourceNode.address).send(),
                 equalTo<BigInteger>(aliceQty))
 
-        // transfer tokens
         var transferQuantity = BigInteger.valueOf(100000)
 
         val aliceTransferReceipt = contract.transfer(
@@ -110,7 +111,6 @@ open class Helper {
         Assert.assertThat(contract.balanceOf(destNode.address).send(),
                 equalTo<BigInteger>(bobQty))
 
-        // set an allowance
         Assert.assertThat(contract.allowance(
                 aliceAddress, bobAddress).send(),
                 equalTo<BigInteger>(BigInteger.ZERO))

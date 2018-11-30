@@ -44,7 +44,10 @@ val nodesT = Arrays.asList(
         quorum1T, quorum2T, quorum3T, quorum4T)
 val storeRawPort = "8090"
 val quorumTessera = Quorum.build(HttpService(quorum1T.url))
-val storeRawTessera = Tessera(EnclaveHttpService(localhost, 8090), quorumTessera)
+val tessera = Arrays.asList(Tessera(EnclaveHttpService(localhost, 8090), quorumTessera),
+        Tessera(EnclaveHttpService(localhost, 8091),  Quorum.build(HttpService(quorum2T.url))),
+        Tessera(EnclaveHttpService(localhost, 8092),  Quorum.build(HttpService(quorum3T.url))),
+        Tessera(EnclaveHttpService(localhost, 8093),  Quorum.build(HttpService(quorum4T.url))))
 val upCheckTessera = Tessera(EnclaveHttpService(localhost, 8080), quorumTessera)
 
 
@@ -78,9 +81,14 @@ val nodesC = Arrays.asList(
 
 val constellationIpcPath1 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data/constellation.ipc"
 val constellationIpcPath2 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data1/constellation.ipc"
+val constellationIpcPath3 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data2/constellation.ipc"
+val constellationIpcPath4 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data3/constellation.ipc"
+
 val quorumConstellation = Quorum.build(HttpService(quorum1C.url))
-val constellation1 = Constellation(UnixEnclaveIpcService(constellationIpcPath1), quorumConstellation)
-val constellation2 = Constellation(UnixEnclaveIpcService(constellationIpcPath2), quorumConstellation)
+val constellation = Arrays.asList(Constellation(UnixEnclaveIpcService(constellationIpcPath1), Quorum.build(HttpService(quorum1C.url))),
+        Constellation(UnixEnclaveIpcService(constellationIpcPath2), Quorum.build(HttpService(quorum2C.url))),
+        Constellation(UnixEnclaveIpcService(constellationIpcPath3), Quorum.build(HttpService(quorum3C.url))),
+        Constellation(UnixEnclaveIpcService(constellationIpcPath4), Quorum.build(HttpService(quorum4C.url))))
 // ASCII base 64 encoded public keys for our transaction managers
 const val TM1_PUBLIC_KEY = "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo="
 const val TM2_PUBLIC_KEY = "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="
