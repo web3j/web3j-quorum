@@ -40,6 +40,7 @@ jacocoTestReport {
     }
 }
 
+
 ext {
     web3jVersion = '4.0.3'
     solidityPluginVersion = '0.1.2'
@@ -92,6 +93,10 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -99,6 +104,36 @@ publishing {
 
             artifact sourcesJar {
                 classifier 'sources'
+            }
+
+            artifact javadocJar {
+                classifier 'javadoc'
+            }
+
+            pom {
+                name = project.name
+                description = project.description
+                url = "https://github.com/web3j/quorum"
+
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        distribution = "repo"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "conor10"
+                        name = "Conor Svensson"
+                        email = "conor10@gmail.com"
+                    }
+                }
+                scm {
+                    url = "https://github.com/web3j/quorum"
+                    connection = "scm:https://github.com/web3j/quorum.git"
+                    developerConnection = "scm:git://github.com/web3j/quorum.git"
+                }
             }
         }
     }
