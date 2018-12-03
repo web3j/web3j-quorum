@@ -10,21 +10,24 @@ buildscript {
 }
 
 plugins {
-    id "com.jfrog.bintray" version "1.7.3"
+    id "com.gradle.plugin-publish" version "0.10.0"
+    id 'com.jfrog.bintray' version '1.8.4'
+    id 'java-gradle-plugin'
+    id 'java'
+
+    // Required for JFrog Artifactory repository
+    id 'jacoco'
+    id 'maven-publish'
+
+    // Required for Maven Nexus repository
+    id 'maven'
+    id 'signing'
+    id 'idea'
 }
 
-apply plugin: 'java'
 apply plugin: 'kotlin'
-// Required for JFrog Artifactory repository
-apply plugin: 'jacoco'
-apply plugin: 'maven-publish'
 
-// Required for Maven Nexus repository
-apply plugin: 'maven'
-apply plugin: 'signing'
-apply plugin: 'idea'
-apply plugin: 'io.codearte.nexus-staging'
-
+description 'web3j Quorum API'
 sourceCompatibility = 1.8
 
 jacoco {
@@ -38,17 +41,23 @@ jacocoTestReport {
 }
 
 ext {
+    web3jVersion = '4.0.3'
+    solidityPluginVersion = '0.1.2'
+    junitVersion = '4.12'
+    logbackVersion = '1.2.3'
+    mockitoVersion = '1.10.19'
+    jacksonKotlinVersion = '2.9.0'
+    slf4jApiVersion = '1.7.25'
+    assertjCoreVersion = '3.8.0'
+
     ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSSRH_USERNAME')
     ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('OSSRH_PASSWORD')
     ossrhRepoUrl = project.hasProperty('ossrhRepoUrl') ? project.property('ossrhRepoUrl') : System.getenv('OSSRH_REPO_URL')
     bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
     bintrayKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    bintrayGpgPassphrase = project.hasProperty('bintrayGpgPassphrase') ? project.property('bintrayGpgPassphrase') : System.getenv('BINTRAY_GPG_PASSPHRASE')
     isSnapshotVersion = project.version.endsWith("-SNAPSHOT")
-
-    web3jVersion = '4.0.0'
-    junitVersion = '4.11'
-    logbackVersion = '1.2.3'
-    mockitoVersion = '1.10.19'
+    manualRelease = project.hasProperty('manualRelease') ? project.property('manualRelease').toBoolean() : false
 }
 
 
@@ -58,14 +67,14 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
-            "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0",
-            "org.slf4j:slf4j-api:1.7.25",
+            "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion",
+            "org.slf4j:slf4j-api:$slf4jApiVersion",
             "org.web3j:core:$web3jVersion"
-    testCompile 'junit:junit:4.12',
+    testCompile "junit:junit:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
-            'org.mockito:mockito-core:1.10.19',
-            "org.assertj:assertj-core:3.8.0",
+            "org.mockito:mockito-core:$mockitoVersion",
+            "org.assertj:assertj-core:$assertjCoreVersion",
             "org.web3j:core:$web3jVersion:tests"
 }
 
@@ -95,43 +104,17 @@ publishing {
     }
 }
 
-bintray {
-    user = bintrayUser
-    key = bintrayKey
-    publications = ['mavenJava']
-    publish = true
-    pkg {
-        repo = 'maven'
-        name = 'quorum'
-        desc = 'web3j Quorum API'
-        userOrg = 'web3j'
-        licenses = ['Apache-2.0']
-        issueTrackerUrl = 'https://github.com/web3j/quorum/issues'
-        vcsUrl = 'https://github.com/web3j/quorum.git'
-        websiteUrl = 'http://web3j.io'
-        publicDownloadNumbers = true
-    }
-}
-
-artifacts {
-    archives sourcesJar, javadocJar
-}
-
-signing {
-    required { gradle.taskGraph.hasTask('uploadArchives') }  // only execute as part of this task
-    sign configurations.archives
-}
-
 uploadArchives {
     repositories {
         mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
             onlyIf {
-                ossrhUsername != '' && ossrhPassword != '' && ossrhRepoUrl != ''
+                // Only run if this is a manual release triggered by a user, or an automated release for snapshots.
+                // We don't need to run this for automated releases.
+                isSnapshotVersion && ossrhUsername != '' && ossrhPassword != '' && ossrhRepoUrl != ''
             }
 
-            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+            repository(url: ossrhRepoUrl) {
                 authentication(
                         userName: ossrhUsername,
                         password: ossrhPassword
@@ -139,20 +122,22 @@ uploadArchives {
             }
 
             pom.project {
-                name 'web3j'
+                name project.name
                 packaging 'jar'
-                description 'web3j Quorum API'
-                url 'http://web3j.org'
+                description project.description
+                url 'https://web3j.io'
 
                 scm {
-                    connection 'scm:git:https://github.com/web3j/quorum.git'
-                    url 'https://github.com/web3j/quorum.git'
+                    url 'https://github.com/web3j/quorum'
+                    connection 'scm:https://github.com/web3j/quorum.git'
+                    developerConnection 'scm:git://github.com/web3j/quorum.git'
                 }
 
                 licenses {
                     license {
                         name 'The Apache License, Version 2.0'
                         url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
                     }
                 }
 
@@ -168,20 +153,81 @@ uploadArchives {
     }
 }
 
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    publications = ['mavenJava']
+    publish = true
+    pkg {
+        repo = 'maven'
+        name = 'quorum'
+        desc = 'web3j Quorum API'
+        userOrg = 'web3j'
+        licenses = ['Apache-2.0']
+        issueTrackerUrl = 'https://github.com/web3j/web3j-gradle-plugin/issues'
+        vcsUrl = 'https://github.com/web3j/web3j-gradle-plugin.git'
+        websiteUrl = 'http://web3j.io'
+        publicDownloadNumbers = true
+        version {
+            gpg {
+                sign = true
+                passphrase = bintrayGpgPassphrase
+            }
+            mavenCentralSync {
+                sync = true
+                user = ossrhUsername
+                password = ossrhPassword
+                close = '1'
+            }
+        }
+    }
+}
+
 task release {
-    dependsOn 'clean'
     dependsOn 'build'
     dependsOn 'uploadArchives'
-    dependsOn 'closeAndPromoteRepository'
-    dependsOn 'bintrayUpload'
 
-    tasks.findByName('build').mustRunAfter 'clean'
+    doLast {
+        // Validates the user inputs before a release can be performed.
+        if (isSnapshotVersion) {
+            // Only need OSSRH details.
+            logger.lifecycle("About to perform {} snapshot release ...", manualRelease ? "a manual" : "an automated")
 
-    tasks.findByName('uploadArchives').mustRunAfter 'build'
-    tasks.findByName('closeAndPromoteRepository').mustRunAfter 'uploadArchives'
+            if (!ossrhUsername || !ossrhPassword || !ossrhRepoUrl) {
+                throw new InvalidUserDataException("Required parameters missing:  'ossrhUsername', 'ossrhPassword', 'ossrhRepoUrl'")
+            }
 
-    tasks.findByName('bintrayUpload').mustRunAfter 'build'
+            logger.lifecycle(" - ossrhUsername={}", ossrhUsername)
+            logger.lifecycle(" - ossrhPassword={}", ossrhPassword ? "provided" : "not_provided")
+            logger.lifecycle(" - ossrhRepoUrl={}", ossrhRepoUrl)
+        } else {
+            // Release => Need OSSRH and bintray.
+            if (!ossrhUsername || !ossrhPassword || !ossrhRepoUrl) {
+                throw new InvalidUserDataException("Required parameters missing:  'ossrhUsername', 'ossrhPassword', 'ossrhRepoUrl'")
+            }
+            if (!bintrayUser || !bintrayKey || !bintrayGpgPassphrase) {
+                throw new InvalidUserDataException("Required parameters missing:  'bintrayUser', 'bintrayKey', 'bintrayGpgPassphrase'")
+            }
+            logger.lifecycle("About to perform {} full release ...", manualRelease ? "a manual" : "an automated")
+            logger.lifecycle(" - ossrhUsername={}", ossrhUsername)
+            logger.lifecycle(" - ossrhPassword={}", ossrhPassword ? "provided" : "not_provided")
+            logger.lifecycle(" - ossrhRepoUrl={}", ossrhRepoUrl)
+            logger.lifecycle(" - bintrayUser={}", bintrayUser)
+            logger.lifecycle(" - bintrayKey={}", bintrayKey ? "provided" : "not_provided")
+            logger.lifecycle(" - bintrayGpgPassphrase={}", bintrayGpgPassphrase ? "provided" : "not_provided")
+        }
+    }
+
+    // Snapshots go to nexus, non-snapshots go to bintray.
+    if (isSnapshotVersion) {
+        dependsOn 'uploadArchives'
+        tasks.findByName('uploadArchives').mustRunAfter 'build'
+    } else {
+        dependsOn 'bintrayUpload'
+        tasks.findByName('bintrayUpload').mustRunAfter 'build'
+    }
 }
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
