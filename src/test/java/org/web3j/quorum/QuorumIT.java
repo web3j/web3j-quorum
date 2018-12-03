@@ -74,7 +74,7 @@ public class QuorumIT {
                 Node destNode = nodes.get((i + 1) % nodes.size());
 
                 runPrivateGreeterTest(sourceNode, destNode, Integer.toString(i));
-                runPrivateHumanStandardTokenTest(sourceNode, destNode);
+//                runPrivateHumanStandardTokenTest(sourceNode, destNode);
             }
         }
     }
