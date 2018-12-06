@@ -13,7 +13,7 @@ class RequestBuilderTest {
 
         assertThat(result).isEqualTo(
                 """
-                $POST /$path HTTP/1.1
+                POST /$path HTTP/1.1
                 Host: k
                 User-Agent: constellation-client
                 Content-Type: application/json

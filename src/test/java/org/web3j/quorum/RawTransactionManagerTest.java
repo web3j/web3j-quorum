@@ -1,11 +1,5 @@
 package org.web3j.quorum;
 
-import java.io.File;
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
-
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,28 +7,23 @@ import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.quorum.enclave.Constellation;
 import org.web3j.quorum.enclave.Enclave;
 import org.web3j.quorum.enclave.Tessera;
 import org.web3j.quorum.enclave.protocol.EnclaveService;
 import org.web3j.quorum.enclave.protocol.http.EnclaveHttpService;
-import org.web3j.quorum.enclave.protocol.ipc.EnclaveIpcService;
-import org.web3j.quorum.enclave.protocol.ipc.UnixEnclaveIpcService;
-import org.web3j.quorum.tx.QuorumTransactionManager;
 import org.web3j.quorum.generated.Greeter;
 import org.web3j.quorum.generated.HumanStandardToken;
+import org.web3j.quorum.tx.QuorumTransactionManager;
 import org.web3j.tx.gas.DefaultGasProvider;
 
-import javax.validation.groups.Default;
+import java.io.File;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.web3j.quorum.tx.util.Base64Kt.decode;
-import static org.web3j.quorum.tx.util.Base64Kt.encode;
-import static org.web3j.tx.Contract.GAS_LIMIT;
-import static org.web3j.tx.ManagedTransaction.GAS_PRICE;
 
 /**
  * Useful integration tests for verifying Quorum deployments and transaction privacy.
