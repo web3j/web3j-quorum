@@ -25,13 +25,6 @@ abstract class EnclaveIpcService : EnclaveService {
     }
 
     /**
-     * Send a new raw payload to Enclave
-     */
-    fun sendRaw(request: String, path: String, from: String, to: List<String>): String {
-        return sendRawJsonRequest(request, path, from, to)
-    }
-
-    /**
      * Send a new raw request to Enclave
      */
     fun <S> send(request: S, path: String): Boolean {
@@ -44,14 +37,6 @@ abstract class EnclaveIpcService : EnclaveService {
      */
     fun sendJsonRequest(payload: String, path: String): String {
         val data = RequestBuilder.encodeJsonRequest(path, payload)
-        return performIO(data)
-    }
-
-    /**
-     * Send a new raw json request to Enclave
-     */
-    private fun sendRawJsonRequest(payload: String, path: String, from: String, to: List<String>): String {
-        val data = RequestBuilder.encodeRawJsonRequest(path, payload, from, to)
         return performIO(data)
     }
 

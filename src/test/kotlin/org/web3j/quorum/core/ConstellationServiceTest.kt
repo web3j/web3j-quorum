@@ -31,7 +31,7 @@ class ConstellationServiceTest : Helper() {
         val from = TM1_PUBLIC_KEY
         val to = TM2_PUBLIC_KEY
 
-        val sendResponse = constellation[0].sendRequest(payload, from, listOf(to))
+        val sendResponse = constellation[0].storeRawRequest(payload, from, listOf(to))
         val key = sendResponse.key
         assertThat(key).hasSize(88)
 

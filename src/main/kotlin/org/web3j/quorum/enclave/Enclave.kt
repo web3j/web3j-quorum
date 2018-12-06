@@ -7,36 +7,30 @@ import org.web3j.quorum.enclave.protocol.EnclaveService
 /**
  * Enclave API methods.
  */
-abstract class Enclave(
-        private val Service: EnclaveService) {
+interface Enclave {
     /**
-     * Send a new raw payload to Enclave
+     * Send a new raw payload to the quorum node for signing and storing
      */
-    abstract fun sendRawRequest(payload: String, privateFor: List<String>): EthSendTransaction
+    fun sendRawRequest(payload: String, privateFor: List<String>): EthSendTransaction
 
     /**
-     * Store raw transaction in the secure Enclave
+     * Store raw transaction in the secure enclave only
      */
-    abstract fun storeRawRequest(payload: String, from: String, to: List<String>): SendResponse
+    fun storeRawRequest(payload: String, from: String, to: List<String>): SendResponse
 
     /**
-     * Verify that our node is running
+     * Retrieve a payload from the secure enclave
      */
-    abstract fun upCheck() : Boolean
+    fun receiveRequest(key: String, to: String): ReceiveResponse
 
     /**
-     * Send a new payload to Enclave for secure enclave.
+     * Verify that our enclave node is running
      */
-    fun sendRequest(payload: String, from: String, to: List<String>): SendResponse {
-        val sendRequest = SendRequest(payload, from, to)
-        return Service.send(sendRequest, "send", SendResponse::class.java)
-    }
+    fun upCheck() : Boolean
 
     /**
-     * Retrieve a payload from Enclave's secure enclave.
+     * Delete a payload from the secure enclave only
+     * @param key The enclave key
      */
-    fun receiveRequest(key: String, to: String): ReceiveResponse {
-        val receiveRequest = ReceiveRequest(key, to)
-        return Service.send(receiveRequest, "receive", ReceiveResponse::class.java)
-    }
+    fun deleteRequest(key: String): Boolean
 }

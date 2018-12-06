@@ -8,6 +8,7 @@ import org.web3j.quorum.PAYLOAD
 import org.web3j.quorum.TM1_PUBLIC_KEY
 import org.web3j.quorum.TM2_PUBLIC_KEY
 import org.web3j.quorum.enclave.Constellation
+import org.web3j.quorum.enclave.Enclave
 import org.web3j.quorum.enclave.protocol.ipc.MockEnclaveIpcService
 import org.web3j.quorum.quorumConstellation
 
@@ -106,7 +107,7 @@ class ConstellationEndpointsTest {
     """.trimIndent()
 
     private lateinit var enclaveIpcService: MockEnclaveIpcService
-    private lateinit var constellation: Constellation
+    private lateinit var constellation: Enclave
 
     @Before
     fun setUp() {
@@ -124,7 +125,7 @@ class ConstellationEndpointsTest {
     @Test
     fun testSend() {
         enclaveIpcService.add(sendRequest, sendResponse)
-        val response = constellation.sendRequest(payload, from, listOf(to))
+        val response = constellation.storeRawRequest(payload, from, listOf(to))
         assertThat(response.key).isEqualTo(key)
     }
 
@@ -138,6 +139,7 @@ class ConstellationEndpointsTest {
     @Test
     fun testDelete() {
         enclaveIpcService.add(deleteRequest, deleteResponse)
+
         assertTrue(constellation.deleteRequest(key))
     }
 }
