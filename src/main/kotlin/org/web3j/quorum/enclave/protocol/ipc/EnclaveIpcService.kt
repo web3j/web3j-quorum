@@ -2,7 +2,6 @@ package org.web3j.quorum.enclave.protocol.ipc
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.*
-import org.slf4j.LoggerFactory
 import org.web3j.protocol.ipc.IOFacade
 import org.web3j.protocol.ipc.IpcService
 import org.web3j.quorum.enclave.protocol.EnclaveService
@@ -13,7 +12,6 @@ import org.web3j.quorum.enclave.protocol.utils.ResponseParser
  * IPC service layer
  */
 abstract class EnclaveIpcService : EnclaveService {
-    private val log = LoggerFactory.getLogger(IpcService::class.java)
     private val objectMapper = jacksonObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
 
@@ -71,10 +69,8 @@ abstract class EnclaveIpcService : EnclaveService {
     private fun performIO(data: String): String {
         val io = getIO()
         io.write(data)
-        log.debug(">> " + data)
 
         val response = io.read()
-        log.debug("<< " + response)
 
         return ResponseParser.parseChunkedResponse(response)
     }
