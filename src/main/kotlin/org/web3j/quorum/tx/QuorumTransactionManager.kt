@@ -15,9 +15,7 @@ import java.math.BigInteger
 class QuorumTransactionManager(
         val web3j: Quorum, private val credentials: Credentials, private val publicKey: String,
         var privateFor: List<String> = listOf(),
-        val enclave: Enclave, sleepDuration: Int = 500,
-        private val attempts: Int = DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH) : RawTransactionManager(web3j, credentials,
-        attempts, sleepDuration) {
+        val enclave: Enclave) : RawTransactionManager(web3j, credentials) {
 
     override fun sendTransaction(
             gasPrice: BigInteger?, gasLimit: BigInteger?, to: String?, data: String?,
@@ -53,13 +51,6 @@ class QuorumTransactionManager(
         val hexValue = Numeric.toHexString(signedMessage)
         return enclave.sendRawRequest(hexValue, privateFor)
     }
-
-    fun isPrivate(v: Int) =
-            when (v) {
-                37 -> true
-                38 -> true
-                else -> false
-            }
 
     private fun setPrivate(message: ByteArray): ByteArray {
         val vOffset = message.size - 67

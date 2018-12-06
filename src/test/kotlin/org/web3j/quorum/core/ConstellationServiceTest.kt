@@ -35,8 +35,6 @@ class ConstellationServiceTest : Helper() {
         val key = sendResponse.key
         assertThat(key).hasSize(88)
 
-        val receiveResponse = constellation[1].receiveRequest(key, TM2_PUBLIC_KEY)
-
         assertTrue(constellation[0].deleteRequest(key))
     }
 

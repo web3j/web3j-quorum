@@ -36,9 +36,7 @@ open class Helper {
                 credentials,
                 sourceNode.publicKeys[0],
                 destNode.publicKeys,
-                enclave,
-                10000,
-                5)
+                enclave)
 
         val greeting = "Hello Quorum world!"
 
@@ -67,9 +65,7 @@ open class Helper {
                 credentials,
                 sourceNode.publicKeys[0],
                 destNode.publicKeys,
-                enclave,
-                10000,
-                5)
+                enclave)
 
         var aliceQty = BigInteger.valueOf(1000000)
         val aliceAddress = sourceNode.address
