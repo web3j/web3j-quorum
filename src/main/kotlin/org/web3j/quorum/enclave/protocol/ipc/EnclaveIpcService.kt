@@ -3,7 +3,6 @@ package org.web3j.quorum.enclave.protocol.ipc
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.*
 import org.web3j.protocol.ipc.IOFacade
-import org.web3j.protocol.ipc.IpcService
 import org.web3j.quorum.enclave.protocol.EnclaveService
 import org.web3j.quorum.enclave.protocol.utils.RequestBuilder
 import org.web3j.quorum.enclave.protocol.utils.ResponseParser

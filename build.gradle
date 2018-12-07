@@ -44,7 +44,6 @@ jacocoTestReport {
 ext {
     web3jVersion = '4.0.3'
     jacksonKotlinVersion = '2.9.0'
-    jerseyClientVersion = '2.27'
 
     logbackVersion = '1.2.3'
     junitVersion = '4.12'
@@ -69,8 +68,8 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
             "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion",
-            "org.web3j:core:$web3jVersion",
-            "org.glassfish.jersey.core:jersey-client:$jerseyClientVersion"
+            "org.web3j:core:$web3jVersion"
+    
     testCompile "junit:junit:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",

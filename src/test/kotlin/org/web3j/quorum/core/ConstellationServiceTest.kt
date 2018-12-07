@@ -41,8 +41,8 @@ class ConstellationServiceTest : Helper() {
     @Test
     @Throws(Exception::class)
     fun testNodes() {
-        for (count in 0..3) {
-            for (i in 0..3) {
+        for (count in 1..1) {
+            for (i in 1..1) {
                 val sourceNode = nodesC[i]
                 val destNode = nodesC[(i + 1) % nodesC.size]
 

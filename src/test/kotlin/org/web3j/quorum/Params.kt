@@ -79,10 +79,10 @@ private val quorum4C = Node(
 val nodesC = Arrays.asList(
         quorum1C, quorum2C, quorum3C, quorum4C)
 
-val constellationIpcPath1 = "<path-to-the-enclave>"
-val constellationIpcPath2 = "<path-to-the-enclave>"
-val constellationIpcPath3 = "<path-to-the-enclave>"
-val constellationIpcPath4 = "<path-to-the-enclave>"
+val constellationIpcPath1 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data/constellation.ipc"
+val constellationIpcPath2 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data1/constellation.ipc"
+val constellationIpcPath3 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data2/constellation.ipc"
+val constellationIpcPath4 = "/Users/sebastianraba/Desktop/work/web3js-quorum/constellation/data3/constellation.ipc"
 
 val quorumConstellation = Quorum.build(HttpService(quorum1C.url))
 val constellation = Arrays.asList(Constellation(UnixEnclaveIpcService(constellationIpcPath1), Quorum.build(HttpService(quorum1C.url))),
