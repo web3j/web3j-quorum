@@ -14,7 +14,6 @@ import org.web3j.quorum.*
  * hardcode the IPC path to connect to in constellationIpcPath1 and constellationIpcPath2
  * variables below.
  *
- * <p>
  */
 @Ignore
 class ConstellationServiceTest : Helper() {

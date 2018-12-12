@@ -7,13 +7,15 @@ import okhttp3.*
 import okhttp3.OkHttpClient
 
 
-
+/**
+ * EnclaveHttpService implements send methods that support communication with the private enclave via Http.
+ * Currently Http communication is only supported in Tessera.
+ */
 class EnclaveHttpService(private val url: String, private val port: Int) : EnclaveService {
 
     private val objectMapper = jacksonObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
     private val JSON = MediaType.parse("application/json; charset=utf-8")
-
 
     /**
      * Send a new raw payload to Enclave
