@@ -30,6 +30,9 @@ gradle-app.setting
 
 .idea
 *.iml
+*.ipr
+*.iws
+
 geth.sh
 src/main/resources/
 

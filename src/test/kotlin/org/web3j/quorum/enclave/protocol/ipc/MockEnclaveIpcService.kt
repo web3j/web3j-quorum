@@ -1,24 +1,34 @@
-package org.web3j.quorum.enclave.ipc
+package org.web3j.quorum.enclave.protocol.ipc
 
 import org.web3j.protocol.ipc.IOFacade
-import java.io.IOException
 
 /**
  * Very simple IOFacade implementation for tests. *DO NOT* share a single
  * instance between multiple tests, as it is not thread safe.
  */
-class MockIOFacade : IOFacade {
+class MockEnclaveIpcService : EnclaveIpcService() {
 
-    private val store = hashMapOf<String, String>()
-    private var response = ""
+    companion object {
+        val store = hashMapOf<String, String>()
+    }
 
     fun add(request: String, response: String) {
         store[request] = response
     }
 
+    override fun getIO(): IOFacade {
+        return MockIoFacade()
+    }
+
+}
+
+private class MockIoFacade: IOFacade {
+
+    private var response = ""
+
     override fun write(payload: String) {
-        if (store.containsKey(payload)) {
-            response = store.getOrDefault(payload, "")
+        if (MockEnclaveIpcService.store.containsKey(payload)) {
+            response = MockEnclaveIpcService.store.getOrDefault(payload, "")
         } else {
             throw RuntimeException("Unexpected request received: $payload")
         }
@@ -35,3 +45,5 @@ class MockIOFacade : IOFacade {
     }
     override fun close(){}
 }
+
+

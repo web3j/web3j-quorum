@@ -1,17 +1,18 @@
-package org.web3j.quorum.enclave.core
+package org.web3j.quorum.core
 
 import org.junit.Test
 import org.junit.Assert.assertTrue
 import org.assertj.core.api.Assertions.*
 import org.junit.Before
-import org.web3j.quorum.enclave.PAYLOAD
-import org.web3j.quorum.enclave.TM1_PUBLIC_KEY
-import org.web3j.quorum.enclave.TM2_PUBLIC_KEY
-import org.web3j.quorum.enclave.ipc.IpcService
-import org.web3j.quorum.enclave.ipc.MockIOFacade
-import org.web3j.quorum.enclave.protocol.Constellation
+import org.web3j.quorum.PAYLOAD
+import org.web3j.quorum.TM1_PUBLIC_KEY
+import org.web3j.quorum.TM2_PUBLIC_KEY
+import org.web3j.quorum.enclave.Constellation
+import org.web3j.quorum.enclave.Enclave
+import org.web3j.quorum.enclave.protocol.ipc.MockEnclaveIpcService
+import org.web3j.quorum.quorumConstellation
 
-class ConstellationTest {
+class ConstellationEndpointsTest {
 
     val from = TM1_PUBLIC_KEY
     val to = TM2_PUBLIC_KEY
@@ -105,38 +106,40 @@ class ConstellationTest {
 
     """.trimIndent()
 
-    private lateinit var ioFacade: MockIOFacade
-    private lateinit var constellation: Constellation
+    private lateinit var enclaveIpcService: MockEnclaveIpcService
+    private lateinit var constellation: Enclave
 
     @Before
     fun setUp() {
-        ioFacade = MockIOFacade()
-        constellation = Constellation(IpcService(ioFacade))
+        enclaveIpcService = MockEnclaveIpcService()
+        constellation = Constellation(enclaveIpcService, quorumConstellation)
     }
 
     @Test
     fun testUpCheck() {
-        ioFacade.add(upCheckRequest, upCheckResponse)
+
+        enclaveIpcService.add(upCheckRequest, upCheckResponse)
         assertTrue(constellation.upCheck())
     }
 
     @Test
     fun testSend() {
-        ioFacade.add(sendRequest, sendResponse)
-        val response = constellation.sendRequest(payload, from, listOf(to))
+        enclaveIpcService.add(sendRequest, sendResponse)
+        val response = constellation.storeRawRequest(payload, from, listOf(to))
         assertThat(response.key).isEqualTo(key)
     }
 
     @Test
     fun testReceive() {
-        ioFacade.add(recieveRequest, receiveResponse)
+        enclaveIpcService.add(recieveRequest, receiveResponse)
         val response = constellation.receiveRequest(key, from)  // from is intentional here
         assertThat(response.payload).isEqualTo(payload)
     }
 
     @Test
     fun testDelete() {
-        ioFacade.add(deleteRequest, deleteResponse)
+        enclaveIpcService.add(deleteRequest, deleteResponse)
+
         assertTrue(constellation.deleteRequest(key))
     }
 }

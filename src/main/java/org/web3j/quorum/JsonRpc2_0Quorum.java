@@ -1,13 +1,15 @@
 package org.web3j.quorum;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.core.JsonRpc2_0Web3j;
 import org.web3j.protocol.core.Request;
-import org.web3j.protocol.core.methods.response.EthSendRawTransaction;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.quorum.methods.request.PrivateRawTransaction;
 import org.web3j.quorum.methods.request.PrivateTransaction;
 import org.web3j.quorum.methods.response.PrivatePayload;
 
@@ -24,6 +26,17 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
             Web3jService web3jService, long pollingInterval,
             ScheduledExecutorService scheduledExecutorService) {
         super(web3jService, pollingInterval, scheduledExecutorService);
+    }
+
+    @Override
+    public Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
+            String signedTransactionData, List<String> privateFor) {
+        PrivateRawTransaction transaction = new PrivateRawTransaction(privateFor);
+        return new Request<>(
+                "eth_sendRawPrivateTransaction",
+                Arrays.asList(signedTransactionData, transaction),
+                web3jService,
+                EthSendTransaction.class);
     }
 
     @Override

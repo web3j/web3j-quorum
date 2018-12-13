@@ -1,4 +1,4 @@
-package org.web3j.quorum.enclave.http
+package org.web3j.quorum.enclave.protocol.utils
 
 import org.assertj.core.api.Assertions.*
 import org.junit.Test
@@ -13,7 +13,7 @@ class RequestBuilderTest {
 
         assertThat(result).isEqualTo(
                 """
-                $POST /$path HTTP/1.1
+                POST /$path HTTP/1.1
                 Host: k
                 User-Agent: constellation-client
                 Content-Type: application/json

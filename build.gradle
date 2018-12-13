@@ -42,13 +42,12 @@ jacocoTestReport {
 
 
 ext {
-    web3jVersion = '4.0.3'
-    solidityPluginVersion = '0.1.2'
-    junitVersion = '4.12'
-    logbackVersion = '1.2.3'
-    mockitoVersion = '1.10.19'
+    web3jVersion = '4.0.4'
     jacksonKotlinVersion = '2.9.0'
-    slf4jApiVersion = '1.7.25'
+
+    logbackVersion = '1.2.3'
+    junitVersion = '4.12'
+    mockitoVersion = '1.10.19'
     assertjCoreVersion = '3.8.0'
 
     ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSSRH_USERNAME')
@@ -69,8 +68,8 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
             "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion",
-            "org.slf4j:slf4j-api:$slf4jApiVersion",
             "org.web3j:core:$web3jVersion"
+    
     testCompile "junit:junit:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
