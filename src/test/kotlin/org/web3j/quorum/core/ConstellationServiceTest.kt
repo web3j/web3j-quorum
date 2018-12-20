@@ -32,9 +32,8 @@ class ConstellationServiceTest : Helper() {
 
         val sendResponse = constellation[0].storeRawRequest(payload, from, listOf(to))
         val key = sendResponse.key
+        println(key)
         assertThat(key).hasSize(88)
-
-        assertTrue(constellation[0].deleteRequest(key))
     }
 
     @Test

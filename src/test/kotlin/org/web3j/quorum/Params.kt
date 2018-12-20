@@ -101,7 +101,7 @@ val client3 = OkHttpClient.Builder()
         .socketFactory(UnixDomainSocketFactory(File(constellationIpcPath4)))
         .build()
 val quorumConstellation = Quorum.build(HttpService(quorum1C.url))
-val constellation = Arrays.asList(Constellation(EnclaveIpcService("http://localhost", 8080, client), Quorum.build(HttpService(quorum1C.url))))
+val constellation = Arrays.asList(Constellation(EnclaveIpcService("http://localhost", 9020, client), Quorum.build(HttpService(quorum1C.url))))
 
 //val constellation = Arrays.asList(Constellation(UnixEnclaveIpcService(constellationIpcPath1), Quorum.build(HttpService(quorum1C.url))),
 //        Constellation(UnixEnclaveIpcService(constellationIpcPath2), Quorum.build(HttpService(quorum2C.url))),
