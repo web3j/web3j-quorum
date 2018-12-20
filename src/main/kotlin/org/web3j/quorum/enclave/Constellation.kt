@@ -27,15 +27,11 @@ class Constellation(private val ipcService: EnclaveIpcService, private val web3:
     }
 
     override fun upCheck(): Boolean {
-        val test = ipcService.sendJsonRequest("", "upcheck")
+        val test = ipcService.send( "upcheck")
         return test  == "I'm up!"
     }
 
     override fun deleteRequest(key: String): Boolean {
-        val deleteRequest = DeleteRequest(key)
-        return ipcService.send(deleteRequest, "delete")
+        throw NotImplementedError("Constellation delete not implemented")
     }
-
-
-
 }

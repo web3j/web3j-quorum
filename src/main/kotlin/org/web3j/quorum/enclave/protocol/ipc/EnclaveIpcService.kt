@@ -2,62 +2,56 @@ package org.web3j.quorum.enclave.protocol.ipc
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.*
-import org.web3j.protocol.ipc.IOFacade
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import org.web3j.quorum.enclave.EnclaveClientConnectionException
 import org.web3j.quorum.enclave.protocol.EnclaveService
-import org.web3j.quorum.enclave.protocol.utils.RequestBuilder
-import org.web3j.quorum.enclave.protocol.utils.ResponseParser
 
 /**
  * IPC service layer
  */
-abstract class EnclaveIpcService : EnclaveService {
+class EnclaveIpcService(private val url: String, private val port: Int, private val client: OkHttpClient = OkHttpClient()) : EnclaveService {
     private val objectMapper = jacksonObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-
+    private val JSON_MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8")
     /**
      * Send a new raw payload to Enclave
      */
     override fun <S, T> send(request: S, path: String, responseType: Class<T>): T {
         val payload = objectMapper.writeValueAsString(request)
-        val chunk = sendJsonRequest(payload, path)
-        return objectMapper.readValue(chunk, responseType)
-    }
+        val uri = "$url:$port/$path"
+        val body = RequestBody.create(JSON_MEDIA_TYPE, payload)
+        val request = Request.Builder()
+                .url(uri)
+                .post(body)
+                .build()
 
-    /**
-     * Send a new raw request to Enclave
-     */
-    fun <S> send(request: S, path: String): Boolean {
-        val payload = objectMapper.writeValueAsString(request)
-        return sendJsonRequest(payload, path).isEmpty()
-    }
+        val response = client.newCall(request).execute()
 
-    /**
-     * Send a new raw request to Enclave for secure enclave.
-     */
-    fun sendJsonRequest(payload: String, path: String): String {
-        val data = RequestBuilder.encodeJsonRequest(path, payload)
-        return performIO(data)
+        if (response.isSuccessful) {
+            val chunk = response.body()?.string()
+            return objectMapper.readValue(chunk, responseType)
+        } else {
+            val statusCode = response.code()
+            val text = if (response.body() == null) "N/A" else response.body()?.string()
+
+            throw EnclaveClientConnectionException("Invalid response received from enclave: $statusCode $text")
+        }
     }
 
     /**
      * Send to a specific path
      */
     override fun send(path: String): String {
-        val data = RequestBuilder.encodeGetRequest(path)
-        return performIO(data)
+        val client = OkHttpClient()
+        val serverUri = "$url:$port/$path"
+        val request = Request.Builder()
+                .url(serverUri)
+                .get()
+                .build()
+        val response = client.newCall(request).execute()
+        return response.body().toString()
     }
-
-    /**
-     * Perform IO read/write
-     */
-    private fun performIO(data: String): String {
-        val io = getIO()
-        io.write(data)
-
-        val response = io.read()
-
-        return ResponseParser.parseChunkedResponse(response)
-    }
-
-    abstract fun getIO(): IOFacade
 }
