@@ -52,7 +52,6 @@ class EnclaveIpcService(private val url: String, private val port: Int, private 
                 .get()
                 .build()
         val response = client.newCall(request).execute()
-        println(response)
-        return response.body().toString()
+        return response.message()
     }
 }

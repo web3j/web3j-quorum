@@ -1,16 +1,9 @@
 package org.web3j.quorum.core
 
-import okhttp3.OkHttpClient
 import org.junit.Test
 import org.junit.Assert.assertTrue
 import org.assertj.core.api.Assertions.*
-import org.junit.Before
 import org.web3j.quorum.*
-import org.web3j.quorum.enclave.Constellation
-import org.web3j.quorum.enclave.Enclave
-import org.web3j.quorum.enclave.protocol.ipc.EnclaveIpcService
-import java.io.File
-
 
 class ConstellationEndpointsTest {
 

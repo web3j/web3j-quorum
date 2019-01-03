@@ -16,7 +16,7 @@ import java.util.*
 
 // ASCII base 64 encoded payload
 val PAYLOAD: String = Base64.getEncoder().encodeToString("message payload1".toByteArray())
-val localhost = "http://localhost:"
+val localhost = "http://localhost"
 
 
 // Tessera Node configuration
@@ -101,7 +101,8 @@ val client3 = OkHttpClient.Builder()
         .socketFactory(UnixDomainSocketFactory(File(constellationIpcPath4)))
         .build()
 val quorumConstellation = Quorum.build(HttpService(quorum1C.url))
-val constellation = Arrays.asList(Constellation(EnclaveIpcService("http://localhost", 9020, client), Quorum.build(HttpService(quorum1C.url))))
+val constellation = Arrays.asList(Constellation(EnclaveIpcService("http://localhost", 9020, client), Quorum.build(HttpService(quorum1C.url))),
+        Constellation(EnclaveIpcService("http://localhost", 9020, client), Quorum.build(HttpService(quorum1C.url))))
 
 //val constellation = Arrays.asList(Constellation(UnixEnclaveIpcService(constellationIpcPath1), Quorum.build(HttpService(quorum1C.url))),
 //        Constellation(UnixEnclaveIpcService(constellationIpcPath2), Quorum.build(HttpService(quorum2C.url))),

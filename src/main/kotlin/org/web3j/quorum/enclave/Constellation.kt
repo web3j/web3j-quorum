@@ -28,7 +28,8 @@ class Constellation(private val ipcService: EnclaveIpcService, private val web3:
 
     override fun upCheck(): Boolean {
         val test = ipcService.send( "upcheck")
-        return test  == "I'm up!"
+        println(test)
+        return test  == "OK"
     }
 
     override fun deleteRequest(key: String): Boolean {
