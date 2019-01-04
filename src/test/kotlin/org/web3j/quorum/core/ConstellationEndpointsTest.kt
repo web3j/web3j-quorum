@@ -3,8 +3,10 @@ package org.web3j.quorum.core
 import org.junit.Test
 import org.junit.Assert.assertTrue
 import org.assertj.core.api.Assertions.*
+import org.junit.Ignore
 import org.web3j.quorum.*
 
+@Ignore
 class ConstellationEndpointsTest {
 
     val from = TM1_PUBLIC_KEY
