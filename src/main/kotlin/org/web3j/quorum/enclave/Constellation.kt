@@ -2,7 +2,7 @@ package org.web3j.quorum.enclave
 
 import org.web3j.protocol.core.methods.response.EthSendTransaction
 import org.web3j.quorum.Quorum
-import org.web3j.quorum.enclave.protocol.ipc.EnclaveIpcService
+import org.web3j.quorum.enclave.protocol.EnclaveService
 
 /**
  * Constellation implements the "privacy engine" of Quorum, a fork of Ethereum with support for private
@@ -10,7 +10,7 @@ import org.web3j.quorum.enclave.protocol.ipc.EnclaveIpcService
  *
  * <p> In this library it is used to encrypt the payload of a private transaction.
  */
-class Constellation(private val ipcService: EnclaveIpcService, private val web3: Quorum) : Enclave {
+class Constellation(private val ipcService: EnclaveService, private val web3: Quorum) : Enclave {
 
     override fun sendRawRequest(payload: String, privateFor: List<String>): EthSendTransaction {
         return web3.ethSendRawTransaction(payload).send()
