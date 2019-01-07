@@ -45,7 +45,6 @@ class EnclaveIpcService(private val url: String, private val port: Int, private 
      * Send to a specific path
      */
     override fun send(path: String): String {
-        val client = OkHttpClient()
         val serverUri = "$url:$port/$path"
         val request = Request.Builder()
                 .url(serverUri)

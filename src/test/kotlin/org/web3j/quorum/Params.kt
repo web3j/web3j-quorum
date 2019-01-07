@@ -7,7 +7,6 @@ import org.web3j.quorum.enclave.Tessera
 import org.web3j.quorum.enclave.protocol.http.EnclaveHttpService
 import org.web3j.quorum.enclave.protocol.ipc.EnclaveIpcService
 import java.io.File
-//import org.web3j.quorum.enclave.protocol.ipc.UnixEnclaveIpcService
 import java.util.*
 
 /**
@@ -100,14 +99,12 @@ val client2 = OkHttpClient.Builder()
 val client3 = OkHttpClient.Builder()
         .socketFactory(UnixDomainSocketFactory(File(constellationIpcPath4)))
         .build()
-val quorumConstellation = Quorum.build(HttpService(quorum1C.url))
 val constellation = Arrays.asList(Constellation(EnclaveIpcService("http://localhost", 9020, client), Quorum.build(HttpService(quorum1C.url))),
-        Constellation(EnclaveIpcService("http://localhost", 9020, client), Quorum.build(HttpService(quorum1C.url))))
+        Constellation(EnclaveIpcService("http://localhost", 9021, client1), Quorum.build(HttpService(quorum2C.url))),
+        Constellation(EnclaveIpcService("http://localhost", 9022, client2), Quorum.build(HttpService(quorum3C.url))),
+        Constellation(EnclaveIpcService("http://localhost", 9023, client3), Quorum.build(HttpService(quorum4C.url))))
 
-//val constellation = Arrays.asList(Constellation(UnixEnclaveIpcService(constellationIpcPath1), Quorum.build(HttpService(quorum1C.url))),
-//        Constellation(UnixEnclaveIpcService(constellationIpcPath2), Quorum.build(HttpService(quorum2C.url))),
-//        Constellation(UnixEnclaveIpcService(constellationIpcPath3), Quorum.build(HttpService(quorum3C.url))),
-//        Constellation(UnixEnclaveIpcService(constellationIpcPath4), Quorum.build(HttpService(quorum4C.url))))
+
 // ASCII base 64 encoded public keys for our transaction managers
 const val TM1_PUBLIC_KEY = "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo="
 const val TM2_PUBLIC_KEY = "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="
