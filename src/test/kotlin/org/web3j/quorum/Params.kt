@@ -16,7 +16,6 @@ import java.util.*
 val PAYLOAD: String = Base64.getEncoder().encodeToString("message payload1".toByteArray())
 val localhost = "http://localhost"
 
-
 // Tessera Node configuration
 val quorum1T = Node(
         "0xed9d02e382b34818e88b88a309c7fe71e65f419d",
@@ -101,7 +100,6 @@ val constellation = Arrays.asList(Constellation(EnclaveService("http://localhost
         Constellation(EnclaveService("http://localhost", 9020, client1), Quorum.build(HttpService(quorum2C.url))),
         Constellation(EnclaveService("http://localhost", 9020, client2), Quorum.build(HttpService(quorum3C.url))),
         Constellation(EnclaveService("http://localhost", 9020, client3), Quorum.build(HttpService(quorum4C.url))))
-
 
 // ASCII base 64 encoded public keys for our transaction managers
 const val TM1_PUBLIC_KEY = "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo="
