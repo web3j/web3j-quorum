@@ -267,7 +267,8 @@ compileKotlin {
         jvmTarget = "1.8"
     }
 }
-compileTestKotlin {
+
+compiledKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
