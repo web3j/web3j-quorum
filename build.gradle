@@ -60,7 +60,6 @@ ext {
     manualRelease = project.hasProperty('manualRelease') ? project.property('manualRelease').toBoolean() : false
 }
 
-
 repositories {
     mavenCentral()
 }
@@ -136,6 +135,13 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    // We only want to sign the artifacts if we are building and publishing from local (manual release).
+    // Otherwise, Gitlab CI/CD does it for us.
+    required { manualRelease && gradle.taskGraph.hasTask('uploadArchives') }  // only execute as part of this task
+    sign configurations.archives
 }
 
 uploadArchives {
