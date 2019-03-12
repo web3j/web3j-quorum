@@ -42,7 +42,7 @@ Java 8:
    <dependency>
      <groupId>org.web3j</groupId>
      <artifactId>quorum</artifactId>
-     <version>0.10.0</version>
+     <version>4.0.6</version>
    </dependency>
 
 Gradle
@@ -52,7 +52,7 @@ Java 8:
 
 .. code-block:: groovy
 
-   compile ('org.web3j:quorum:0.10.0')
+   compile ('org.web3j:quorum:4.0.6')
 
 
 Run Quorum
