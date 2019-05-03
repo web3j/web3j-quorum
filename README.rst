@@ -21,9 +21,8 @@ For further information on web3j, please refer to the
 Features
 --------
 
-- Support for Quorum's private transactions
-- `QuorumChain API <https://github.com/jpmorganchase/quorum/blob/master/docs/api.md#quorumchain-apis>`_
-  implementation
+- Support for Quorum's private transactions through private transaction manager
+- Ability to send **signed** private transactions
 - Works out the box with web3j's
   `smart contract wrappers <http://docs.web3j.io/smart_contracts.html#solidity-smart-contract-wrappers>`_
 
@@ -64,32 +63,32 @@ See instructions as per the `Quorum project page <https://github.com/jpmorgancha
 Start sending requests
 ----------------------
 
-To send asynchronous requests using a Future:
+To send synchronous requests:
 
 .. code-block:: java
 
    Quorum quorum = Quorum.build(new HttpService("http://localhost:22001"));
-   QuorumNodeInfo quorumNodeInfo = quorum.quorumNodeInfo().sendAsync().get();
-   String voteAccount = quorumNodeInfo.getNodeInfo().getVoteAccount();
+   Web3ClientVersion web3ClientVersion = quorum.web3ClientVersion().send();
+   String clientVersion = web3ClientVersion.getWeb3ClientVersion();
 
+To send asynchronous requests:
+
+.. code-block:: java
+
+   Quorum quorum = Quorum.build(new HttpService("http://localhost:22001"));
+   Web3ClientVersion web3ClientVersion = quorum.web3ClientVersion().sendAsync().get();
+   String clientVersion = web3ClientVersion.getWeb3ClientVersion();
 
 To use an RxJava Observable:
 
 .. code-block:: java
 
    Quorum quorum = Quorum.build(new HttpService("http://localhost:22001"));
-   quorum.quorumNodeInfo().observable().subscribe(x -> {
-       String voteAccount = x.getNodeInfo().getVoteAccount();
+   quorum.web3ClientVersion().observable().subscribe(x -> {
+       String clientVersion = x.getWeb3ClientVersion();
        ...
    });
 
-To send synchronous requests:
-
-.. code-block:: java
-
-   Quorum quorum = Quorum.build(new HttpService("http://localhost:22001"));
-   QuorumNodeInfo quorumNodeInfo = quorum.quorumNodeInfo().send();
-   String voteAccount = quorumNodeInfo.getNodeInfo().getVoteAccount();
 
 
 IPC
@@ -121,7 +120,7 @@ The only difference is that you'll need to use the
 
 .. code-block:: java
 
-   ClientTransactionManager transactionManager = new ClientTransactionManager(
+   QuorumTransactionManager transactionManager = new QuorumTransactionManager(
            web3j, "0x<from-address>", Arrays.asList("<privateFor-public-key>", ...);
    YourSmartContract contract = YourSmartContract.deploy(
        <web3j>, <transactionManager>, GAS_PRICE, GAS_LIMIT,
@@ -135,3 +134,37 @@ field on transactions.
 See the `web3j documentation <http://docs.web3j.io/smart_contracts.html>`_ for a detailed overview
 of smart contracts and web3j.
 
+
+Sending Raw Private Transactions
+--------------------------------
+web3j supports sending raw private transactions through a connection to Tessera (Quorum transaction manager). Code examples
+
+.. code-block:: java
+
+   Credentials credentials = ...
+
+   EnclaveService enclaveService = new EnclaveService("http://TESSERA_THIRD_PARTY_URL", TESSERA_THIRD_PARTY_PORT, httpClient);
+   Enclave enclave = new Tessera(enclaveService, quorum);
+
+   QuorumTransactionManager qrtxm = new QuorumTransactionManager(
+       quorum, credentials, TM_FROM_KEY, Arrays.asList(TM_TO_KEY_ARRAY),
+       enclave,
+       30,     // Retry times
+       2000);  // Sleep
+
+   YourSmartContract.deploy(client,
+       qrtxm,
+       GAS_PRICE, GAS_LIMIT,
+       <param1>, ..., <paramN>).send();
+
+   // Raw txn
+   RawTransactionManager qrtxm = new RawTransactionManager(
+         quorum,
+         credentials,
+         30,     // Retry times
+         2000);  // Sleep
+
+   YourSmartContract.deploy(quorum,
+         qrtxm,
+         GAS_PRICE, GAS_LIMIT,
+         <param1>, ..., <paramN>).send();
