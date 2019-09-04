@@ -24,7 +24,7 @@ Features
 - Support for Quorum's private transactions through private transaction manager
 - Ability to send **signed** private transactions
 - Works out the box with web3j's
-  `smart contract wrappers <http://docs.web3j.io/smart_contracts.html#solidity-smart-contract-wrappers>`_
+  `smart contract wrappers <https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers>`_
 
 Getting started
 ---------------
@@ -112,7 +112,7 @@ the same host as web3j. To connect simply use *UnixIpcService* or *WindowsIpcSer
 Smart Contract Wrappers
 -----------------------
 
-`Smart contract wrappers <http://docs.web3j.io/smart_contracts.html#solidity-smart-contract-wrappers>`_
+`Smart contract wrappers <https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers>`_
 generated using web3j 2.0+ work out the box with with web3j-quorum.
 
 The only difference is that you'll need to use the
@@ -131,7 +131,7 @@ These wrappers are similar to the web3j smart contract wrappers with the excepti
 transactions are signed by the Quorum nodes rather then by web3j. They also support the privateFor
 field on transactions.
 
-See the `web3j documentation <http://docs.web3j.io/smart_contracts.html>`_ for a detailed overview
+See the `web3j documentation <https://docs.web3j.io/smart_contracts/>`_ for a detailed overview
 of smart contracts and web3j.
 
 
