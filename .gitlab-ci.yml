@@ -1,53 +1,34 @@
-image: gradle:alpine
-
-variables:
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-
-
-before_script:
-- export GRADLE_USER_HOME=`pwd`/.gradle
-
-cache:
-  paths:
-  - .m2/repository/
-  - target/
+image: gradle:4.10.2
 
 stages:
 - build
-- test
-- deploy
+- release
+- publish
+- downstream
 
 build:
   stage: build
   script:
-  - ./gradlew clean build -x test
+  - gradle clean build -x test
 
-unit tests:
-  stage: test
+snapshot:
+  variables:
+    OSSRH_REPO_URL: $SNAPSHOT_OSSRH_REPO_URL
+  stage: release
   script:
-  - ./gradlew test
+  - gradle release
+  only:
+    refs:
+      - master
 
-publish_snapshot:
-  stage: deploy
+release:
+  variables:
+    OSSRH_REPO_URL: $RELEASE_OSSRH_REPO_URL
+  stage: release
   script:
-  - ./gradlew clean release -x test
-
-  environment:
-    name: publish_snapshot
+  - sed -i "45s/.*/    web3jVersion = '${CI_COMMIT_REF_NAME//release\/}'/" build.gradle
+  - gradle -Pversion=${CI_COMMIT_REF_NAME//release\/} release
   when: manual
   only:
-  - /release/.*$/
-
-publish_release:
-  stage: deploy
-  script:
-  - ./gradlew clean release -x test
-
-  environment:
-    name: publish_release
-  when: manual
-  only:
-  - /release/.*$/
-  - master
+    refs:
+      - /^release\/(\d*).(\d*).(\d*)/
