@@ -26,7 +26,7 @@ release:
     OSSRH_REPO_URL: $RELEASE_OSSRH_REPO_URL
   stage: release
   script:
-  - sed -i "45s/.*/    web3jVersion = '${CI_COMMIT_REF_NAME//release\/}'/" build.gradle
+  - sed -i "47s/.*/    web3jVersion = '${CI_COMMIT_REF_NAME//release\/}'/" build.gradle
   - gradle -Pversion=${CI_COMMIT_REF_NAME//release\/} release
   when: manual
   only:
