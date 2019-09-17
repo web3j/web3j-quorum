@@ -42,7 +42,7 @@ jacocoTestReport {
 
 
 ext {
-    web3jVersion = '4.0.4'
+    web3jVersion = '4.+'
     jacksonKotlinVersion = '2.9.0'
 
     logbackVersion = '1.2.3'

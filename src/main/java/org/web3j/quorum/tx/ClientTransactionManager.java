@@ -5,6 +5,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.quorum.Quorum;
 import org.web3j.quorum.methods.request.PrivateTransaction;
@@ -81,5 +83,19 @@ public class ClientTransactionManager extends TransactionManager {
                 fromAddress, null, gasLimit, to, value, data, privateFrom, privateFor);
 
         return quorum.ethSendTransaction(transaction).send();
+    }
+
+    @Override
+    public EthSendTransaction sendTransaction(BigInteger gasPrice, BigInteger gasLimit, String to, String data, BigInteger value, boolean constructor) throws IOException {
+        return sendTransaction(gasPrice,gasLimit,to,data,value);
+    }
+
+    @Override
+    public String sendCall(String to, String data, DefaultBlockParameter defaultBlockParameter) throws IOException {
+        return quorum.ethCall(
+                Transaction.createEthCallTransaction(getFromAddress(), to, data),
+                defaultBlockParameter)
+                .send()
+                .getValue();
     }
 }
