@@ -1,3 +1,7 @@
+plugins {
+    id "com.github.breadmoirai.github-release" version "2.2.9"
+}
+
 buildscript {
     ext.kotlin_version = '1.2.71'
     repositories {
@@ -277,4 +281,21 @@ compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+
+githubRelease {
+    token System.getenv('GITHUB_PERSONAL_ACCESS_TOKEN') ? System.getenv('GITHUB_PERSONAL_ACCESS_TOKEN') : ""
+    owner 'web3j'
+    repo 'quorum'
+    tagName "v${version}"
+    body changelog {
+        options([
+                '--format=oneline',
+                '--abbrev-commit',
+                '--max-count=50'
+        ])
+    }
+    releaseAssets file("$buildDir/libs").listFiles()
+    overwrite true
 }
