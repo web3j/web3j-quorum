@@ -206,8 +206,8 @@ bintray {
         desc = 'web3j Quorum API'
         userOrg = 'web3j'
         licenses = ['Apache-2.0']
-        issueTrackerUrl = 'https://github.com/web3j/web3j-gradle-plugin/issues'
-        vcsUrl = 'https://github.com/web3j/web3j-gradle-plugin.git'
+        issueTrackerUrl = 'https://github.com/web3j/quorum/issues'
+        vcsUrl = 'https://github.com/web3j/quorum.git'
         websiteUrl = 'http://web3j.io'
         publicDownloadNumbers = true
         version {
