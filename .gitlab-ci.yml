@@ -28,7 +28,6 @@ release:
   script:
   - sed -i "47s/.*/    web3jVersion = '${CI_COMMIT_REF_NAME//release\/}'/" build.gradle
   - gradle -Pversion=${CI_COMMIT_REF_NAME//release\/} release githubRelease
-  when: manual
   only:
     refs:
       - /^release\/(\d*).(\d*).(\d*)/
