@@ -12,6 +12,7 @@ build:
   - gradle clean build -x test
 
 snapshot:
+  allow_failure: false
   variables:
     OSSRH_REPO_URL: $SNAPSHOT_OSSRH_REPO_URL
   stage: release
@@ -22,12 +23,23 @@ snapshot:
       - master
 
 release:
+  allow_failure: false
   variables:
     OSSRH_REPO_URL: $RELEASE_OSSRH_REPO_URL
   stage: release
   script:
   - sed -i "47s/.*/    web3jVersion = '${CI_COMMIT_REF_NAME//release\/}'/" build.gradle
-  - gradle -Pversion=${CI_COMMIT_REF_NAME//release\/} release githubRelease
+  - gradle -Pversion=${CI_COMMIT_REF_NAME//release\/} release githubRelease -x bintrayPublish
+  only:
+    refs:
+      - /^release\/(\d*).(\d*).(\d*)/
+
+publish:
+  variables:
+    OSSRH_REPO_URL: $RELEASE_OSSRH_REPO_URL
+  stage: publish
+  script:
+    - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} bintrayPublish
   only:
     refs:
       - /^release\/(\d*).(\d*).(\d*)/
