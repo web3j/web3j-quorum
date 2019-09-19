@@ -47,6 +47,7 @@ release:
       - /^release\/(\d*).(\d*).(\d*)/
 
 publish:
+  allow_failure: false
   variables:
     OSSRH_REPO_URL: $RELEASE_OSSRH_REPO_URL
   stage: publish
@@ -57,6 +58,7 @@ publish:
       - /^release\/(\d*).(\d*).(\d*)/
 
 githubRelease:
+  allow_failure: false
   stage: github
   script:
   - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} githubRelease
