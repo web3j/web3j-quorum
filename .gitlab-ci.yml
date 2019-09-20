@@ -33,7 +33,7 @@ release-snapshot:
     OSSRH_REPO_URL: $SNAPSHOT_OSSRH_REPO_URL
   stage: release
   script:
-  - ./gradlew release
+  - ./gradlew release -x build
   only:
     refs:
       - master
@@ -57,7 +57,7 @@ release-version:
   stage: release
   script:
   - sed -i "47s/.*/    web3jVersion = '${CI_COMMIT_REF_NAME//release\/}'/" build.gradle
-  - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} release -x bintrayPublish
+  - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} release -x bintrayPublish build
   only:
     refs:
       - /^release\/(\d*).(\d*).(\d*)/
