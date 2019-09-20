@@ -15,18 +15,19 @@ stages:
 - build
 - release
 - publish
-- github
-- downstream
 
-build:
+build-snapshot:
   stage: build
   script:
   - ./gradlew clean build -x test
   artifacts:
     paths:
     - build/libs/**
+  only:
+    refs:
+      - master
 
-snapshot:
+release-snapshot:
   allow_failure: false
   variables:
     OSSRH_REPO_URL: $SNAPSHOT_OSSRH_REPO_URL
@@ -37,7 +38,19 @@ snapshot:
     refs:
       - master
 
-release:
+build-version:
+  stage: build
+  script:
+  - sed -i "47s/.*/    web3jVersion = '${CI_COMMIT_REF_NAME//release\/}'/" build.gradle
+  - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} build -x test
+  artifacts:
+    paths:
+    - build/libs/**
+  only:
+    refs:
+      - /^release\/(\d*).(\d*).(\d*)/
+
+release-version:
   allow_failure: false
   variables:
     OSSRH_REPO_URL: $RELEASE_OSSRH_REPO_URL
@@ -49,22 +62,14 @@ release:
     refs:
       - /^release\/(\d*).(\d*).(\d*)/
 
-publish:
+publish-version:
   allow_failure: false
   variables:
     OSSRH_REPO_URL: $RELEASE_OSSRH_REPO_URL
   stage: publish
   script:
     - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} bintrayPublish
-  only:
-    refs:
-      - /^release\/(\d*).(\d*).(\d*)/
-
-githubRelease:
-  allow_failure: false
-  stage: github
-  script:
-  - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} githubRelease
+    - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} githubRelease
   only:
     refs:
       - /^release\/(\d*).(\d*).(\d*)/
