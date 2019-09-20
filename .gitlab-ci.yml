@@ -22,6 +22,9 @@ build:
   stage: build
   script:
   - ./gradlew clean build -x test
+  artifacts:
+    paths:
+    - build/libs/**
 
 snapshot:
   allow_failure: false
