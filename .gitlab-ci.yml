@@ -57,7 +57,7 @@ release-version:
   stage: release
   script:
   - sed -i "47s/.*/    web3jVersion = '${CI_COMMIT_REF_NAME//release\/}'/" build.gradle
-  - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} bintrayUpload
+  - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} bintrayUpload -x bintrayPublish
   only:
     refs:
       - /^release\/(\d*).(\d*).(\d*)/
