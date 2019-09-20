@@ -33,7 +33,7 @@ release-snapshot:
     OSSRH_REPO_URL: $SNAPSHOT_OSSRH_REPO_URL
   stage: release
   script:
-  - ./gradlew release -x build
+  - ./gradlew uploadArchives -x build
   only:
     refs:
       - master
@@ -57,7 +57,7 @@ release-version:
   stage: release
   script:
   - sed -i "47s/.*/    web3jVersion = '${CI_COMMIT_REF_NAME//release\/}'/" build.gradle
-  - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} bintrayUpload -x bintrayPublish
+  - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} bintrayUpload bintrayPublish
   only:
     refs:
       - /^release\/(\d*).(\d*).(\d*)/
@@ -68,7 +68,6 @@ publish-version:
     OSSRH_REPO_URL: $RELEASE_OSSRH_REPO_URL
   stage: publish
   script:
-    - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} bintrayPublish
     - ./gradlew -Pversion=${CI_COMMIT_REF_NAME//release\/} githubRelease
   only:
     refs:
