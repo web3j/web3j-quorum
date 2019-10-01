@@ -1,33 +1,20 @@
-
-buildscript {
-    ext.kotlin_version = '1.2.71'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+    id 'io.codearte.nexus-staging' version '0.21.1'
     id "com.github.breadmoirai.github-release" version "2.2.9"
     id "com.gradle.plugin-publish" version "0.10.0"
     id 'com.jfrog.bintray' version '1.8.4'
+    id 'org.unbroken-dome.test-sets' version '2.2.0'
     id 'java-gradle-plugin'
     id 'java'
 
-    // Required for JFrog Artifactory repository
     id 'jacoco'
     id 'maven-publish'
 
-    // Required for Maven Nexus repository
     id 'maven'
     id 'signing'
     id 'idea'
 }
-
-apply plugin: 'kotlin'
 
 description 'web3j Quorum API'
 sourceCompatibility = 1.8
@@ -67,16 +54,17 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.21",
             "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion",
             "org.web3j:core:$web3jVersion"
     
-    testCompile "junit:junit:$junitVersion",
+    testImplementation "junit:junit:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
             "org.mockito:mockito-core:$mockitoVersion",
             "org.assertj:assertj-core:$assertjCoreVersion",
             "org.web3j:core:$web3jVersion:tests"
+
 }
 
 tasks.withType(Test) {
@@ -252,3 +240,7 @@ githubRelease {
     releaseAssets file("$buildDir/libs").listFiles()
     overwrite true
 }
+
+testSets { integrationTest { dirName = 'integration-test' } }
+integrationTest.mustRunAfter test
+compileIntegrationTestKotlin { kotlinOptions.jvmTarget = '1.8' }

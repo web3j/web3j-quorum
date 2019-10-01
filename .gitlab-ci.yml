@@ -16,28 +16,6 @@ stages:
 - release
 - publish
 
-build-snapshot:
-  stage: build
-  script:
-  - ./gradlew clean build -x test
-  artifacts:
-    paths:
-    - build/libs/**
-  only:
-    refs:
-      - master
-
-release-snapshot:
-  allow_failure: false
-  variables:
-    OSSRH_REPO_URL: $SNAPSHOT_OSSRH_REPO_URL
-  stage: release
-  script:
-  - ./gradlew uploadArchives -x build
-  only:
-    refs:
-      - master
-
 build-version:
   stage: build
   script:

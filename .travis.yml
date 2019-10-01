@@ -1,22 +1,32 @@
 language: java
-
-dist: trusty
-
 jdk:
-  - oraclejdk8
-
-sudo: false  # as per http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
-
-# Avoid uploading cache after every build with Gradle - see https://docs.travis-ci.com/user/languages/java/#Caching
+- openjdk8
+sudo: false
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-
-# Don't run integrationTests as they require a live Ethereum client to be running
-# Add --info to view details of test failures
-script: ./gradlew --info check 
-
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+install: skip
+test: skip
+jobs:
+  include:
+  - stage: build master
+    script: "./gradlew spotlessCheck check jacocoTestReport"
+  - stage: release snapshot
+    script: "./gradlew release --info -PossrhRepoUrl=${SNAPSHOT_OSSRH_REPO_URL} -x
+      test"
+    if: branch = master
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+env:
+  global:
+  - SNAPSHOT_OSSRH_REPO_URL: https://oss.sonatype.org/content/repositories/snapshots/
+  - RELEASE_OSSRH_REPO_URL: https://oss.sonatype.org/service/local/staging/deploy/maven2
+  - secure: XaNXLSCp73w+mQK/o6u38eGzmkyC+CZq4FBVF526m9GqzqglUfrWVU0CMl4oTj7CVOt7+BorlnqgdoWjafYz0oeK+07t3Qu+jn9hB5wncR8nMepKTJgzLyaDD380fEXWbhZsHBv0ee9sxxBRtK617YSA15OLhNmLlTZW3YUvaYDM/mvasBShYGlYlfKnGFvqK2YXeXHD99pHCkgIhEjmbYnnEXnvMHFmNipZVUDbR9I4rubHaOWAywoOaxStvKDfWh55jNx4ZAPFUkTDtLCtqCUjzEIOj+H2uR4N0uwpTupYgfxPlEbYVJuIxMujIWU9aL5EIPN9/VrNIe7Ahf9mayj8v9LhJKjoLbUzZLLKhWutjAxYMHLfE2q/ZVhFehDgqejOGc8h9xrrnUFPu57FdabNo5+D26ASY6Pyaxluqn7qkkB3i0SzAC61X3wTWbd/oCiB82SpEFuY3KyLnxVsPAKm9oklgYfu4Tfkv7uWzUq+MoYNFWHW0ppSIh2XWQw3c1sqsgEHJ94nkL0eWOlHrxZBC4t4xo0njT5nHKGNYqp/orktzAR5Sw9VtfWmncAgYqQOOCzjZEJP5GwTQQ7FjbK8+Yq7vScAyZkp7jxh3IIsrTuoAaotuGg8DcMTGRMe43NLbnZeB9zeKbogAmOansNYiqfzAyMYYX8zkgu7TiQ=
+  - secure: aiF5BFPsum/MD8vTG71RPnzC3hw6jmitzSrTcFZD01W/kKuPmOrZWvHtXzxvXSEbO1dZ+jgtlEGo+khbZmOrcTu+VSJNFDBHsNBfI56ChFbfHOAY2WW0Eh2bL3FW1X818rtvpViPdUf+4E7gAbQ0IiseCNC0WqcH7tkmVyfG545qWjJy1mD9AJVYfJTZuFhHeZD+WrKahesQBB6v+88Oj//1nHCoE6g0jsluMRNgdVUT1zEodMCH0oCfbRhVMBBpU4gTVXmE3u4ljdv5N37uG3XRXFyqNLuKoPZ4dl2KJjx2hSZ2TT4OGjH6yjfpnDcy2+61m5doHBKmzpVpn1+ZlLiiofiJ4A7SZU5nAjQnFTd6YoKAMdVzm0tdXLVKjKZxHYLYTrG3mJ3ep7smVKDzFFhqKnAK3Oj6ti8PCIlVcAfRqiVSjMm+Y9eNG1YZPYwBeRAbmoO16ZS5OJF3l6FpL4w+O+EFzLOJ08k+SpccvsMzhQ3OW8XjOiecM4kOJ5UgNK7ILdceS5LlBtjzGJTAg4bh7Byx9CRtIG9DaZErZ8EDWUqUmaDi+V9GExhMA5qTvJJDmTUm4MRYJ3u4ez173xebvr1SaxsyBr0cF/yBCCfpIaqsQUNMOmk5BMWanjFPAen8H/sNwvHsLeJFQg9UNKUGsgWXMVIs5qwMFA968zw=
+  - secure: fwTcWDVRjXyiKqStHxXPzlu7dpyeHus1IrJK3ODVgki3Qcx443lpq0YhghvecakiSGIYHwFJVG3XiHakVhVQpnOsISNqsspYkn2U92O3gT3brexkfx9oAk/w+nWBMhlK97F5keDYbC0EmL98QJgcexlCNK8h7TjeEVnNdJlAmBzYaH7ROd9PnTzheBddFQUmVlC6zUSrNaRnIgWAyP1uBZqFPW4Om9WK1ZqcwGtzxegyJSvJS3mNEfgic/mmT85XmGSQ2NeJcUp2JDRd6T/n/1CLKSRqfl7ePEhmK3mKaMIWjdzTxrMul4fTp7RdZBIY0fdIi1Q6fYoI45SgYlYNsPiuVrmYInSgrY8kSyUibGe74Yw1Ma4L/HR0zay51y/qznJ6j8uGlhKQWnxwcSWOrvXmoX1FDSkyKNFh68UeNkarS64nl7mee424wLtBzoPx1zeCqPlYNauwYbpJ7wj1q7MjmG/PSwF3MQtWzAok2Zuwc6jn/OeQhc3PvzuIUkbQt+FSTMyZvxHPV/BkHWW4lzGAxFxqwuXaZqCHx6GmgNndvJRZa+8Lnjgxltb03M3gmIQy6GI0KvFw5p++EWUEulrczlOaC0Skh0TFTPre2NmkNBTzN94oPkGulYeFLKAp3ssh4CtTkLeIofzXGxNIs3V4mHX3uLJoAECB9m8cjX4=
+  - secure: Un07tNCyF/HLrynfDQEto09brbkTAnG8icLulHwX0l32xUlC7LjfqGPq5FNOhn/mqBisJ+ByWnVuXQQanb/KJrW5kobrmX5MDqLPyJ1FfDw1sprB2W3un9T16SZYmZqe2nG5orv3UTZ1fpbqzwgIaKWv/GU1wtiHujmeyVwXqr7mBmxWq9M09LJUgCQ5ppZvZ75mlSXOawdC4qtWk6KOdVnlMb+mvhzEiAY1M071fLnkLotVQ11gzhDWz5iVGPUrh39yRhnTkuCwsEIGVvoIdCttsLNAEe4Ttku9+PNXTWMEuTZLgURQ2grZ6Qr9lcAfBd5uPtELRgZGsHiW+oDmhWMnhq44Rnv09/JXKMCUTdWC1NKg7STBAMvPArHJpM8+NTCe2W60+nqi37Vj7+ZNSTkHo9/1luAUXRUEw9oL87HaR8ZrcRBbhbOxJ3ngAYOZdvT8MFfsSARHB+VgzPDDVj12L1eDxIjNuCiYBWLfKHXTrKXXcXvG5kWnDI1Tvc4KJ7PbJ8RWDUe1WeGYLlu0p3MLAN/pyUpnUe+VEmHz8nrkf/jrMkXQDniGp35dctYclHzLYtLdhWrbEL8z6txsaGgvbFgVwD6zfQ1QqgvQJrK9i7eHJGLvIh2KEHsgVItUgaS8zfZhnaQgegxFPAps6eVVRVpU/2nG8ielqGVsKE8=
+  - secure: t2jM1zHFsvgvI9CDprViHgjGld9Mk9gyK/9oSjo4tj6pYl4VNQpSyHZZzDLId7O3fv+utrIUQ04yd2Ti5aPEd9s+68wcLtP77Os5+ycERdAYEvQtwvCYuV+QSUev/2g49mOU67s0J8pLH0RZiUL3lw+B+I++klD3rebxSzU2g6R+VtVC0jfOr5hdXDegzt6ps9vFft0G/jHp1SuoFNJzs0Wg3RSkP0pVVUAN/mRnMe/hubgOhfxy1RFQLc8sO5AqO3ViBDhipN56ngbh6aePPcO0uYiHcYAiK2bx3fVmrS8A6v0PH6DpMrNPOuryt0NYlfchEoy99NVLnsVvAehmxX4lCxPbl5WSbhe53H1NdkO3rYRx8R/Vrfvl+NN/X9mwAyVhLe12wdAZ3u2qd8csHn2hlTCNc68ivz8hNS02SEsbok+NoX4u/h9jofwAR86L99NDbEymoD872CJXL3UTgLp+DJufSqZHXTXsFk6XgygQiByXnLE93QH+qq3yvCYHLtEt5HtcIoHcbR5Xpu8ntFpCHdnUTFyD5yloRDVuSONWfNy8MZtWDXlSVeMg4qVGhPLXZM06YAxJGG17u64F686JoMCdgy1K2KMNLkIvrK+UF6O2jbLbLZjN5cqr1KgZAj0ZpRyFVQoq0eK4+dySr7t4QiSXBI5totbImqspdH4=
