@@ -19,6 +19,9 @@ jobs:
   - stage: build release
     if: branch =~ /release/
     script: "./gradlew check release -Pversion=${TRAVIS_BRANCH#'release/'} -PossrhRepoUrl=${RELEASE_OSSRH_REPO_URL}"
+  - stage: github release
+      if: branch =~ /release/
+      script: "./gradlew check -Pversion=${TRAVIS_BRANCH#'release/'} && ./scripts/github-release.sh"
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 env:
