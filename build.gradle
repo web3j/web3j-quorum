@@ -5,6 +5,7 @@ plugins {
     id "com.gradle.plugin-publish" version "0.10.0"
     id 'com.jfrog.bintray' version '1.8.4'
     id 'org.unbroken-dome.test-sets' version '2.2.0'
+    id 'com.diffplug.gradle.spotless' version '3.17.0'
     id 'java-gradle-plugin'
     id 'java'
 
@@ -19,14 +20,11 @@ plugins {
 description 'web3j Quorum API'
 sourceCompatibility = 1.8
 
-jacoco {
-    toolVersion = '0.7.7.201606060606' // See http://www.eclemma.org/jacoco/.
+jacoco { toolVersion = '0.7.7.201606060606' // See http://www.eclemma.org/jacoco/.
 }
 
 jacocoTestReport {
-    reports {
-        xml.enabled true
-    }
+    reports { xml.enabled true }
 }
 
 
@@ -38,6 +36,7 @@ ext {
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
     assertjCoreVersion = '3.8.0'
+    ktlintVersion = '0.31.+'
 
     ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSSRH_USERNAME')
     ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('OSSRH_PASSWORD')
@@ -51,13 +50,17 @@ ext {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.21",
             "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion",
             "org.web3j:core:$web3jVersion"
-    
+
+    implementation("com.github.shyiko:ktlint:${ktlintVersion}") { exclude group: 'org.slf4j' }
+
+
     testImplementation "junit:junit:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
@@ -81,22 +84,16 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
-artifacts {
-    archives sourcesJar, javadocJar
-}
+artifacts { archives sourcesJar, javadocJar }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
 
-            artifact sourcesJar {
-                classifier 'sources'
-            }
+            artifact sourcesJar { classifier 'sources' }
 
-            artifact javadocJar {
-                classifier 'javadoc'
-            }
+            artifact javadocJar { classifier 'javadoc' }
 
             pom {
                 name = project.name
@@ -134,6 +131,42 @@ signing {
     sign configurations.archives
 }
 
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/src/*/java/**/*.java'
+            exclude '**/.gradle/**'
+            exclude '**/generated/**'
+        }
+        removeUnusedImports()
+        googleJavaFormat("1.7").aosp()
+        importOrder 'java', '', 'org.web3j', '\\#'
+        trimTrailingWhitespace()
+        endWithNewline()
+        licenseHeaderFile "$rootDir/gradle/spotless.java.license"
+    }
+    kotlin {
+        // This path needs to be relative to each project
+        target fileTree('.') {
+            include '**/*.kt'
+            exclude '**/.gradle/**'
+            exclude '**/db/changes/**'
+        }
+        ktlint(ktlintVersion)
+        trimTrailingWhitespace()
+        endWithNewline()
+        licenseHeaderFile "$rootDir/gradle/spotless.java.license"
+    }
+    groovyGradle {
+        target '*.gradle'
+        greclipse().configFile(rootProject.file('gradle/formatter.properties'))
+        endWithNewline()
+        indentWithSpaces(4)
+        paddedCell()
+    }
+}
+
+
 uploadArchives {
     repositories {
         mavenDeployer {
@@ -148,7 +181,7 @@ uploadArchives {
                 authentication(
                         userName: ossrhUsername,
                         password: ossrhPassword
-                )
+                        )
             }
 
             pom.project {
@@ -213,16 +246,8 @@ bintray {
     }
 }
 
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
+compileKotlin { kotlinOptions { jvmTarget = "1.8" } }
+compileTestKotlin { kotlinOptions { jvmTarget = "1.8" } }
 
 
 githubRelease {
@@ -232,9 +257,9 @@ githubRelease {
     tagName "v${version}"
     body changelog {
         options([
-                '--format=oneline',
-                '--abbrev-commit',
-                '--max-count=50'
+            '--format=oneline',
+            '--abbrev-commit',
+            '--max-count=50'
         ])
     }
     releaseAssets file("$buildDir/libs").listFiles()
