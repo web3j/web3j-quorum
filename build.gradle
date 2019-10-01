@@ -124,13 +124,6 @@ publishing {
     }
 }
 
-signing {
-    // We only want to sign the artifacts if we are building and publishing from local (manual release).
-    // Otherwise, Gitlab CI/CD does it for us.
-    required { manualRelease && gradle.taskGraph.hasTask('uploadArchives') }  // only execute as part of this task
-    sign configurations.archives
-}
-
 spotless {
     java {
         target fileTree('.') {
@@ -249,6 +242,32 @@ bintray {
 compileKotlin { kotlinOptions { jvmTarget = "1.8" } }
 compileTestKotlin { kotlinOptions { jvmTarget = "1.8" } }
 
+task release {
+    dependsOn 'build'
+
+    if (isSnapshotVersion) {
+        logger.info(" - ossrhUsername={}", ossrhUsername)
+        logger.info(" - ossrhPassword={}", ossrhPassword ? "provided" : "not_provided")
+        logger.info(" - ossrhRepoUrl={}", ossrhRepoUrl)
+    } else {
+        logger.info("About to perform {} full release ...", manualRelease ? "a manual" : "an automated")
+        logger.info(" - ossrhUsername={}", ossrhUsername)
+        logger.info(" - ossrhPassword={}", ossrhPassword ? "provided" : "not_provided")
+        logger.info(" - ossrhRepoUrl={}", ossrhRepoUrl)
+        logger.info(" - bintrayUser={}", bintrayUser)
+        logger.info(" - bintrayKey={}", bintrayKey ? "provided" : "not_provided")
+        logger.info(" - bintrayGpgPassphrase={}", bintrayGpgPassphrase ? "provided" : "not_provided")
+    }
+
+    // Snapshots go to nexus, non-snapshots go to bintray.
+    if (isSnapshotVersion) {
+        dependsOn 'uploadArchives'
+        tasks.findByName('uploadArchives').mustRunAfter 'build'
+    } else {
+        dependsOn 'bintrayUpload'
+        tasks.findByName('bintrayUpload').mustRunAfter 'build'
+    }
+}
 
 githubRelease {
     token System.getenv('GITHUB_PERSONAL_ACCESS_TOKEN') ? System.getenv('GITHUB_PERSONAL_ACCESS_TOKEN') : ""
