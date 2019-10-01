@@ -29,7 +29,7 @@ jacocoTestReport {
 
 
 ext {
-    web3jVersion = '4.+'
+    web3jVersion = project.property('version') != 'unspecified' ? project.property('version') : "4.+"
     jacksonKotlinVersion = '2.9.0'
 
     logbackVersion = '1.2.3'
@@ -267,22 +267,6 @@ task release {
         dependsOn 'bintrayUpload'
         tasks.findByName('bintrayUpload').mustRunAfter 'build'
     }
-}
-
-githubRelease {
-    token System.getenv('GITHUB_PERSONAL_ACCESS_TOKEN') ? System.getenv('GITHUB_PERSONAL_ACCESS_TOKEN') : ""
-    owner 'web3j'
-    repo 'quorum'
-    tagName "v${version}"
-    body changelog {
-        options([
-            '--format=oneline',
-            '--abbrev-commit',
-            '--max-count=50'
-        ])
-    }
-    releaseAssets file("$buildDir/libs").listFiles()
-    overwrite true
 }
 
 testSets { integrationTest { dirName = 'integration-test' } }
