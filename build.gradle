@@ -37,7 +37,7 @@ ext {
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
     assertjCoreVersion = '3.8.0'
-    ktlintVersion = '0.31.+'
+    ktlintVersion = '0.31.0'
 
     ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSSRH_USERNAME')
     ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('OSSRH_PASSWORD')
