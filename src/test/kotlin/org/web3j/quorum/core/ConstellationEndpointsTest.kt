@@ -28,6 +28,6 @@ class ConstellationEndpointsTest {
     @Test
     fun testReceive() {
         val response = constellation[0].receiveRequest(key, from)  // from is intentional here
-        assertThat(response.payload).isEqualTo(payload)
+        assertThat(response).isEqualTo(payload)
     }
 }
