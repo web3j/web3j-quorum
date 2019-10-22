@@ -1,3 +1,15 @@
+/*
+ * Copyright 2019 Web3 Labs LTD.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
 package org.web3j.quorum.tx
 
 import org.web3j.crypto.Credentials
@@ -19,23 +31,32 @@ import org.web3j.utils.Numeric
 import java.math.BigInteger
 
 class QuorumTransactionManager(
-        val web3j: Quorum, private val credentials: Credentials, private val publicKey: String,
-        var privateFor: List<String> = listOf(),
-        val enclave: Enclave,
-        attempts: Int = TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH,
-        sleepDuration: Long = TransactionManager.DEFAULT_POLLING_FREQUENCY) : RawTransactionManager(web3j, credentials, attempts, sleepDuration.toInt()) {
+    val web3j: Quorum,
+    private val credentials: Credentials,
+    private val publicKey: String,
+    var privateFor: List<String> = listOf(),
+    val enclave: Enclave,
+    attempts: Int = TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH,
+    sleepDuration: Long = TransactionManager.DEFAULT_POLLING_FREQUENCY
+) : RawTransactionManager(web3j, credentials, attempts, sleepDuration.toInt()) {
 
     // add extra constructor as java does not have optional parameters
-    constructor(web3j: Quorum,
-                credentials: Credentials,
-                publicKey: String,
-                privateFor: List<String> = listOf(),
-                enclave: Enclave) : this(web3j, credentials, publicKey, privateFor, enclave, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH, TransactionManager.DEFAULT_POLLING_FREQUENCY){
+    constructor(
+        web3j: Quorum,
+        credentials: Credentials,
+        publicKey: String,
+        privateFor: List<String> = listOf(),
+        enclave: Enclave
+    ) : this(web3j, credentials, publicKey, privateFor, enclave, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH, TransactionManager.DEFAULT_POLLING_FREQUENCY) {
     }
 
     override fun sendTransaction(
-            gasPrice: BigInteger?, gasLimit: BigInteger?, to: String?, data: String?,
-            value: BigInteger?): EthSendTransaction {
+        gasPrice: BigInteger?,
+        gasLimit: BigInteger?,
+        to: String?,
+        data: String?,
+        value: BigInteger?
+    ): EthSendTransaction {
 
         val nonce = nonce
         val rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, to, value, data)
