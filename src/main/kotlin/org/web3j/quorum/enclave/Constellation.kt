@@ -28,15 +28,15 @@ class Constellation(private val ipcService: EnclaveService, private val web3: Qu
         return web3.ethSendRawTransaction(payload).send()
     }
 
-	//payload needs to be base64 encoded string
-	//returned hash is base64 encoded
+    // payload needs to be base64 encoded string
+    // returned hash is base64 encoded
     override fun storeRawRequest(payload: String, from: String, to: List<String>): SendResponse {
         val sendRequest = SendRequest(payload, from, to)
         return ipcService.send(sendRequest, "send", SendResponse::class.java)
     }
 
-	// key is base64 encoded directly returned from constellation storeRawRequest
-	//returned string is base64 encoded payload
+    // key is base64 encoded directly returned from constellation storeRawRequest
+    // returned string is base64 encoded payload
     override fun receiveRequest(key: String, to: String): String {
         val receiveRequest = ReceiveRequest(key, to)
         return ipcService.send(receiveRequest, "receive", ReceiveResponse::class.java).payload

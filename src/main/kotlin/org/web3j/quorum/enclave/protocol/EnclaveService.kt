@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
-import okhttp3.HttpUrl
 import okhttp3.Request
 import okhttp3.RequestBody
 import org.web3j.quorum.enclave.EnclaveClientConnectionException
