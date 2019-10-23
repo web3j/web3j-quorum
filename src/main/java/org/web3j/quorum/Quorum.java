@@ -40,35 +40,34 @@ public interface Quorum extends Web3j {
 
     Request<?, EthSendTransaction> ethSendRawTransaction(String signedTransactionData);
 
-    Request<?, EthSendTransaction> ethSendRawPrivateTransaction(String signedTransactionData, List<String> privateFor);
+    Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
+            String signedTransactionData, List<String> privateFor);
 
+    // raft consensus
 
-    //raft consensus
-    
     Request<?, RaftLeader> raftGetLeader();
-    
+
     Request<?, RaftRole> raftGetRole();
-    
+
     Request<?, RaftPeerId> raftAddPeer(String enode);
-    
+
     Request<?, ConsensusNoResponse> raftRemovePeer(int peerId);
-    
+
     Request<?, RaftCluster> raftGetCluster();
-    
-    //istanbul consensus
-    
+
+    // istanbul consensus
+
     Request<?, IstanbulSnapshot> istanbulGetSnapshot(String blockNum);
-    
+
     Request<?, IstanbulSnapshot> istanbulGetSnapshotAtHash(String blockHash);
-    
+
     Request<?, IstanbulValidators> istanbulGetValidators(String blockNum);
-    
+
     Request<?, IstanbulValidators> istanbulGetValidatorsAtHash(String blockHash);
-    
+
     Request<?, ConsensusNoResponse> istanbulPropose(String address, boolean auth);
-    
+
     Request<?, ConsensusNoResponse> istanbulDiscard(String address);
-    
+
     Request<?, IstanbulCandidates> istanbulCandidates();
-    
 }
