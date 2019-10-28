@@ -19,9 +19,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 
-import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.protocol.core.Response;
 
 public class IstanbulSnapshot extends Response<Snapshot> {
@@ -30,9 +31,15 @@ public class IstanbulSnapshot extends Response<Snapshot> {
         return Optional.ofNullable(getResult());
     }
 
+    @Override
+    @JsonDeserialize(using = IstanbulSnapshot.ResponseDeserialiser.class)
+    public void setResult(Snapshot result) {
+        super.setResult(result);
+    }
+
     public static class ResponseDeserialiser extends JsonDeserializer<Snapshot> {
 
-        private ObjectReader objectReader = ObjectMapperFactory.getObjectReader();
+        private ObjectMapper objectReader = new ObjectMapper().registerModule(new KotlinModule());
 
         @Override
         public Snapshot deserialize(

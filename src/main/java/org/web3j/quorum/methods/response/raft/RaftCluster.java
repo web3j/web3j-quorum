@@ -13,19 +13,17 @@
 package org.web3j.quorum.methods.response.raft;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 
-import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.protocol.core.Response;
 
 public class RaftCluster extends Response<List<RaftPeer>> {
@@ -33,21 +31,43 @@ public class RaftCluster extends Response<List<RaftPeer>> {
         return Optional.ofNullable(getResult());
     }
 
-    public static class ResponseDeserializer extends JsonDeserializer<List<RaftPeer>> {
-        private ObjectReader objectReader = ObjectMapperFactory.getObjectReader();
+    @Override
+    @JsonDeserialize(using = RaftCluster.ResponseDeserialiser.class)
+    public void setResult(List<RaftPeer> result) {
+        super.setResult(result);
+    }
+
+    public static class ResponseDeserialiser extends JsonDeserializer<List<RaftPeer>> {
+        private ObjectMapper om = new ObjectMapper().registerModule(new KotlinModule());
 
         @Override
         public List<RaftPeer> deserialize(
                 JsonParser jsonParser, DeserializationContext deserializationContext)
                 throws IOException {
             if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
-                Iterator<RaftPeer> it = objectReader.readValues(jsonParser, RaftPeer.class);
-                Iterable<RaftPeer> iterable = () -> it;
-                return StreamSupport.stream(iterable.spliterator(), false)
-                        .collect(Collectors.toList());
+                return om.readValue(jsonParser, List.class);
             } else {
                 return null;
             }
         }
     }
+
+    //    public static class ResponseDeserializer extends JsonDeserializer<List<RaftPeer>> {
+    //        private ObjectMapper om = new ObjectMapper().registerModule(new KotlinModule());
+
+    //        @Override
+    //        public List<RaftPeer> deserialize(
+    //                JsonParser jsonParser, DeserializationContext deserializationContext)
+    //                throws IOException {
+    //            System.out.println("HERE");
+    //            if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
+    //                Iterator<RaftPeer> it = om.readValues(jsonParser, RaftPeer.class);
+    //                Iterable<RaftPeer> iterable = () -> it;
+    //                return StreamSupport.stream(iterable.spliterator(), false)
+    //                        .collect(Collectors.toList());
+    //            } else {
+    //                return null;
+    //            }
+    //        }
+    //    }
 }
