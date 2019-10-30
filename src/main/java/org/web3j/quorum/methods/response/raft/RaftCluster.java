@@ -51,23 +51,4 @@ public class RaftCluster extends Response<List<RaftPeer>> {
             }
         }
     }
-
-    //    public static class ResponseDeserializer extends JsonDeserializer<List<RaftPeer>> {
-    //        private ObjectMapper om = new ObjectMapper().registerModule(new KotlinModule());
-
-    //        @Override
-    //        public List<RaftPeer> deserialize(
-    //                JsonParser jsonParser, DeserializationContext deserializationContext)
-    //                throws IOException {
-    //            System.out.println("HERE");
-    //            if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
-    //                Iterator<RaftPeer> it = om.readValues(jsonParser, RaftPeer.class);
-    //                Iterable<RaftPeer> iterable = () -> it;
-    //                return StreamSupport.stream(iterable.spliterator(), false)
-    //                        .collect(Collectors.toList());
-    //            } else {
-    //                return null;
-    //            }
-    //        }
-    //    }
 }
