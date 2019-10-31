@@ -43,6 +43,8 @@ public interface Quorum extends Web3j {
     Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
             String signedTransactionData, List<String> privateFor);
 
+    Request<?, EthSendTransaction> ethSendTransactionAsync(PrivateTransaction transaction);
+
     // raft consensus
 
     Request<?, RaftLeader> raftGetLeader();

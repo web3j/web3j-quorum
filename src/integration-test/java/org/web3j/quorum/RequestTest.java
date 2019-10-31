@@ -77,6 +77,24 @@ public class RequestTest extends RequestTester {
     }
 
     @Test
+    public void testSendTransactionAsync() throws Exception {
+        web3j.ethSendTransactionAsync(
+                        new PrivateTransaction(
+                                "FROM",
+                                BigInteger.ONE,
+                                BigInteger.TEN,
+                                "TO",
+                                BigInteger.TEN,
+                                "DATA",
+                                "privateFrom",
+                                Arrays.asList("privateFor1", "privateFor2")))
+                .send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransactionAsync\",\"params\":[{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+    }
+
+    @Test
     public void testRaftRole() throws Exception {
         web3j.raftGetRole().send();
 

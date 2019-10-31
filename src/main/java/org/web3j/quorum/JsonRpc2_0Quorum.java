@@ -85,6 +85,15 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
                 PrivatePayload.class);
     }
 
+    @Override
+    public Request<?, EthSendTransaction> ethSendTransactionAsync(PrivateTransaction transaction) {
+        return new Request<>(
+                "eth_sendTransactionAsync",
+                Collections.singletonList(transaction),
+                web3jService,
+                EthSendTransaction.class);
+    }
+
     // raft consensus
 
     @Override
