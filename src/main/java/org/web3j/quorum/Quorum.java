@@ -23,6 +23,12 @@ import org.web3j.quorum.methods.response.*;
 import org.web3j.quorum.methods.response.istanbul.IstanbulCandidates;
 import org.web3j.quorum.methods.response.istanbul.IstanbulSnapshot;
 import org.web3j.quorum.methods.response.istanbul.IstanbulValidators;
+import org.web3j.quorum.methods.response.permissioning.ExecStatusInfo;
+import org.web3j.quorum.methods.response.permissioning.OrgDetailsInfo;
+import org.web3j.quorum.methods.response.permissioning.PermissionAccountList;
+import org.web3j.quorum.methods.response.permissioning.PermissionNodeList;
+import org.web3j.quorum.methods.response.permissioning.PermissionOrgList;
+import org.web3j.quorum.methods.response.permissioning.PermissionRoleList;
 import org.web3j.quorum.methods.response.raft.RaftCluster;
 import org.web3j.quorum.methods.response.raft.RaftLeader;
 import org.web3j.quorum.methods.response.raft.RaftPeerId;
@@ -72,4 +78,64 @@ public interface Quorum extends Web3j {
     Request<?, ConsensusNoResponse> istanbulDiscard(String address);
 
     Request<?, IstanbulCandidates> istanbulCandidates();
+
+    // permissioning
+
+    Request<?, PermissionOrgList> quorumPermissionGetOrgList();
+
+    Request<?, PermissionNodeList> quorumPermissionGetNodeList();
+
+    Request<?, PermissionRoleList> quorumPermissionGetRoleList();
+
+    Request<?, PermissionAccountList> quorumPermissionGetAccountList();
+
+    Request<?, ExecStatusInfo> quorumPermissionAddOrg(
+            String orgId, String url, String address, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionApproveOrg(
+            String orgId, String url, String address, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionAddSubOrg(
+            String pOrgId, String orgId, String url, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionUpdateOrgStatus(
+            String orgId, int action, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionApproveOrgStatus(
+            String orgId, int action, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionAddNode(
+            String orgId, String url, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionUpdateNodeStatus(
+            String orgId, String url, int action, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionAssignAdminRole(
+            String orgId, String address, String roleid, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionApproveAdminRole(
+            String orgId, String address, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionAddNewRole(
+            String orgId,
+            String roleId,
+            int access,
+            boolean isVoter,
+            boolean isAdmin,
+            PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionRemoveRole(
+            String orgId, String roleId, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionAddAccountToOrg(
+            String address, String orgId, String roleId, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionChangeAccountRole(
+            String address, String orgId, String roleId, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionUpdateAccountStatus(
+            String orgId, String address, int status, PrivateTransaction transaction);
+
+    Request<?, OrgDetailsInfo> quorumPermissionGetOrgDetails(
+            String orgId, PrivateTransaction transaction);
 }

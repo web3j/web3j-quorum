@@ -22,6 +22,12 @@ import org.web3j.quorum.methods.response.*;
 import org.web3j.quorum.methods.response.istanbul.IstanbulCandidates;
 import org.web3j.quorum.methods.response.istanbul.IstanbulSnapshot;
 import org.web3j.quorum.methods.response.istanbul.IstanbulValidators;
+import org.web3j.quorum.methods.response.permissioning.ExecStatusInfo;
+import org.web3j.quorum.methods.response.permissioning.OrgDetailsInfo;
+import org.web3j.quorum.methods.response.permissioning.PermissionAccountList;
+import org.web3j.quorum.methods.response.permissioning.PermissionNodeList;
+import org.web3j.quorum.methods.response.permissioning.PermissionOrgList;
+import org.web3j.quorum.methods.response.permissioning.PermissionRoleList;
 import org.web3j.quorum.methods.response.raft.RaftCluster;
 import org.web3j.quorum.methods.response.raft.RaftLeader;
 import org.web3j.quorum.methods.response.raft.RaftPeerId;
@@ -80,7 +86,7 @@ public class ResponseTest extends ResponseTester {
         assertThat(
                 raftCluster.getCluster().get().toString(),
                 is(
-                        "[RaftPeer{ip='127.0.0.1', nodeId='3d9ca5956b38557aba991e31cf510d4df641dce9cc26bfeb7de082f0c07abb6ede3a58410c8f249dabeecee4ad3979929ac4c7c496ad20b8cfdd061b7401b4f5', p2pPort='21003', raftId='4', raftPort='50404'}]"));
+                        "[{ip=127.0.0.1, nodeId=3d9ca5956b38557aba991e31cf510d4df641dce9cc26bfeb7de082f0c07abb6ede3a58410c8f249dabeecee4ad3979929ac4c7c496ad20b8cfdd061b7401b4f5, p2pPort=21003, raftId=4, raftPort=50404}]"));
     }
 
     @Test
@@ -108,7 +114,7 @@ public class ResponseTest extends ResponseTester {
         assertThat(
                 snapshot.getSnapshot().get().toString(),
                 is(
-                        "Snapshot{epoch='30000', hash='0x0cea2fb02ca1e6e9f75d6d551766b3b4776ce5e644b0c78ed164cc63d6635dca', number='2', policy='0', tally=Tally{authorize='false', votes='0'}, validators=[0x6571d97f340c8495b661a823f2c2145ca47d63c2, 0x8157d4437104e3b8df4451a85f7b2438ef6699ff], votes=[]}"));
+                        "Snapshot(epoch=30000, hash=0x0cea2fb02ca1e6e9f75d6d551766b3b4776ce5e644b0c78ed164cc63d6635dca, number=2, policy=0, tally=Tally(authorize=false, votes=0), validators=[0x6571d97f340c8495b661a823f2c2145ca47d63c2, 0x8157d4437104e3b8df4451a85f7b2438ef6699ff], votes=[])"));
     }
 
     @Test
@@ -133,5 +139,74 @@ public class ResponseTest extends ResponseTester {
                 validators.getCandidates().toString(),
                 is(
                         "{0x6571d97f340c8495b661a823f2c2145ca47d63c2=true, 0x8157d4437104e3b8df4451a85f7b2438ef6699ff=false}"));
+    }
+
+    @Test
+    public void testPermissionGetOrgList() {
+        buildResponse(
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"fullOrgId\": \"INITORG\",\"level\": \"1\",\"orgId\": \"INITORG\",\"parentOrgId\": \"\",\"status\": \"2\",\"subOrgList\": [],\"ultimateParent\": \"INITORG\"}]}");
+
+        PermissionOrgList orgList = deserialiseResponse(PermissionOrgList.class);
+        assertThat(
+                orgList.getPermissionOrgList().toString(),
+                is(
+                        "[{fullOrgId=INITORG, level=1, orgId=INITORG, parentOrgId=, status=2, subOrgList=[], ultimateParent=INITORG}]"));
+    }
+
+    @Test
+    public void testPermissionGetNodeList() {
+        buildResponse(
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"orgId\": \"INITORG\",\"status\": \"2\",\"url\":\"enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0\"},{\"orgId\": \"INITORG\",\"status\": \"2\",\"url\":\"enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0\"}]}");
+
+        PermissionNodeList nodeList = deserialiseResponse(PermissionNodeList.class);
+        assertThat(
+                nodeList.getPermissionNodeList().toString(),
+                is(
+                        "[{orgId=INITORG, status=2, url=enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0}, {orgId=INITORG, status=2, url=enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0}]"));
+    }
+
+    @Test
+    public void testPermissionGetRoleList() {
+        buildResponse(
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"access\":\"3\",\"active\":\"true\",\"isAdmin\":\"true\",\"isVoter\":\"true\",\"orgId\":\"INITORG\",\"roleId\":\"NWADMIN\"}]}");
+
+        PermissionRoleList roleList = deserialiseResponse(PermissionRoleList.class);
+        assertThat(
+                roleList.getPermissionRoleList().toString(),
+                is(
+                        "[{access=3, active=true, isAdmin=true, isVoter=true, orgId=INITORG, roleId=NWADMIN}]"));
+    }
+
+    @Test
+    public void testPermissionGetAccountList() {
+        buildResponse(
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"acctId\":\"0xed9d02e382b34818e88b88a309c7fe71e65f419d\",\"isOrgAdmin\":\"true\",\"orgId\":\"INITORG\",\"roleId\":\"NWADMIN\",\"status\":\"2\"},{\"acctId\":\"0xca843569e3427144cead5e4d5999a3d0ccf92b8e\",\"isOrgAdmin\":\"true\",\"orgId\":\"INITORG\",\"roleId\":\"NWADMIN\",\"status\":\"2\"}]}");
+
+        PermissionAccountList accountList = deserialiseResponse(PermissionAccountList.class);
+        assertThat(
+                accountList.getPermissionAccountList().toString(),
+                is(
+                        "[{acctId=0xed9d02e382b34818e88b88a309c7fe71e65f419d, isOrgAdmin=true, orgId=INITORG, roleId=NWADMIN, status=2}, {acctId=0xca843569e3427144cead5e4d5999a3d0ccf92b8e, isOrgAdmin=true, orgId=INITORG, roleId=NWADMIN, status=2}]"));
+    }
+
+    @Test
+    public void testPermissionExecStatusInfoResponse() {
+        buildResponse(
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"Action completed successfully\"}");
+
+        ExecStatusInfo response = deserialiseResponse(ExecStatusInfo.class);
+        assertThat(response.getExecStatus(), is("Action completed successfully"));
+    }
+
+    @Test
+    public void testPermissionGetOrgDetails() {
+        buildResponse(
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"acctList\":[{\"acctId\":\"0xed9d02e382b34818e88b88a309c7fe71e65f419d\",\"isOrgAdmin\":\"true\",\"orgId\":\"INITORG\",\"roleId\":\"NWADMIN\",\"status\":\"2\"}],\"nodeList\":[{\"orgId\":\"INITORG\",\"status\":\"2\",\"url\":\"enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0\"},{\"orgId\":\"INITORG\",\"status\":\"2\",\"url\":\"enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0\"}],\"roleList\":[{\"access\":\"3\",\"active\":\"true\",\"isAdmin\":\"true\",\"isVoter\":\"true\",\"orgId\":\"INITORG\",\"roleId\":\"NWADMIN\"}],\"subOrgList\":[]}}");
+
+        OrgDetailsInfo orgDetails = deserialiseResponse(OrgDetailsInfo.class);
+        assertThat(
+                orgDetails.getOrgDetails().toString(),
+                is(
+                        "OrgDetails(roleList=[PermissionRoleInfo(isVoter=true, active=true, orgId=INITORG, roleId=NWADMIN, access=3, isAdmin=true)], acctList=[PermissionAccountInfo(acctId=0xed9d02e382b34818e88b88a309c7fe71e65f419d, isOrgAdmin=true, orgId=INITORG, roleId=NWADMIN, status=2)], nodeList=[PermissionNodeInfo(orgId=INITORG, url=enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0, status=2), PermissionNodeInfo(orgId=INITORG, url=enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0, status=2)], subOrgList=[])"));
     }
 }
