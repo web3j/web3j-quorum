@@ -16,6 +16,11 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Ignore
 import org.junit.Test
+import org.web3j.quorum.PAYLOAD
+import org.web3j.quorum.TM1_PUBLIC_KEY
+import org.web3j.quorum.TM2_PUBLIC_KEY
+import org.web3j.quorum.constellation
+import org.web3j.quorum.nodesC
 
 /**
  * Useful integration tests for verifying Enclave transactions.

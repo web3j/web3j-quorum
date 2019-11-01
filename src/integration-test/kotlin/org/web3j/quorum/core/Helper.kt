@@ -17,6 +17,8 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.http.HttpService
+import org.web3j.quorum.Node
+import org.web3j.quorum.Quorum
 import org.web3j.quorum.enclave.Enclave
 import org.web3j.quorum.generated.Greeter
 import org.web3j.quorum.generated.HumanStandardToken

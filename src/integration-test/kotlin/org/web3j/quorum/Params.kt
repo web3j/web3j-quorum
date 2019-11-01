@@ -19,6 +19,7 @@ import org.web3j.quorum.enclave.Tessera
 import org.web3j.quorum.enclave.protocol.EnclaveService
 import java.io.File
 import java.util.Base64
+import java.util.Arrays
 /**
  * Common parameters for unit tests.
  */
