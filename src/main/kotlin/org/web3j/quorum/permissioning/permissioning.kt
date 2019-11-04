@@ -41,12 +41,12 @@ public data class PermissionOrgInfo(
     val parentOrgId: String,
     val ultimateParent: String,
     val level: Int,
-    val subOrgList: List<String>
+    val subOrgList: List<String>?
 )
 
 public data class OrgDetails(
-    val roleList: List<PermissionRoleInfo>,
-    val acctList: List<PermissionAccountInfo>,
-    var nodeList: List<PermissionNodeInfo>,
-    var subOrgList: List<String>
+    val roleList: List<PermissionRoleInfo>?,
+    val acctList: List<PermissionAccountInfo>?,
+    var nodeList: List<PermissionNodeInfo>?,
+    var subOrgList: List<String>?
 )
