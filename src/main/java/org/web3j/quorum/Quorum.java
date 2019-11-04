@@ -90,13 +90,13 @@ public interface Quorum extends Web3j {
     Request<?, PermissionAccountList> quorumPermissionGetAccountList();
 
     Request<?, ExecStatusInfo> quorumPermissionAddOrg(
-            String orgId, String url, String address, PrivateTransaction transaction);
+            String orgId, String enodeId, String address, PrivateTransaction transaction);
 
     Request<?, ExecStatusInfo> quorumPermissionApproveOrg(
-            String orgId, String url, String address, PrivateTransaction transaction);
+            String orgId, String enodeId, String address, PrivateTransaction transaction);
 
     Request<?, ExecStatusInfo> quorumPermissionAddSubOrg(
-            String pOrgId, String orgId, String url, PrivateTransaction transaction);
+            String pOrgId, String orgId, String enodeId, PrivateTransaction transaction);
 
     Request<?, ExecStatusInfo> quorumPermissionUpdateOrgStatus(
             String orgId, int action, PrivateTransaction transaction);
@@ -105,10 +105,10 @@ public interface Quorum extends Web3j {
             String orgId, int action, PrivateTransaction transaction);
 
     Request<?, ExecStatusInfo> quorumPermissionAddNode(
-            String orgId, String url, PrivateTransaction transaction);
+            String orgId, String enodeId, PrivateTransaction transaction);
 
     Request<?, ExecStatusInfo> quorumPermissionUpdateNodeStatus(
-            String orgId, String url, int action, PrivateTransaction transaction);
+            String orgId, String enodeId, int action, PrivateTransaction transaction);
 
     Request<?, ExecStatusInfo> quorumPermissionAssignAdminRole(
             String orgId, String address, String roleid, PrivateTransaction transaction);
@@ -136,6 +136,5 @@ public interface Quorum extends Web3j {
     Request<?, ExecStatusInfo> quorumPermissionUpdateAccountStatus(
             String orgId, String address, int status, PrivateTransaction transaction);
 
-    Request<?, OrgDetailsInfo> quorumPermissionGetOrgDetails(
-            String orgId, PrivateTransaction transaction);
+    Request<?, OrgDetailsInfo> quorumPermissionGetOrgDetails(String orgId);
 }

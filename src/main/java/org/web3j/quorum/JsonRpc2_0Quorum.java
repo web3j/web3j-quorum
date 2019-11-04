@@ -239,30 +239,30 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
 
     @Override
     public Request<?, ExecStatusInfo> quorumPermissionAddOrg(
-            String orgId, String url, String address, PrivateTransaction transaction) {
+            String orgId, String enodeId, String address, PrivateTransaction transaction) {
         return new Request<>(
                 "quorumPermission_addOrg",
-                Arrays.asList(orgId, url, address, transaction),
+                Arrays.asList(orgId, enodeId, address, transaction),
                 web3jService,
                 ExecStatusInfo.class);
     }
 
     @Override
     public Request<?, ExecStatusInfo> quorumPermissionApproveOrg(
-            String orgId, String url, String address, PrivateTransaction transaction) {
+            String orgId, String enodeId, String address, PrivateTransaction transaction) {
         return new Request<>(
                 "quorumPermission_approveOrg",
-                Arrays.asList(orgId, url, address, transaction),
+                Arrays.asList(orgId, enodeId, address, transaction),
                 web3jService,
                 ExecStatusInfo.class);
     }
 
     @Override
     public Request<?, ExecStatusInfo> quorumPermissionAddSubOrg(
-            String pOrgId, String orgId, String url, PrivateTransaction transaction) {
+            String pOrgId, String orgId, String enodeId, PrivateTransaction transaction) {
         return new Request<>(
                 "quorumPermission_addSubOrg",
-                Arrays.asList(pOrgId, orgId, url, transaction),
+                Arrays.asList(pOrgId, orgId, enodeId, transaction),
                 web3jService,
                 ExecStatusInfo.class);
     }
@@ -289,20 +289,20 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
 
     @Override
     public Request<?, ExecStatusInfo> quorumPermissionAddNode(
-            String orgId, String url, PrivateTransaction transaction) {
+            String orgId, String enodeId, PrivateTransaction transaction) {
         return new Request<>(
                 "quorumPermission_addNode",
-                Arrays.asList(orgId, url, transaction),
+                Arrays.asList(orgId, enodeId, transaction),
                 web3jService,
                 ExecStatusInfo.class);
     }
 
     @Override
     public Request<?, ExecStatusInfo> quorumPermissionUpdateNodeStatus(
-            String orgId, String url, int action, PrivateTransaction transaction) {
+            String orgId, String enodeId, int action, PrivateTransaction transaction) {
         return new Request<>(
                 "quorumPermission_updateNodeStatus",
-                Arrays.asList(orgId, url, action, transaction),
+                Arrays.asList(orgId, enodeId, action, transaction),
                 web3jService,
                 ExecStatusInfo.class);
     }
@@ -383,11 +383,10 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
     }
 
     @Override
-    public Request<?, OrgDetailsInfo> quorumPermissionGetOrgDetails(
-            String orgId, PrivateTransaction transaction) {
+    public Request<?, OrgDetailsInfo> quorumPermissionGetOrgDetails(String orgId) {
         return new Request<>(
                 "quorumPermission_getOrgDetails",
-                Arrays.asList(orgId, transaction),
+                Collections.singletonList(orgId),
                 web3jService,
                 OrgDetailsInfo.class);
     }
