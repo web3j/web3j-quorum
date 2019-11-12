@@ -390,4 +390,24 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
                 web3jService,
                 OrgDetailsInfo.class);
     }
+
+    @Override
+    public Request<?, ExecStatusInfo> quorumPermissionRecoverBlackListedNode(
+            String orgId, String enodeId, PrivateTransaction transaction) {
+        return new Request<>(
+                "quorumPermission_recoverBlackListedNode",
+                Arrays.asList(orgId, enodeId, transaction),
+                web3jService,
+                ExecStatusInfo.class);
+    }
+
+    @Override
+    public Request<?, ExecStatusInfo> quorumPermissionApproveBlackListedNodeRecovery(
+            String orgId, String enodeId, PrivateTransaction transaction) {
+        return new Request<>(
+                "quorumPermission_approveBlackListedNodeRecovery",
+                Arrays.asList(orgId, enodeId, transaction),
+                web3jService,
+                ExecStatusInfo.class);
+    }
 }

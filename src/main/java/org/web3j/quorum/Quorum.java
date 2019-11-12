@@ -137,4 +137,10 @@ public interface Quorum extends Web3j {
             String orgId, String address, int status, PrivateTransaction transaction);
 
     Request<?, OrgDetailsInfo> quorumPermissionGetOrgDetails(String orgId);
+
+    Request<?, ExecStatusInfo> quorumPermissionRecoverBlackListedNode(
+            String orgId, String enodeId, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionApproveBlackListedNodeRecovery(
+            String orgId, String enodeId, PrivateTransaction transaction);
 }

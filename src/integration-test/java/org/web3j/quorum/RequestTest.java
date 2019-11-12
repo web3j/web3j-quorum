@@ -517,4 +517,44 @@ public class RequestTest extends RequestTester {
         verifyResult(
                 "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_getOrgDetails\",\"params\":[\"orgId\"],\"id\":1}");
     }
+
+    @Test
+    public void testPermissionRecoverBlackListedNode() throws Exception {
+        web3j.quorumPermissionRecoverBlackListedNode(
+                        "orgId",
+                        "enodeId",
+                        new PrivateTransaction(
+                                "FROM",
+                                BigInteger.ONE,
+                                BigInteger.TEN,
+                                "TO",
+                                BigInteger.TEN,
+                                "DATA",
+                                "privateFrom",
+                                Arrays.asList("privateFor1", "privateFor2")))
+                .send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_recoverBlackListedNode\",\"params\":[\"orgId\",\"enodeId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+    }
+
+    @Test
+    public void testPermissionApproveBlackListedNodeRecover() throws Exception {
+        web3j.quorumPermissionApproveBlackListedNodeRecovery(
+                        "orgId",
+                        "enodeId",
+                        new PrivateTransaction(
+                                "FROM",
+                                BigInteger.ONE,
+                                BigInteger.TEN,
+                                "TO",
+                                BigInteger.TEN,
+                                "DATA",
+                                "privateFrom",
+                                Arrays.asList("privateFor1", "privateFor2")))
+                .send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_approveBlackListedNodeRecovery\",\"params\":[\"orgId\",\"enodeId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+    }
 }
