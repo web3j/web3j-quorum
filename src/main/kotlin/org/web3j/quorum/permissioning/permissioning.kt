@@ -31,7 +31,7 @@ public data class PermissionAccountInfo(
 
 public data class PermissionNodeInfo(
     val orgId: String,
-    val url: String,
+    val enodeId: String,
     val status: Int
 )
 

@@ -512,18 +512,7 @@ public class RequestTest extends RequestTester {
 
     @Test
     public void testPermissionGetOrgDetails() throws Exception {
-        web3j.quorumPermissionGetOrgDetails(
-                        "orgId",
-                        new PrivateTransaction(
-                                "FROM",
-                                BigInteger.ONE,
-                                BigInteger.TEN,
-                                "TO",
-                                BigInteger.TEN,
-                                "DATA",
-                                "privateFrom",
-                                Arrays.asList("privateFor1", "privateFor2")))
-                .send();
+        web3j.quorumPermissionGetOrgDetails("orgId").send();
 
         verifyResult(
                 "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_getOrgDetails\",\"params\":[\"orgId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
