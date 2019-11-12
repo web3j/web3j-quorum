@@ -515,6 +515,6 @@ public class RequestTest extends RequestTester {
         web3j.quorumPermissionGetOrgDetails("orgId").send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_getOrgDetails\",\"params\":[\"orgId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_getOrgDetails\",\"params\":[\"orgId\"],\"id\":1}");
     }
 }
