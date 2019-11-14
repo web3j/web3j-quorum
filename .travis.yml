@@ -13,9 +13,12 @@ install: skip
 test: skip
 jobs:
   include:
-  - stage: build snapshot
-    if: branch = master
+  - stage: build pull request
+    script: "./gradlew check jacocoTestReport"
+    if: type = pull_request
+  - stage: build master
     script: "./gradlew check jacocoTestReport publish"
+    if: branch = master AND NOT type = pull_request
   - stage: build release
     if: branch =~ /release/
     script: "./gradlew check publish -Pversion=${TRAVIS_BRANCH#'release/'}"
