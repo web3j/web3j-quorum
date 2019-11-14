@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Web3 Labs LTD.
+ * Copyright 2019 Web3 Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,13 +12,13 @@
  */
 package org.web3j.quorum
 
+import java.io.File
+import java.util.Base64
 import okhttp3.OkHttpClient
 import org.web3j.protocol.http.HttpService
 import org.web3j.quorum.enclave.Constellation
 import org.web3j.quorum.enclave.Tessera
 import org.web3j.quorum.enclave.protocol.EnclaveService
-import java.io.File
-import java.util.Base64
 /**
  * Common parameters for unit tests.
  */

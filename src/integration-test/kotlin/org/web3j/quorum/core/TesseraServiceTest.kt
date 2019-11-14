@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Web3 Labs LTD.
+ * Copyright 2019 Web3 Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -16,10 +16,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Ignore
 import org.junit.Test
-import org.web3j.quorum.nodesT
-import org.web3j.quorum.upCheckTessera
 import org.web3j.quorum.PAYLOAD
+import org.web3j.quorum.nodesT
 import org.web3j.quorum.tessera
+import org.web3j.quorum.upCheckTessera
 
 /**
  * Useful integration tests for verifying Enclave transactions.

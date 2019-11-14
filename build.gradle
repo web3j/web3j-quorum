@@ -1,32 +1,16 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
-    id 'io.codearte.nexus-staging' version '0.21.1'
-    id "com.github.breadmoirai.github-release" version "2.2.9"
-    id "com.gradle.plugin-publish" version "0.10.0"
-    id 'com.jfrog.bintray' version '1.8.4'
-    id 'org.unbroken-dome.test-sets' version '2.2.0'
-    id 'com.diffplug.gradle.spotless' version '3.17.0'
-    id 'java-gradle-plugin'
     id 'java'
-
-    id 'jacoco'
-    id 'maven-publish'
-
-    id 'maven'
-    id 'signing'
     id 'idea'
+    id 'jacoco'
+    id "com.diffplug.gradle.spotless" version "3.25.0"
+    id 'io.codearte.nexus-staging' version '0.21.1'
+    id "de.marcphilipp.nexus-publish" version "0.4.0"
+    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+    id 'org.unbroken-dome.test-sets' version '2.2.0'
 }
+
 
 description 'web3j Quorum API'
-sourceCompatibility = 1.8
-
-jacoco { toolVersion = '0.7.7.201606060606' // See http://www.eclemma.org/jacoco/.
-}
-
-jacocoTestReport {
-    reports { xml.enabled true }
-}
-
 
 ext {
     web3jVersion = project.property('version')
@@ -37,22 +21,19 @@ ext {
     mockitoVersion = '1.10.19'
     assertjCoreVersion = '3.8.0'
     ktlintVersion = '0.31.0'
-
-    ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('OSSRH_USERNAME')
-    ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('OSSRH_PASSWORD')
-    ossrhRepoUrl = project.hasProperty('ossrhRepoUrl') ? project.property('ossrhRepoUrl') : System.getenv('OSSRH_REPO_URL')
-    bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    bintrayKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    bintrayGpgPassphrase = project.hasProperty('bintrayGpgPassphrase') ? project.property('bintrayGpgPassphrase') : System.getenv('BINTRAY_GPG_PASSPHRASE')
-    isSnapshotVersion = project.version.endsWith("-SNAPSHOT")
-    manualRelease = project.hasProperty('manualRelease') ? project.property('manualRelease').toBoolean() : false
 }
 
-repositories {
-    maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
-    mavenCentral()
-    jcenter()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+apply {
+    [
+        'jacoco',
+        'java',
+        'javadoc',
+        'repositories',
+        'spotless',
+        'publish'
+    ].each {
+        from("$rootDir/gradle/$it/build.gradle")
+    }
 }
 
 dependencies {
@@ -62,215 +43,33 @@ dependencies {
 
     implementation("com.github.shyiko:ktlint:${ktlintVersion}") { exclude group: 'org.slf4j' }
 
-
     testImplementation "junit:junit:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
             "org.mockito:mockito-core:$mockitoVersion",
             "org.assertj:assertj-core:$assertjCoreVersion",
             "org.web3j:core:$web3jVersion:tests"
-
 }
+
 
 tasks.withType(Test) {
     reports.html.destination = file("${reporting.baseDir}/${name}")
 }
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts { archives sourcesJar, javadocJar }
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
-            artifact sourcesJar { classifier 'sources' }
-
-            artifact javadocJar { classifier 'javadoc' }
-
-            pom {
-                name = project.name
-                description = project.description
-                url = "https://github.com/web3j/quorum"
-
-                licenses {
-                    license {
-                        name = "The Apache License, Version 2.0"
-                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                        distribution = "repo"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "conor10"
-                        name = "Conor Svensson"
-                        email = "conor10@gmail.com"
-                    }
-                }
-                scm {
-                    url = "https://github.com/web3j/quorum"
-                    connection = "scm:https://github.com/web3j/quorum.git"
-                    developerConnection = "scm:git://github.com/web3j/quorum.git"
-                }
-            }
-        }
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
-
-spotless {
-    java {
-        target fileTree('.') {
-            include '**/src/*/java/**/*.java'
-            exclude '**/.gradle/**'
-            exclude '**/generated/**'
-        }
-        removeUnusedImports()
-        googleJavaFormat("1.7").aosp()
-        importOrder 'java', '', 'org.web3j', '\\#'
-        trimTrailingWhitespace()
-        endWithNewline()
-        licenseHeaderFile "$rootDir/gradle/spotless.java.license"
-    }
-    kotlin {
-        // This path needs to be relative to each project
-        target fileTree('.') {
-            include '**/*.kt'
-            exclude '**/.gradle/**'
-            exclude '**/db/changes/**'
-        }
-        ktlint(ktlintVersion)
-        trimTrailingWhitespace()
-        endWithNewline()
-        licenseHeaderFile "$rootDir/gradle/spotless.java.license"
-    }
-    groovyGradle {
-        target '*.gradle'
-        greclipse().configFile(rootProject.file('gradle/formatter.properties'))
-        endWithNewline()
-        indentWithSpaces(4)
-        paddedCell()
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
-
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-
-            onlyIf {
-                // Only run if this is a manual release triggered by a user, or an automated release for snapshots.
-                // We don't need to run this for automated releases.
-                isSnapshotVersion && ossrhUsername != '' && ossrhPassword != '' && ossrhRepoUrl != ''
-            }
-
-            repository(url: ossrhRepoUrl) {
-                authentication(
-                        userName: ossrhUsername,
-                        password: ossrhPassword
-                        )
-            }
-
-            pom.project {
-                name project.name
-                packaging 'jar'
-                description project.description
-                url 'https://web3j.io'
-
-                scm {
-                    url 'https://github.com/web3j/quorum'
-                    connection 'scm:https://github.com/web3j/quorum.git'
-                    developerConnection 'scm:git://github.com/web3j/quorum.git'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'conor10'
-                        name 'Conor Svensson'
-                        email 'conor10@gmail.com'
-                    }
-                }
-            }
-        }
+testSets {
+    integrationTest {
+        dirName = 'integration-test'
     }
 }
-
-bintray {
-    user = bintrayUser
-    key = bintrayKey
-    publications = ['mavenJava']
-    publish = true
-    pkg {
-        repo = 'maven'
-        name = 'quorum'
-        desc = 'web3j Quorum API'
-        userOrg = 'web3j'
-        licenses = ['Apache-2.0']
-        issueTrackerUrl = 'https://github.com/web3j/quorum/issues'
-        vcsUrl = 'https://github.com/web3j/quorum.git'
-        websiteUrl = 'http://web3j.io'
-        publicDownloadNumbers = true
-        version {
-            gpg {
-                sign = true
-                passphrase = bintrayGpgPassphrase
-            }
-            mavenCentralSync {
-                sync = true
-                user = ossrhUsername
-                password = ossrhPassword
-                close = '1'
-            }
-        }
-    }
-}
-
-compileKotlin { kotlinOptions { jvmTarget = "1.8" } }
-compileTestKotlin { kotlinOptions { jvmTarget = "1.8" } }
-
-task release {
-    dependsOn 'build'
-
-    if (isSnapshotVersion) {
-        logger.info(" - ossrhUsername={}", ossrhUsername)
-        logger.info(" - ossrhPassword={}", ossrhPassword ? "provided" : "not_provided")
-        logger.info(" - ossrhRepoUrl={}", ossrhRepoUrl)
-    } else {
-        logger.info("About to perform {} full release ...", manualRelease ? "a manual" : "an automated")
-        logger.info(" - ossrhUsername={}", ossrhUsername)
-        logger.info(" - ossrhPassword={}", ossrhPassword ? "provided" : "not_provided")
-        logger.info(" - ossrhRepoUrl={}", ossrhRepoUrl)
-        logger.info(" - bintrayUser={}", bintrayUser)
-        logger.info(" - bintrayKey={}", bintrayKey ? "provided" : "not_provided")
-        logger.info(" - bintrayGpgPassphrase={}", bintrayGpgPassphrase ? "provided" : "not_provided")
-    }
-
-    // Snapshots go to nexus, non-snapshots go to bintray.
-    if (isSnapshotVersion) {
-        dependsOn 'uploadArchives'
-        tasks.findByName('uploadArchives').mustRunAfter 'build'
-    } else {
-        dependsOn 'bintrayUpload'
-        tasks.findByName('bintrayUpload').mustRunAfter 'build'
-    }
-}
-
-testSets { integrationTest { dirName = 'integration-test' } }
 integrationTest.mustRunAfter test
 compileIntegrationTestKotlin { kotlinOptions.jvmTarget = '1.8' }
