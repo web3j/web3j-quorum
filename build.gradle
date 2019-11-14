@@ -23,6 +23,12 @@ ext {
     ktlintVersion = '0.31.0'
 }
 
+
+nexusStaging {
+    username System.getenv('OSSRH_USERNAME')
+    password System.getenv('OSSRH_PASSWORD')
+}
+
 apply {
     [
         'jacoco',
