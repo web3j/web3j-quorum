@@ -35,8 +35,9 @@ class Tessera(private val service: EnclaveService, private val web3: Quorum) : E
 
     // key is hex encoded payload string
     // returned string is hex encoded byte string
-    override fun receiveRequest(key: String, to: String): String {
-        return web3.quorumGetPrivatePayload(key).send().getPrivatePayload()
+    override fun receiveRequest(key: String, to: String): ReceiveResponse {
+        val payload = web3.quorumGetPrivatePayload(key).send().getPrivatePayload()
+        return ReceiveResponse(payload)
     }
 
     override fun upCheck(): Boolean {

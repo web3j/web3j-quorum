@@ -37,9 +37,9 @@ class Constellation(private val ipcService: EnclaveService, private val web3: Qu
 
     // key is base64 encoded directly returned from constellation storeRawRequest
     // returned string is base64 encoded payload
-    override fun receiveRequest(key: String, to: String): String {
+    override fun receiveRequest(key: String, to: String): ReceiveResponse {
         val receiveRequest = ReceiveRequest(key, to)
-        return ipcService.send(receiveRequest, "receive", ReceiveResponse::class.java).payload
+        return ipcService.send(receiveRequest, "receive", ReceiveResponse::class.java)
     }
 
     override fun upCheck(): Boolean {

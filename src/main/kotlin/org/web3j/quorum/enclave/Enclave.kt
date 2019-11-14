@@ -31,7 +31,7 @@ interface Enclave {
     /**
      * Retrieve a payload from the secure enclave
      */
-    fun receiveRequest(key: String, to: String): String
+    fun receiveRequest(key: String, to: String): ReceiveResponse
 
     /**
      * Verify that our enclave node is running
