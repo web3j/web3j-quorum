@@ -20,8 +20,7 @@ plugins {
 description 'web3j Quorum API'
 sourceCompatibility = 1.8
 
-jacoco {
-    toolVersion = '0.7.7.201606060606' // See http://www.eclemma.org/jacoco/.
+jacoco { toolVersion = '0.7.7.201606060606' // See http://www.eclemma.org/jacoco/.
 }
 
 jacocoTestReport {
@@ -50,9 +49,7 @@ ext {
 }
 
 repositories {
-    maven {
-        url 'https://oss.sonatype.org/content/repositories/releases/'
-    }
+    maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
     mavenCentral()
     jcenter()
 }
@@ -178,7 +175,7 @@ uploadArchives {
                 authentication(
                         userName: ossrhUsername,
                         password: ossrhPassword
-                )
+                        )
             }
 
             pom.project {
