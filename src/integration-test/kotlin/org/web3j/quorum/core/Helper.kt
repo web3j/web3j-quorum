@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Web3 Labs LTD.
+ * Copyright 2019 Web3 Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,6 +12,8 @@
  */
 package org.web3j.quorum.core
 
+import java.io.File
+import java.math.BigInteger
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert
@@ -24,8 +26,6 @@ import org.web3j.quorum.generated.Greeter
 import org.web3j.quorum.generated.HumanStandardToken
 import org.web3j.quorum.tx.QuorumTransactionManager
 import org.web3j.tx.gas.DefaultGasProvider
-import java.io.File
-import java.math.BigInteger
 
 /**
 * Helper class that implements methods of the tests

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Web3 Labs LTD.
+ * Copyright 2019 Web3 Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,15 +12,16 @@
  */
 package org.web3j.quorum.tx
 
+import java.math.BigInteger
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.response.EthSendTransaction
-import org.web3j.quorum.tx.util.decode
-import org.web3j.quorum.tx.util.encode
 import org.web3j.quorum.Quorum
 import org.web3j.quorum.enclave.Enclave
 import org.web3j.quorum.enclave.SendResponse
+import org.web3j.quorum.tx.util.decode
+import org.web3j.quorum.tx.util.encode
 import org.web3j.rlp.RlpDecoder
 import org.web3j.rlp.RlpEncoder
 import org.web3j.rlp.RlpList
@@ -28,7 +29,6 @@ import org.web3j.rlp.RlpString
 import org.web3j.tx.RawTransactionManager
 import org.web3j.tx.TransactionManager
 import org.web3j.utils.Numeric
-import java.math.BigInteger
 
 class QuorumTransactionManager(
     val web3j: Quorum,
