@@ -27,7 +27,6 @@ ext {
 nexusStaging {
     username System.getenv('OSSRH_USERNAME')
     password System.getenv('OSSRH_PASSWORD')
-    stagingProfileId project.name
 }
 
 apply {
