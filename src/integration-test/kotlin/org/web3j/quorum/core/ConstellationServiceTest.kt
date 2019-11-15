@@ -12,10 +12,12 @@
  */
 package org.web3j.quorum.core
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Assert.assertTrue
-import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsEqual.equalTo
+
 import org.web3j.quorum.PAYLOAD
 import org.web3j.quorum.TM1_PUBLIC_KEY
 import org.web3j.quorum.TM2_PUBLIC_KEY
@@ -31,7 +33,7 @@ import org.web3j.quorum.nodesC
  * variables below.
  *
  */
-@Ignore
+@Disabled
 class ConstellationServiceTest : Helper() {
 
     @Test
@@ -49,7 +51,7 @@ class ConstellationServiceTest : Helper() {
         val sendResponse = constellation[0].storeRawRequest(payload, from, listOf(to))
         val key = sendResponse.key
         println(key)
-        assertThat(key).hasSize(88)
+        assertThat(key.length, equalTo(88))
     }
 
     @Test

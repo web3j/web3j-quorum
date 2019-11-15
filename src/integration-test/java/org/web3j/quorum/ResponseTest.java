@@ -14,7 +14,7 @@ package org.web3j.quorum;
 
 import java.math.BigInteger;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.web3j.protocol.ResponseTester;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -33,8 +33,8 @@ import org.web3j.quorum.methods.response.raft.RaftLeader;
 import org.web3j.quorum.methods.response.raft.RaftPeerId;
 import org.web3j.quorum.methods.response.raft.RaftRole;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 public class ResponseTest extends ResponseTester {
 

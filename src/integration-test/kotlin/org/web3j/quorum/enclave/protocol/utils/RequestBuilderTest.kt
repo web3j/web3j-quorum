@@ -12,8 +12,9 @@
  */
 package org.web3j.quorum.enclave.protocol.utils
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsEqual.equalTo
 
 class RequestBuilderTest {
 
@@ -23,7 +24,7 @@ class RequestBuilderTest {
         val json = "{\"foo\":\"bar\"}"
         val result = RequestBuilder.encodeJsonRequest(path, json)
 
-        assertThat(result).isEqualTo(
+        assertThat(result, equalTo(
                 """
                 POST /$path HTTP/1.1
                 Host: k
@@ -32,7 +33,7 @@ class RequestBuilderTest {
                 Content-Length: ${json.length}
 
                 $json
-                """.trimIndent()
+                """.trimIndent())
         )
     }
 }

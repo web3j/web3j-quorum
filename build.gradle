@@ -17,10 +17,11 @@ ext {
     jacksonKotlinVersion = '2.9.0'
 
     logbackVersion = '1.2.3'
-    junitVersion = '4.12'
-    mockitoVersion = '1.10.19'
+    junitVersion = '5.5.2'
+    mockitoVersion = '3.1.0'
     assertjCoreVersion = '3.8.0'
     ktlintVersion = '0.31.0'
+    hamcrestVersion = '2.1'
 }
 
 
@@ -49,17 +50,19 @@ dependencies {
 
     implementation("com.github.shyiko:ktlint:${ktlintVersion}") { exclude group: 'org.slf4j' }
 
-    testImplementation "junit:junit:$junitVersion",
+    testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
             "org.mockito:mockito-core:$mockitoVersion",
             "org.assertj:assertj-core:$assertjCoreVersion",
-            "org.web3j:core:$web3jVersion:tests"
+            "org.web3j:core:$web3jVersion:tests",
+            "org.hamcrest:hamcrest-library:$hamcrestVersion"
 }
 
 
 tasks.withType(Test) {
     reports.html.destination = file("${reporting.baseDir}/${name}")
+    useJUnitPlatform()
 }
 
 compileKotlin {

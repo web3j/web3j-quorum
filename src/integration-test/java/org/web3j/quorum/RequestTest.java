@@ -15,7 +15,7 @@ package org.web3j.quorum;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.web3j.protocol.RequestTester;
 import org.web3j.protocol.http.HttpService;
