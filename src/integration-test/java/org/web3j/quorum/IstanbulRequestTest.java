@@ -81,4 +81,28 @@ public class IstanbulRequestTest extends RequestTester {
         verifyResult(
                 "{\"jsonrpc\":\"2.0\",\"method\":\"istanbul_candidates\",\"params\":[],\"id\":1}");
     }
+
+    @Test
+    public void testIstanbulNodeAddress() throws Exception {
+        web3j.istanbulNodeAddress().send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"istanbul_nodeAddress\",\"params\":[],\"id\":1}");
+    }
+
+    @Test
+    public void testIstanbulBlockSigners() throws Exception {
+        web3j.istanbulGetSignersFromBlock("blockNum").send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"istanbul_getSignersFromBlock\",\"params\":[\"blockNum\"],\"id\":1}");
+    }
+
+    @Test
+    public void testIstanbulBlockSignersByHash() throws Exception {
+        web3j.istanbulGetSignersFromBlockByHash("blockHash").send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"istanbul_getSignersFromBlockByHash\",\"params\":[\"blockHash\"],\"id\":1}");
+    }
 }

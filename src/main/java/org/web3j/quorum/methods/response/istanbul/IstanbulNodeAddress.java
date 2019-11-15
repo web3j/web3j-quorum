@@ -10,25 +10,13 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package org.web3j.quorum.methods.response.istanbul
+package org.web3j.quorum.methods.response.istanbul;
 
-public data class Tally(var authorize: Boolean, var votes: Int)
+import org.web3j.protocol.core.Response;
 
-public data class Vote(var validator: String, var block: Int, var address: String, var authorize: Boolean)
+public class IstanbulNodeAddress extends Response<String> {
 
-public data class Snapshot(
-    var epoch: String,
-    var hash: String,
-    var number: String,
-    var policy: String,
-    var tally: Tally,
-    var validators: List<String>,
-    var votes: List<Vote>
-)
-
-public data class BlockSigners(
-    var Number: Int,
-    var Hash: String,
-    var Author: String,
-    var Committers: List<String>
-)
+    public String getNodeAddress() {
+        return getResult();
+    }
+}

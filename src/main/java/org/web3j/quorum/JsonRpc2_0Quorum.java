@@ -25,7 +25,9 @@ import org.web3j.quorum.methods.request.PrivateRawTransaction;
 import org.web3j.quorum.methods.request.PrivateTransaction;
 import org.web3j.quorum.methods.response.ConsensusNoResponse;
 import org.web3j.quorum.methods.response.PrivatePayload;
+import org.web3j.quorum.methods.response.istanbul.IstanbulBlockSigners;
 import org.web3j.quorum.methods.response.istanbul.IstanbulCandidates;
+import org.web3j.quorum.methods.response.istanbul.IstanbulNodeAddress;
 import org.web3j.quorum.methods.response.istanbul.IstanbulSnapshot;
 import org.web3j.quorum.methods.response.istanbul.IstanbulValidators;
 import org.web3j.quorum.methods.response.permissioning.ExecStatusInfo;
@@ -197,6 +199,33 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
                 Collections.emptyList(),
                 web3jService,
                 IstanbulCandidates.class);
+    }
+
+    @Override
+    public Request<?, IstanbulNodeAddress> istanbulNodeAddress() {
+        return new Request<>(
+                "istanbul_nodeAddress",
+                Collections.emptyList(),
+                web3jService,
+                IstanbulNodeAddress.class);
+    }
+
+    @Override
+    public Request<?, IstanbulBlockSigners> istanbulGetSignersFromBlock(String blockNum) {
+        return new Request<>(
+                "istanbul_getSignersFromBlock",
+                Collections.singletonList(blockNum),
+                web3jService,
+                IstanbulBlockSigners.class);
+    }
+
+    @Override
+    public Request<?, IstanbulBlockSigners> istanbulGetSignersFromBlockByHash(String blockHash) {
+        return new Request<>(
+                "istanbul_getSignersFromBlockByHash",
+                Collections.singletonList(blockHash),
+                web3jService,
+                IstanbulBlockSigners.class);
     }
 
     // permissioning

@@ -20,7 +20,9 @@ import org.web3j.protocol.core.Request;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.quorum.methods.request.*;
 import org.web3j.quorum.methods.response.*;
+import org.web3j.quorum.methods.response.istanbul.IstanbulBlockSigners;
 import org.web3j.quorum.methods.response.istanbul.IstanbulCandidates;
+import org.web3j.quorum.methods.response.istanbul.IstanbulNodeAddress;
 import org.web3j.quorum.methods.response.istanbul.IstanbulSnapshot;
 import org.web3j.quorum.methods.response.istanbul.IstanbulValidators;
 import org.web3j.quorum.methods.response.permissioning.ExecStatusInfo;
@@ -78,6 +80,12 @@ public interface Quorum extends Web3j {
     Request<?, ConsensusNoResponse> istanbulDiscard(String address);
 
     Request<?, IstanbulCandidates> istanbulCandidates();
+
+    Request<?, IstanbulNodeAddress> istanbulNodeAddress();
+
+    Request<?, IstanbulBlockSigners> istanbulGetSignersFromBlock(String blockNum);
+
+    Request<?, IstanbulBlockSigners> istanbulGetSignersFromBlockByHash(String blockHash);
 
     // permissioning
 
