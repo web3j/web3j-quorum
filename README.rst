@@ -4,7 +4,7 @@
 web3j-quorum: Java integration library for Quorum
 =================================================
 
-.. image:: https://travis-ci.org/web3j/quorum.svg?branch=master
+.. image:: https://travis-ci.org/web3j/web3j-quorum.svg?branch=master
        :target: https://travis-ci.org/web3j/web3j-quorum
 
 web3j-quorum is an extension to `web3j <https://github.com/web3j/web3j>`_ providing support for
