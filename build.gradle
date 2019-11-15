@@ -7,6 +7,7 @@ plugins {
     id "de.marcphilipp.nexus-publish" version "0.4.0"
     id 'org.jetbrains.kotlin.jvm' version '1.3.21'
     id 'org.unbroken-dome.test-sets' version '2.2.0'
+    id "de.undercouch.download" version "4.0.0"
 }
 
 
@@ -35,10 +36,31 @@ apply {
         'java',
         'javadoc',
         'repositories',
+        'publish',
         'spotless',
-        'publish'
-    ].each {
-        from("$rootDir/gradle/$it/build.gradle")
+    ].each { buildScript ->
+        download {
+            src "https://raw.githubusercontent.com/web3j/build-tools/master/gradle/$buildScript/build.gradle"
+            dest "$rootDir/gradle/$buildScript/build.gradle"
+            overwrite true
+            quiet true
+            onlyIfModified true
+        }
+        from("$rootDir/gradle/$buildScript/build.gradle")
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom {
+                scm {
+                    url = "https://github.com/web3j/web3j-quorum"
+                    connection = "scm:https://github.com/web3j/web3j-quorum.git"
+                    developerConnection = "scm:git://github.com/web3j/web3j-quorum.git"
+                }
+            }
+        }
     }
 }
 
