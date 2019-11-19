@@ -2,7 +2,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: "de.marcphilipp.nexus-publish"
 
-task javadocJar(type: Jar) {
+task javadocsJar(type: Jar) {
     archiveClassifier = 'javadoc'
     from javadoc
 }
@@ -12,9 +12,14 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
+task testsJar(type: Jar) {
+    archiveClassifier = 'tests'
+    from sourceSets.test.output
+}
+
 javadoc { options.encoding = 'UTF-8' }
 
-artifacts { archives sourcesJar, javadocJar, testJar }
+artifacts { archives sourcesJar, javadocsJar, testsJar }
 
 publishing {
     publications {
@@ -22,24 +27,30 @@ publishing {
             from components.java
 
             artifact sourcesJar
-            artifact javadocJar
-            artifact testJar
+            artifact javadocsJar
+            artifact testsJar
 
             pom {
-                name = project.name
-                description.set( project.provider( { project.description } ) )
+                name = 'web3j'
+                description.set(project.provider({ project.description }))
                 url = 'https://web3j.io'
-                scm {
-                    url = "https://github.com/web3j/quorum"
-                    connection = "scm:https://github.com/web3j/quorum.git"
-                    developerConnection = "scm:git://github.com/web3j/quorum.git"
-                }
 
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
                         url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
+                }
+
+                scm {
+                    def slug = project.name
+                    if (project.hasProperty('scmSlug')) {
+                        slug = project.scmSlug
+                    }
+
+                    url = "https://github.com/web3j/$slug"
+                    connection = "scm:https://github.com/web3j/${slug}.git"
+                    developerConnection = "scm:git://github.com/web3j/${slug}.git"
                 }
 
                 developers {
@@ -69,10 +80,17 @@ nexusPublishing {
     }
 }
 
+
+nexusStaging {
+    username System.getenv('OSSRH_USERNAME')
+    password System.getenv('OSSRH_PASSWORD')
+}
+
+
 signing {
     sign publishing.publications.maven
     def signingKey = new File("$rootDir/web3j.asc")
-    if(signingKey.exists()) {
+    if (signingKey.exists()) {
         useInMemoryPgpKeys(signingKey.getText('UTF-8'), System.getenv('GPG_PASSPHRASE'))
     }
 }

@@ -5,8 +5,10 @@ plugins {
     id "com.diffplug.gradle.spotless" version "3.25.0"
     id 'io.codearte.nexus-staging' version '0.21.1'
     id "de.marcphilipp.nexus-publish" version "0.4.0"
-    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.60'
     id 'org.unbroken-dome.test-sets' version '2.2.0'
+    id "de.undercouch.download" version "4.0.0"
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 
@@ -20,35 +22,37 @@ ext {
     junitVersion = '5.5.2'
     mockitoVersion = '3.1.0'
     assertjCoreVersion = '3.8.0'
-    ktlintVersion = '0.31.0'
     hamcrestVersion = '2.1'
-}
 
-
-nexusStaging {
-    username System.getenv('OSSRH_USERNAME')
-    password System.getenv('OSSRH_PASSWORD')
+    scmSlug = 'web3j-quorum'
 }
 
 apply {
     [
+        'bintray',
         'jacoco',
         'java',
         'javadoc',
         'repositories',
+        'publish',
         'spotless',
-        'publish'
-    ].each {
-        from("$rootDir/gradle/$it/build.gradle")
+    ].each { buildScript ->
+        download {
+            src "https://raw.githubusercontent.com/web3j/build-tools/master/gradle/$buildScript/build.gradle"
+            dest "$rootDir/gradle/$buildScript/build.gradle"
+            overwrite true
+            quiet true
+            onlyIfModified true
+        }
+        from("$rootDir/gradle/$buildScript/build.gradle")
     }
 }
 
+
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.21",
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
             "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion",
             "org.web3j:core:$web3jVersion"
-
-    implementation("com.github.shyiko:ktlint:${ktlintVersion}") { exclude group: 'org.slf4j' }
 
     testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
