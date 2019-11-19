@@ -57,7 +57,7 @@ public class RaftResponseTest extends ResponseTester {
         assertThat(
                 raftCluster.getCluster().get().toString(),
                 is(
-                        "[{ip=127.0.0.1, nodeId=3d9ca5956b38557aba991e31cf510d4df641dce9cc26bfeb7de082f0c07abb6ede3a58410c8f249dabeecee4ad3979929ac4c7c496ad20b8cfdd061b7401b4f5, p2pPort=21003, raftId=4, raftPort=50404}]"));
+                        "[RaftPeer(ip=127.0.0.1, nodeId=3d9ca5956b38557aba991e31cf510d4df641dce9cc26bfeb7de082f0c07abb6ede3a58410c8f249dabeecee4ad3979929ac4c7c496ad20b8cfdd061b7401b4f5, p2pPort=21003, raftId=4, raftPort=50404)]"));
     }
 
     @Test

@@ -31,7 +31,7 @@ public data class PermissionAccountInfo(
 
 public data class PermissionNodeInfo(
     val orgId: String,
-    val enodeId: String,
+    val url: String,
     val status: Int
 )
 
@@ -41,6 +41,7 @@ public data class PermissionOrgInfo(
     val parentOrgId: String,
     val ultimateParent: String,
     val level: Int,
+    val status: Int,
     val subOrgList: List<String>?
 )
 

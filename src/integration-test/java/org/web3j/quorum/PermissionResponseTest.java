@@ -36,7 +36,7 @@ public class PermissionResponseTest extends ResponseTester {
         assertThat(
                 orgList.getPermissionOrgList().toString(),
                 is(
-                        "[{fullOrgId=INITORG, level=1, orgId=INITORG, parentOrgId=, status=2, subOrgList=[], ultimateParent=INITORG}]"));
+                        "[PermissionOrgInfo(orgId=INITORG, fullOrgId=INITORG, parentOrgId=, ultimateParent=INITORG, level=1, status=2, subOrgList=[])]"));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class PermissionResponseTest extends ResponseTester {
         assertThat(
                 nodeList.getPermissionNodeList().toString(),
                 is(
-                        "[{orgId=INITORG, status=2, url=enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0}, {orgId=INITORG, status=2, url=enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0}]"));
+                        "[PermissionNodeInfo(orgId=INITORG, url=enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0, status=2), PermissionNodeInfo(orgId=INITORG, url=enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0, status=2)]"));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class PermissionResponseTest extends ResponseTester {
         assertThat(
                 roleList.getPermissionRoleList().toString(),
                 is(
-                        "[{access=3, active=true, isAdmin=true, isVoter=true, orgId=INITORG, roleId=NWADMIN}]"));
+                        "[PermissionRoleInfo(isVoter=true, active=true, orgId=INITORG, roleId=NWADMIN, access=3, isAdmin=true)]"));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class PermissionResponseTest extends ResponseTester {
         assertThat(
                 accountList.getPermissionAccountList().toString(),
                 is(
-                        "[{acctId=0xed9d02e382b34818e88b88a309c7fe71e65f419d, isOrgAdmin=true, orgId=INITORG, roleId=NWADMIN, status=2}, {acctId=0xca843569e3427144cead5e4d5999a3d0ccf92b8e, isOrgAdmin=true, orgId=INITORG, roleId=NWADMIN, status=2}]"));
+                        "[PermissionAccountInfo(acctId=0xed9d02e382b34818e88b88a309c7fe71e65f419d, isOrgAdmin=true, orgId=INITORG, roleId=NWADMIN, status=2), PermissionAccountInfo(acctId=0xca843569e3427144cead5e4d5999a3d0ccf92b8e, isOrgAdmin=true, orgId=INITORG, roleId=NWADMIN, status=2)]"));
     }
 
     @Test
@@ -87,12 +87,12 @@ public class PermissionResponseTest extends ResponseTester {
     @Test
     public void testPermissionGetOrgDetails() {
         buildResponse(
-                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"acctList\":[{\"acctId\":\"0xed9d02e382b34818e88b88a309c7fe71e65f419d\",\"isOrgAdmin\":\"true\",\"orgId\":\"INITORG\",\"roleId\":\"NWADMIN\",\"status\":\"2\"}],\"nodeList\":[{\"orgId\":\"INITORG\",\"status\":\"2\",\"enodeId\":\"enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0\"},{\"orgId\":\"INITORG\",\"status\":\"2\",\"enodeId\":\"enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0\"}],\"roleList\":[{\"access\":\"3\",\"active\":\"true\",\"isAdmin\":\"true\",\"isVoter\":\"true\",\"orgId\":\"INITORG\",\"roleId\":\"NWADMIN\"}],\"subOrgList\":[]}}");
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"acctList\":[{\"acctId\":\"0xed9d02e382b34818e88b88a309c7fe71e65f419d\",\"isOrgAdmin\":\"true\",\"orgId\":\"INITORG\",\"roleId\":\"NWADMIN\",\"status\":\"2\"}],\"nodeList\":[{\"orgId\":\"INITORG\",\"status\":\"2\",\"url\":\"enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0\"},{\"orgId\":\"INITORG\",\"status\":\"2\",\"url\":\"enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0\"}],\"roleList\":[{\"access\":\"3\",\"active\":\"true\",\"isAdmin\":\"true\",\"isVoter\":\"true\",\"orgId\":\"INITORG\",\"roleId\":\"NWADMIN\"}],\"subOrgList\":null}}");
 
         OrgDetailsInfo orgDetails = deserialiseResponse(OrgDetailsInfo.class);
         assertThat(
                 orgDetails.getOrgDetails().toString(),
                 is(
-                        "OrgDetails(roleList=[PermissionRoleInfo(isVoter=true, active=true, orgId=INITORG, roleId=NWADMIN, access=3, isAdmin=true)], acctList=[PermissionAccountInfo(acctId=0xed9d02e382b34818e88b88a309c7fe71e65f419d, isOrgAdmin=true, orgId=INITORG, roleId=NWADMIN, status=2)], nodeList=[PermissionNodeInfo(orgId=INITORG, enodeId=enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0, status=2), PermissionNodeInfo(orgId=INITORG, enodeId=enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0, status=2)], subOrgList=[])"));
+                        "OrgDetails(roleList=[PermissionRoleInfo(isVoter=true, active=true, orgId=INITORG, roleId=NWADMIN, access=3, isAdmin=true)], acctList=[PermissionAccountInfo(acctId=0xed9d02e382b34818e88b88a309c7fe71e65f419d, isOrgAdmin=true, orgId=INITORG, roleId=NWADMIN, status=2)], nodeList=[PermissionNodeInfo(orgId=INITORG, url=enode://72c0572f7a2492cffb5efc3463ef350c68a0446402a123dacec9db5c378789205b525b3f5f623f7548379ab0e5957110bffcf43a6115e450890f97a9f65a681a@127.0.0.1:21000?discport=0, status=2), PermissionNodeInfo(orgId=INITORG, url=enode://7a1e3b5c6ad614086a4e5fb55b6fe0a7cf7a7ac92ac3a60e6033de29df14148e7a6a7b4461eb70639df9aa379bd77487937bea0a8da862142b12d326c7285742@127.0.0.1:21001?discport=0, status=2)], subOrgList=null)"));
     }
 }

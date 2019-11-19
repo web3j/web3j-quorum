@@ -13,6 +13,8 @@
 package org.web3j.quorum.methods.response.permissioning;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -44,8 +46,16 @@ public class PermissionAccountList extends Response<List<PermissionAccountInfo>>
         public List<PermissionAccountInfo> deserialize(
                 JsonParser jsonParser, DeserializationContext deserializationContext)
                 throws IOException {
-            if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
-                return om.readValue(jsonParser, List.class);
+            List<PermissionAccountInfo> acctList = new ArrayList<>();
+            JsonToken nextToken = jsonParser.nextToken();
+
+            if (nextToken == JsonToken.START_OBJECT) {
+                Iterator<PermissionAccountInfo> acctInfoIterator =
+                        om.readValues(jsonParser, PermissionAccountInfo.class);
+                while (acctInfoIterator.hasNext()) {
+                    acctList.add(acctInfoIterator.next());
+                }
+                return acctList;
             } else {
                 return null;
             }

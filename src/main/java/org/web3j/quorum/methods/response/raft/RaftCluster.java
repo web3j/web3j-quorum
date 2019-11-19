@@ -13,6 +13,8 @@
 package org.web3j.quorum.methods.response.raft;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,8 +46,15 @@ public class RaftCluster extends Response<List<RaftPeer>> {
         public List<RaftPeer> deserialize(
                 JsonParser jsonParser, DeserializationContext deserializationContext)
                 throws IOException {
-            if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
-                return om.readValue(jsonParser, List.class);
+            List<RaftPeer> peerList = new ArrayList<>();
+            JsonToken nextToken = jsonParser.nextToken();
+
+            if (nextToken == JsonToken.START_OBJECT) {
+                Iterator<RaftPeer> peerIterator = om.readValues(jsonParser, RaftPeer.class);
+                while (peerIterator.hasNext()) {
+                    peerList.add(peerIterator.next());
+                }
+                return peerList;
             } else {
                 return null;
             }
