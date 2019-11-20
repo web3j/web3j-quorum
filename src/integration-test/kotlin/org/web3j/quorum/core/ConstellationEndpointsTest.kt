@@ -12,16 +12,18 @@
  */
 package org.web3j.quorum.core
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Assert.assertTrue
-import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsEqual.equalTo
+
 import org.web3j.quorum.PAYLOAD
 import org.web3j.quorum.TM1_PUBLIC_KEY
 import org.web3j.quorum.TM2_PUBLIC_KEY
 import org.web3j.quorum.constellation
 
-@Ignore
+@Disabled
 class ConstellationEndpointsTest {
 
     val from = TM1_PUBLIC_KEY
@@ -37,12 +39,12 @@ class ConstellationEndpointsTest {
     @Test
     fun testSend() {
         val response = constellation[0].storeRawRequest(payload, from, listOf(to))
-        assertThat(response.key.length).isEqualTo(88)
+        assertThat(response.key.length, equalTo(88))
     }
 
     @Test
     fun testReceive() {
         val response = constellation[0].receiveRequest(key, from) // from is intentional here
-        assertThat(response.payload).isEqualTo(payload)
+        assertThat(response.payload, equalTo(payload))
     }
 }

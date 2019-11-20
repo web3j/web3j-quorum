@@ -12,9 +12,10 @@
  */
 package org.web3j.quorum.enclave.protocol.utils
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsEqual.equalTo
 
 class ResponseParserTest {
 
@@ -125,22 +126,22 @@ class ResponseParserTest {
     fun testParseHttpTextResponse() {
         val response = ResponseParser.parseResponse(httpInternalServerErrorResponse)
         val text = ResponseParser.parseTextPlainBody(response)
-        assertThat(text).isEqualTo("Something went wrong")
+        assertThat(text, equalTo("Something went wrong"))
     }
 
     @Test
     fun testParseHttpChunkedResponse() {
         val chunk = ResponseParser.parseChunkedResponse(httpOkChunkedResponse)
-        assertThat(chunk).isEqualTo(
+        assertThat(chunk, equalTo(
                 """
                 {"key":"Uxev9Cj2I6yT1KPolXkNfe9+PsjAQkSROLhPkNCL/EpBVpsDxf2UZUEP7Ic64+0PkNOllRhZQ/m107ojcq8gIg=="}
-                """.trim()
+                """.trim())
         )
     }
 
     @Test
     fun testParseHttpEmptyChunkedResponse() {
         val chunk = ResponseParser.parseChunkedResponse(httpOkCHunkedResponseEmpty)
-        assertThat(chunk).isEqualTo("")
+        assertThat(chunk, equalTo(""))
     }
 }

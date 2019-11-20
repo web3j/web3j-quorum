@@ -26,14 +26,16 @@ class Tessera(private val service: EnclaveService, private val web3: Quorum) : E
         return web3.ethSendRawPrivateTransaction(payload, privateFor).send()
     }
 
+    // payload is hex encoded bytes
+    // hash returned in response is base64 encoded string
     override fun storeRawRequest(payload: String, from: String, to: List<String>): SendResponse {
         val storeRawRequest = StoreRawRequest(payload, from)
         return service.send(storeRawRequest, "storeraw", SendResponse::class.java)
     }
 
+    // not implemented in tessera
     override fun receiveRequest(key: String, to: String): ReceiveResponse {
-        val receiveRequest = ReceiveRequest(key, to)
-        return service.send(receiveRequest, "receive", ReceiveResponse::class.java)
+        throw NotImplementedError("Tessera receive not supported")
     }
 
     override fun upCheck(): Boolean {

@@ -14,11 +14,14 @@ package org.web3j.quorum.core
 
 import java.io.File
 import java.math.BigInteger
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
-import org.junit.Assert
+import org.hamcrest.MatcherAssert.assertThat
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.http.HttpService
+import org.web3j.quorum.Node
+import org.web3j.quorum.Quorum
 import org.web3j.quorum.enclave.Enclave
 import org.web3j.quorum.generated.Greeter
 import org.web3j.quorum.generated.HumanStandardToken
@@ -58,7 +61,7 @@ open class Helper {
                 BigInteger.ZERO, DefaultGasProvider.GAS_LIMIT,
                 greeting).send()
 
-        Assert.assertThat<String>(contract.greet().send(), `is`<String>(greeting))
+        assertThat<String>(contract.greet().send(), `is`<String>(greeting))
     }
 
     @Throws(Exception::class)
@@ -90,11 +93,11 @@ open class Helper {
                 aliceQty, "web3j tokens",
                 BigInteger.valueOf(18), "w3j$").send()
 
-        Assert.assertTrue(contract.isValid)
+        assertTrue(contract.isValid)
 
-        Assert.assertThat(contract.totalSupply().send(), equalTo<BigInteger>(aliceQty))
+        assertThat(contract.totalSupply().send(), equalTo<BigInteger>(aliceQty))
 
-        Assert.assertThat(contract.balanceOf(sourceNode.address).send(),
+        assertThat(contract.balanceOf(sourceNode.address).send(),
                 equalTo<BigInteger>(aliceQty))
 
         var transferQuantity = BigInteger.valueOf(100000)
@@ -104,11 +107,11 @@ open class Helper {
 
         val aliceTransferEventValues = contract.getTransferEvents(aliceTransferReceipt)[0]
 
-        Assert.assertThat(aliceTransferEventValues._from,
+        assertThat(aliceTransferEventValues._from,
                 equalTo<String>(aliceAddress))
-        Assert.assertThat(aliceTransferEventValues._to,
+        assertThat(aliceTransferEventValues._to,
                 equalTo<String>(bobAddress))
-        Assert.assertThat(aliceTransferEventValues._value,
+        assertThat(aliceTransferEventValues._value,
                 equalTo<BigInteger>(transferQuantity))
 
         aliceQty = aliceQty.subtract(transferQuantity)
@@ -116,12 +119,12 @@ open class Helper {
         var bobQty = BigInteger.ZERO
         bobQty = bobQty.add(transferQuantity)
 
-        Assert.assertThat(contract.balanceOf(sourceNode.address).send(),
+        assertThat(contract.balanceOf(sourceNode.address).send(),
                 equalTo<BigInteger>(aliceQty))
-        Assert.assertThat(contract.balanceOf(destNode.address).send(),
+        assertThat(contract.balanceOf(destNode.address).send(),
                 equalTo<BigInteger>(bobQty))
 
-        Assert.assertThat(contract.allowance(
+        assertThat(contract.allowance(
                 aliceAddress, bobAddress).send(),
                 equalTo<BigInteger>(BigInteger.ZERO))
 
@@ -131,14 +134,14 @@ open class Helper {
 
         val approvalEventValues = contract.getApprovalEvents(approveReceipt)[0]
 
-        Assert.assertThat(approvalEventValues._owner,
+        assertThat(approvalEventValues._owner,
                 equalTo<String>(aliceAddress))
-        Assert.assertThat(approvalEventValues._spender,
+        assertThat(approvalEventValues._spender,
                 equalTo<String>(bobAddress))
-        Assert.assertThat(approvalEventValues._value,
+        assertThat(approvalEventValues._value,
                 equalTo<BigInteger>(transferQuantity))
 
-        Assert.assertThat(contract.allowance(
+        assertThat(contract.allowance(
                 aliceAddress, bobAddress).send(),
                 equalTo<BigInteger>(transferQuantity))
     }

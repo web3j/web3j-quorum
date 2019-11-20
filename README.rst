@@ -137,11 +137,16 @@ of smart contracts and web3j.
 
 Sending Raw Private Transactions
 --------------------------------
-web3j supports sending raw private transactions through a connection to Tessera (Quorum transaction manager). Code examples
+web3j supports sending raw private transactions through a connection to Quorum Transaction Managers. Code examples
+
+Connection to Tessera via HTTP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: java
 
    Credentials credentials = ...
+   //connect to quorum node via http or ipc as described above
+   Quorum quorum = ... 
 
    EnclaveService enclaveService = new EnclaveService("http://TESSERA_THIRD_PARTY_URL", TESSERA_THIRD_PARTY_PORT, httpClient);
    Enclave enclave = new Tessera(enclaveService, quorum);
@@ -152,10 +157,109 @@ web3j supports sending raw private transactions through a connection to Tessera 
        30,     // Retry times
        2000);  // Sleep
 
-   YourSmartContract.deploy(client,
+Connection to Tessera via IPC
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: java
+
+   Credentials credentials = ...
+   //connect to quorum node via http or ipc as described above
+   Quorum quorum = ... 
+   
+   //build http client that supports ipc connection
+   UnixDomainSocketFactory socketFactory = new UnixDomainSocketFactory(new File("TESSERA_IPC_PATH"));
+        OkHttpClient client = new OkHttpClient.Builder()
+                .socketFactory(socketFactory)
+                .build();
+
+   EnclaveService enclaveService = new EnclaveService("http://localhost", TESSERA_THIRD_PARTY_PORT, client);
+   Enclave enclave = new Tessera(enclaveService, quorum);
+
+   QuorumTransactionManager qrtxm = new QuorumTransactionManager(
+       quorum, credentials, TM_FROM_KEY, Arrays.asList(TM_TO_KEY_ARRAY),
+       enclave,
+       30,     // Retry times
+       2000);  // Sleep
+       
+Connection to Constellation via IPC
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: java
+
+   Credentials credentials = ...
+   //connect to quorum node via http or ipc as described above
+   Quorum quorum = ... 
+   
+   //build http client that supports ipc connection
+   UnixDomainSocketFactory socketFactory = new UnixDomainSocketFactory(new File("CONSTELLATION_IPC_PATH"));
+        OkHttpClient client = new OkHttpClient.Builder()
+                .socketFactory(socketFactory)
+                .build();
+
+   EnclaveService enclaveService = new EnclaveService("http://localhost", CONSTELLATION_THIRD_PARTY_PORT, client);
+   Enclave enclave = new Constellation(enclaveService, quorum);
+
+   QuorumTransactionManager qrtxm = new QuorumTransactionManager(
+       quorum, credentials, TM_FROM_KEY, Arrays.asList(TM_TO_KEY_ARRAY),
+       enclave,
+       30,     // Retry times
+       2000);  // Sleep
+       
+Using the QuorumTransactionManager with Smart Contract Wrappers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: java
+
+   YourSmartContract.deploy(quorum,
        qrtxm,
        GAS_PRICE, GAS_LIMIT,
        <param1>, ..., <paramN>).send();
+       
+       
+       
+Using the QuorumTransactionManager alone
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Using a single QuorumTransactionManager method ``signAndSend``
+	
+.. code-block:: java
+	
+	RawTransaction rawTransaction = ...
+	EthSendTransaction ethSendTransaction = qrtxm.signAndSend(rawTransaction);
+	
+Using multiple exposed QuorumTransactionManager methods (``storeRawRequest, sign, sendRaw``)
+
+.. code-block:: java
+
+	//send raw bytecode to QuorumTranasctionManager
+	SendResponse storeRawResponse = qrtxm.storeRawRequest(HEX_ENCODED_SMARTCONTRACT_BYTECODE, TM_FROM_KEY, Arrays.asList(TM_TO_KEY_ARRAY));
+	String tesseraTxHash = Numeric.toHexString(Base64.getDecoder().decode(storeRawResponse.getKey()));
+	
+	//create raw transaction with hash returned from QuorumTransactionManager
+	RawTransaction rawTransaction = ...
+	
+	//sign raw transaction
+	String signedTx = qrtxm.sign(rawTransaction);
+	
+	//send signed raw transaction to quorum node
+	EthSendTransaction ethSendTransaction = qrtxm.sendRaw(signedTx, Arrays.asList(TM_TO_KEY_ARRAY));
+	
+Retrieving a private transaction payload with Enclave ``receive`` method
+
+.. code-block:: java
+
+	String payload = enclave.receiveRequest(tesseraTxHash, TM_TO_KEY);
+	
+Full sample code
+~~~~~~~~~~~~~~~~
+
+`Sample code <https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes/samples/send-private-txn-java>`_ for sending raw private transactions via smart contract, QuorumTransactionManager and Enclave
+
+
+Using web3j RawTransactionManager
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: java
 
    // Raw txn
    RawTransactionManager qrtxm = new RawTransactionManager(

@@ -19,6 +19,7 @@ import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.response.EthSendTransaction
 import org.web3j.quorum.Quorum
 import org.web3j.quorum.enclave.Enclave
+import org.web3j.quorum.enclave.SendResponse
 import org.web3j.quorum.tx.util.decode
 import org.web3j.quorum.tx.util.encode
 import org.web3j.rlp.RlpDecoder
@@ -66,6 +67,19 @@ class QuorumTransactionManager(
         return credentials.address
     }
 
+    fun storeRawRequest(payload: String, from: String, to: List<String>): SendResponse {
+        val payloadBase64 = encode(Numeric.hexStringToByteArray(payload))
+        return enclave.storeRawRequest(payloadBase64, from, to)
+    }
+
+    override fun sign(rawTransaction: RawTransaction): String {
+        var signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials)
+        if (privateFor.isNotEmpty()) {
+            signedMessage = setPrivate(signedMessage)
+        }
+        return Numeric.toHexString(signedMessage)
+    }
+
     override fun signAndSend(rawTransaction: RawTransaction): EthSendTransaction {
         val signedMessage: ByteArray
         if (privateFor.isNotEmpty()) {
@@ -86,6 +100,10 @@ class QuorumTransactionManager(
         }
         val hexValue = Numeric.toHexString(signedMessage)
         return enclave.sendRawRequest(hexValue, privateFor)
+    }
+
+    fun sendRaw(signedTx: String, to: List<String>): EthSendTransaction {
+        return enclave.sendRawRequest(signedTx, to)
     }
 
     // If the byte array RLP decodes to a list of size >= 1 containing a list of size >= 3

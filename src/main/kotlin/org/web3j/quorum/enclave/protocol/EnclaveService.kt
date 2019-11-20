@@ -65,6 +65,6 @@ class EnclaveService(private val url: String, private val port: Int, private val
                 .get()
                 .build()
         val response = client.newCall(request).execute()
-        return response.message().toString()
+        return response.body()?.string() ?: ""
     }
 }

@@ -12,10 +12,12 @@
  */
 package org.web3j.quorum.core
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Assert.assertTrue
-import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsEqual.equalTo
+
 import org.web3j.quorum.PAYLOAD
 import org.web3j.quorum.nodesT
 import org.web3j.quorum.tessera
@@ -31,7 +33,8 @@ import org.web3j.quorum.upCheckTessera
  *
  * <p>
  */
-@Ignore
+
+@Disabled
 class TesseraServiceTest : Helper() {
     @Test
     fun testUpCheck() {
@@ -43,10 +46,9 @@ class TesseraServiceTest : Helper() {
     fun testStoreRawRequest() {
         val payload = PAYLOAD
         val from = nodesT[0].publicKeys[0]
-
         val storeResponse = tessera[0].storeRawRequest(payload, from, emptyList())
         val key = storeResponse.key
-        assertThat(key).hasSize(88)
+        assertThat(key.length, equalTo(88))
     }
 
     @Test

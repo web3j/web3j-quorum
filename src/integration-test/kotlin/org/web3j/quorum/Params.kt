@@ -19,6 +19,8 @@ import org.web3j.protocol.http.HttpService
 import org.web3j.quorum.enclave.Constellation
 import org.web3j.quorum.enclave.Tessera
 import org.web3j.quorum.enclave.protocol.EnclaveService
+import java.util.Arrays
+
 /**
  * Common parameters for unit tests.
  */
@@ -31,59 +33,59 @@ val localhost = "http://localhost"
 val quorum1T = Node(
         "0xed9d02e382b34818e88b88a309c7fe71e65f419d",
         Arrays.asList(
-                "/+UuD63zItL1EbjxkKUljMgG8Z1w0AJ8pNOR4iq2yQc="),
-        "http://localhost:22001")
+                "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo="),
+        "http://localhost:22000")
 
 val quorum2T = Node(
         "0xca843569e3427144cead5e4d5999a3d0ccf92b8e",
         Arrays.asList(
-                "yGcjkFyZklTTXrn8+WIkYwicA2EGBn9wZFkctAad4X0="),
-        "http://localhost:22002")
+                "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="),
+        "http://localhost:22001")
 val quorum3T = Node(
         "0x0fbdc686b912d7722dc86510934589e0aaf3b55a",
         Arrays.asList(
-                "jP4f+k/IbJvGyh0LklWoea2jQfmLwV53m9XoHVS4NSU="),
-        "http://localhost:22003")
+                "1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg="),
+        "http://localhost:22002")
 
 val quorum4T = Node(
         "0x9186eb3d20cbd1f5f992a950d808c4495153abd5",
         Arrays.asList(
-                "giizjhZQM6peq52O7icVFxdTmTYinQSUsvyhXzgZqkE="),
-        "http://localhost:22004")
+                "oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8="),
+        "http://localhost:22003")
 
 val nodesT = Arrays.asList(
         quorum1T, quorum2T, quorum3T, quorum4T)
 val quorumTessera = Quorum.build(HttpService(quorum1T.url))
-val tessera = Arrays.asList(Tessera(EnclaveService(localhost, 8090), quorumTessera),
-        Tessera(EnclaveService(localhost, 8091), Quorum.build(HttpService(quorum2T.url))),
-        Tessera(EnclaveService(localhost, 8092), Quorum.build(HttpService(quorum3T.url))),
-        Tessera(EnclaveService(localhost, 8093), Quorum.build(HttpService(quorum4T.url))))
-val upCheckTessera = Tessera(EnclaveService(localhost, 8080), quorumTessera)
+val tessera = Arrays.asList(Tessera(EnclaveService(localhost, 9081), quorumTessera),
+        Tessera(EnclaveService(localhost, 9082), Quorum.build(HttpService(quorum2T.url))),
+        Tessera(EnclaveService(localhost, 9083), Quorum.build(HttpService(quorum3T.url))),
+        Tessera(EnclaveService(localhost, 9084), Quorum.build(HttpService(quorum4T.url))))
+val upCheckTessera = Tessera(EnclaveService(localhost, 9001), quorumTessera)
 
 // Constellation configuration parameters
 private val quorum1C = Node(
         "0xed9d02e382b34818e88b88a309c7fe71e65f419d",
         Arrays.asList(
                 "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo="),
-        "http://localhost:22001")
+        "http://localhost:22000")
 
 private val quorum2C = Node(
         "0xca843569e3427144cead5e4d5999a3d0ccf92b8e",
         Arrays.asList(
                 "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="),
-        "http://localhost:22002")
+        "http://localhost:22001")
 
 private val quorum3C = Node(
         "0x0fbdc686b912d7722dc86510934589e0aaf3b55a",
         Arrays.asList(
                 "1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg="),
-        "http://localhost:22003")
+        "http://localhost:22002")
 
 private val quorum4C = Node(
         "0x9186eb3d20cbd1f5f992a950d808c4495153abd5",
         Arrays.asList(
                 "oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8="),
-        "http://localhost:22004")
+        "http://localhost:22003")
 
 val nodesC = Arrays.asList(
         quorum1C, quorum2C, quorum3C, quorum4C)
