@@ -23,7 +23,6 @@ ext {
     mockitoVersion = '3.1.0'
     assertjCoreVersion = '3.8.0'
     hamcrestVersion = '2.1'
-
 }
 
 apply {
