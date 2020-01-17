@@ -14,7 +14,7 @@ package org.web3j.quorum.enclave.protocol
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -28,7 +28,7 @@ class EnclaveService(private val url: String, private val port: Int, private val
 
     private val objectMapper = jacksonObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-    private val JSON_MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8")
+    private val JSON_MEDIA_TYPE = "application/json; charset=utf-8".toMediaTypeOrNull()
 
     /**
      * Send a new raw payload to Enclave
@@ -45,11 +45,11 @@ class EnclaveService(private val url: String, private val port: Int, private val
         val response = client.newCall(buildRequest).execute()
 
         if (response.isSuccessful) {
-            val chunk = response.body()?.string()
+            val chunk = response.body?.string()
             return objectMapper.readValue(chunk, responseType)
         } else {
-            val statusCode = response.code()
-            val text = if (response.body() == null) "N/A" else response.body()?.string()
+            val statusCode = response.code
+            val text = if (response.body == null) "N/A" else response.body?.string()
 
             throw EnclaveClientConnectionException("Invalid response received from enclave: $statusCode $text")
         }
@@ -65,6 +65,6 @@ class EnclaveService(private val url: String, private val port: Int, private val
                 .get()
                 .build()
         val response = client.newCall(request).execute()
-        return response.body()?.string() ?: ""
+        return response.body?.string() ?: ""
     }
 }
