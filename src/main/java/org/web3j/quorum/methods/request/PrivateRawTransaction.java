@@ -12,6 +12,8 @@
  */
 package org.web3j.quorum.methods.request;
 
+import org.web3j.quorum.PrivacyFlag;
+
 import java.util.List;
 
 /**
@@ -24,9 +26,14 @@ import java.util.List;
 public class PrivateRawTransaction {
 
     private List<String> privateFor;
+    private PrivacyFlag privacyFlag;
 
     public PrivateRawTransaction(List<String> privateFor) {
+        this(privateFor, PrivacyFlag.STANDARD_PRIVATE);
+    }
+    public PrivateRawTransaction(List<String> privateFor, PrivacyFlag privacyMode) {
         this.privateFor = privateFor;
+        this.privacyFlag = privacyMode;
     }
 
     public List<String> getPrivateFor() {
@@ -35,5 +42,13 @@ public class PrivateRawTransaction {
 
     public void setPrivateFor(List<String> privateFor) {
         this.privateFor = privateFor;
+    }
+
+    public PrivacyFlag getPrivacyFlag() {
+        return privacyFlag;
+    }
+
+    public void setPrivacyFlag(PrivacyFlag privacyFlag) {
+        this.privacyFlag = privacyFlag;
     }
 }

@@ -110,6 +110,11 @@ public class ClientTransactionManager extends TransactionManager {
     }
 
     @Override
+    public EthSendTransaction sendTransactionEIP1559(BigInteger gasPremium, BigInteger feeCap, BigInteger gasLimit, String to, String data, BigInteger value, boolean constructor) {
+        throw new UnsupportedOperationException("sendTransactionEIP1559 is not available");
+    }
+
+    @Override
     public String sendCall(String to, String data, DefaultBlockParameter defaultBlockParameter)
             throws IOException {
         return quorum.ethCall(

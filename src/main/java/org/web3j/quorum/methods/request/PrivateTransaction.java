@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.quorum.PrivacyFlag;
 
 /**
  * Quorum's Transaction object.
@@ -28,6 +29,7 @@ public class PrivateTransaction extends Transaction {
 
     private String privateFrom;
     private List<String> privateFor;
+    private PrivacyFlag privacyFlag;
 
     public PrivateTransaction(
             String from,
@@ -38,9 +40,23 @@ public class PrivateTransaction extends Transaction {
             String data,
             String privateFrom,
             List<String> privateFor) {
+        this(from, nonce, gasLimit, to, value, data, privateFrom, privateFor, PrivacyFlag.STANDARD_PRIVATE);
+    }
+
+    public PrivateTransaction(
+            String from,
+            BigInteger nonce,
+            BigInteger gasLimit,
+            String to,
+            BigInteger value,
+            String data,
+            String privateFrom,
+            List<String> privateFor,
+            PrivacyFlag privacyFlag) {
         super(from, nonce, null, gasLimit, to, value, data);
         this.privateFrom = privateFrom;
         this.privateFor = privateFor;
+        this.privacyFlag = privacyFlag;
     }
 
     public String getPrivateFrom() {
@@ -57,5 +73,13 @@ public class PrivateTransaction extends Transaction {
 
     public void setPrivateFor(List<String> privateFor) {
         this.privateFor = privateFor;
+    }
+
+    public PrivacyFlag getPrivacyFlag() {
+        return privacyFlag;
+    }
+
+    public void setPrivacyFlag(PrivacyFlag privacyFlag) {
+        this.privacyFlag = privacyFlag;
     }
 }

@@ -45,7 +45,7 @@ public class TransactionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\",\"params\":[{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -65,7 +65,18 @@ public class TransactionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendRawPrivateTransaction\",\"params\":[\"SignedTxData\",{\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendRawPrivateTransaction\",\"params\":[\"SignedTxData\",{\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
+    }
+
+    @Test
+    public void testSendRawPrivateTransactionPrivacyFlag() throws Exception {
+        String signedTransactionData = "SignedTxData";
+        web3j.ethSendRawPrivateTransaction(
+                signedTransactionData, Arrays.asList("privateFor1", "privateFor2"), PrivacyFlag.PARTY_PROTECTION)
+                .send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendRawPrivateTransaction\",\"params\":[\"SignedTxData\",{\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":1}],\"id\":1}");
     }
 
     @Test
@@ -91,6 +102,6 @@ public class TransactionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransactionAsync\",\"params\":[{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransactionAsync\",\"params\":[{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 }

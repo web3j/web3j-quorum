@@ -80,7 +80,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addOrg\",\"params\":[\"orgId\",\"url\",\"address\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addOrg\",\"params\":[\"orgId\",\"url\",\"address\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -101,7 +101,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_approveOrg\",\"params\":[\"orgId\",\"url\",\"address\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_approveOrg\",\"params\":[\"orgId\",\"url\",\"address\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -122,7 +122,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addSubOrg\",\"params\":[\"pOrgId\",\"orgId\",\"url\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addSubOrg\",\"params\":[\"pOrgId\",\"orgId\",\"url\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -142,7 +142,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_updateOrgStatus\",\"params\":[\"orgId\",1,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_updateOrgStatus\",\"params\":[\"orgId\",1,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -162,7 +162,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_approveOrgStatus\",\"params\":[\"orgId\",1,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_approveOrgStatus\",\"params\":[\"orgId\",1,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -182,7 +182,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addNode\",\"params\":[\"orgId\",\"url\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addNode\",\"params\":[\"orgId\",\"url\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -203,7 +203,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_updateNodeStatus\",\"params\":[\"orgId\",\"url\",1,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_updateNodeStatus\",\"params\":[\"orgId\",\"url\",1,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -224,7 +224,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_assignAdminRole\",\"params\":[\"orgId\",\"address\",\"roleid\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_assignAdminRole\",\"params\":[\"orgId\",\"address\",\"roleid\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -244,7 +244,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_approveAdminRole\",\"params\":[\"orgId\",\"address\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_approveAdminRole\",\"params\":[\"orgId\",\"address\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -267,7 +267,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addNewRole\",\"params\":[\"orgId\",\"roleId\",1,true,true,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addNewRole\",\"params\":[\"orgId\",\"roleId\",1,true,true,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -287,7 +287,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_removeRole\",\"params\":[\"orgId\",\"roleId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_removeRole\",\"params\":[\"orgId\",\"roleId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -308,7 +308,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addAccountToOrg\",\"params\":[\"address\",\"orgId\",\"roleId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_addAccountToOrg\",\"params\":[\"address\",\"orgId\",\"roleId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -329,7 +329,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_changeAccountRole\",\"params\":[\"address\",\"orgId\",\"roleId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_changeAccountRole\",\"params\":[\"address\",\"orgId\",\"roleId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -350,7 +350,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_updateAccountStatus\",\"params\":[\"orgId\",\"address\",1,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_updateAccountStatus\",\"params\":[\"orgId\",\"address\",1,{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -378,7 +378,7 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_recoverBlackListedNode\",\"params\":[\"orgId\",\"enodeId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_recoverBlackListedNode\",\"params\":[\"orgId\",\"enodeId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 
     @Test
@@ -398,6 +398,6 @@ public class PermissionRequestTest extends RequestTester {
                 .send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_approveBlackListedNodeRecovery\",\"params\":[\"orgId\",\"enodeId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumPermission_approveBlackListedNodeRecovery\",\"params\":[\"orgId\",\"enodeId\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":1}");
     }
 }

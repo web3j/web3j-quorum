@@ -13,6 +13,7 @@
 package org.web3j.quorum.enclave
 
 import org.web3j.protocol.core.methods.response.EthSendTransaction
+import org.web3j.quorum.PrivacyFlag
 
 /**
  * Enclave API methods.
@@ -21,7 +22,7 @@ interface Enclave {
     /**
      * Send a new raw payload to the quorum node for signing and storing
      */
-    fun sendRawRequest(payload: String, privateFor: List<String>): EthSendTransaction
+    fun sendRawRequest(payload: String, privateFor: List<String>, privacyFlag : PrivacyFlag): EthSendTransaction
 
     /**
      * Store raw transaction in the secure enclave only
