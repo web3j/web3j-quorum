@@ -97,7 +97,6 @@ public class ClientTransactionManager extends TransactionManager {
         return quorum.ethSendTransaction(transaction).send();
     }
 
-    @Override
     public EthSendTransaction sendTransaction(
             BigInteger gasPrice,
             BigInteger gasLimit,
@@ -109,7 +108,18 @@ public class ClientTransactionManager extends TransactionManager {
         return sendTransaction(gasPrice, gasLimit, to, data, value);
     }
 
-    @Override
+    public EthSendTransaction sendTransactionEIP1559(
+            BigInteger gasPrice,
+            BigInteger feeCap,
+            BigInteger gasLimit,
+            String to,
+            String data,
+            BigInteger value,
+            boolean constructor)
+            throws IOException {
+        return sendTransactionEIP1559(gasPrice, feeCap, gasLimit, to, data, value);
+    }
+
     public String sendCall(String to, String data, DefaultBlockParameter defaultBlockParameter)
             throws IOException {
         return quorum.ethCall(
@@ -119,7 +129,6 @@ public class ClientTransactionManager extends TransactionManager {
                 .getValue();
     }
 
-    @Override
     public EthGetCode getCode(String contractAddress, DefaultBlockParameter defaultBlockParameter)
             throws IOException {
         return quorum.ethGetCode(contractAddress, defaultBlockParameter).send();
