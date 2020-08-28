@@ -119,7 +119,7 @@ public class ClientTransactionManager extends TransactionManager {
             BigInteger value,
             boolean constructor)
             throws IOException {
-        return sendTransactionEIP1559(gasPrice, feeCap, gasLimit, to, data, value);
+        throw new UnsupportedOperationException("sendTransactionEIP1559 is not available");
     }
 
     @Override
