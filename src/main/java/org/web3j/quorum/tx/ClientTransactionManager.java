@@ -19,10 +19,12 @@ import java.util.List;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthCall;
 import org.web3j.protocol.core.methods.response.EthGetCode;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.quorum.Quorum;
 import org.web3j.quorum.methods.request.PrivateTransaction;
+import org.web3j.tx.ContractErrorUtil;
 import org.web3j.tx.TransactionManager;
 
 /** TransactionManager implementation for using a Quorum node to transact. */
@@ -112,11 +114,13 @@ public class ClientTransactionManager extends TransactionManager {
     @Override
     public String sendCall(String to, String data, DefaultBlockParameter defaultBlockParameter)
             throws IOException {
-        return quorum.ethCall(
-                        Transaction.createEthCallTransaction(getFromAddress(), to, data),
-                        defaultBlockParameter)
-                .send()
-                .getValue();
+        EthCall ethCall =
+                quorum.ethCall(
+                                Transaction.createEthCallTransaction(getFromAddress(), to, data),
+                                defaultBlockParameter)
+                        .send();
+        ContractErrorUtil.assertCallNotReverted(ethCall);
+        return ethCall.getValue();
     }
 
     @Override
