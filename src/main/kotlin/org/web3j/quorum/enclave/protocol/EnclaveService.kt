@@ -15,9 +15,9 @@ package org.web3j.quorum.enclave.protocol
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
 import org.web3j.quorum.enclave.EnclaveClientConnectionException
 
 /**
@@ -36,7 +36,7 @@ class EnclaveService(private val url: String, private val port: Int, private val
     fun <S, T> send(request: S, path: String, responseType: Class<T>): T {
         val payload = objectMapper.writeValueAsString(request)
         val uri = "$url:$port/$path"
-        val body = RequestBody.create(JSON_MEDIA_TYPE, payload)
+        val body = payload.toRequestBody(JSON_MEDIA_TYPE)
         val buildRequest = Request.Builder()
                 .url(uri)
                 .post(body)

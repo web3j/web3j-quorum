@@ -40,7 +40,7 @@ public class UnixSocketClient {
                         .build();
 
         RequestBody requestBody =
-                RequestBody.create(okhttp3.MediaType.parse("application/json"), PAYLOAD);
+                RequestBody.create(PAYLOAD, okhttp3.MediaType.parse("application/json"));
 
         // use a proper host name as a DNS lookup still occurs (localhost should suffice)
         Request request =
