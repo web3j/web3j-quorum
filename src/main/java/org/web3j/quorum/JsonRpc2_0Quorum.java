@@ -39,6 +39,7 @@ import org.web3j.quorum.methods.response.permissioning.PermissionRoleList;
 import org.web3j.quorum.methods.response.raft.RaftCluster;
 import org.web3j.quorum.methods.response.raft.RaftLeader;
 import org.web3j.quorum.methods.response.raft.RaftPeerId;
+import org.web3j.quorum.methods.response.raft.RaftPromote;
 import org.web3j.quorum.methods.response.raft.RaftRole;
 
 /** Quorum JSON-RPC API implementation. */
@@ -134,6 +135,24 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
     public Request<?, RaftCluster> raftGetCluster() {
         return new Request<>(
                 "raft_cluster", Collections.emptyList(), web3jService, RaftCluster.class);
+    }
+
+    @Override
+    public Request<?, RaftPeerId> raftAddLearner(String enode) {
+        return new Request<>(
+                "raft_addLearner",
+                Collections.singletonList(enode),
+                web3jService,
+                RaftPeerId.class);
+    }
+
+    @Override
+    public Request<?, RaftPromote> raftPromoteToPeer(int raftId) {
+        return new Request<>(
+                "raft_promoteToPeer",
+                Collections.singletonList(raftId),
+                web3jService,
+                RaftPromote.class);
     }
 
     // istanbul consensus
@@ -436,6 +455,26 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
         return new Request<>(
                 "quorumPermission_approveBlackListedNodeRecovery",
                 Arrays.asList(orgId, enodeId, transaction),
+                web3jService,
+                ExecStatusInfo.class);
+    }
+
+    @Override
+    public Request<?, ExecStatusInfo> quorumPermissionRecoverBlackListedAccount(
+            String orgId, String address, PrivateTransaction transaction) {
+        return new Request<>(
+                "quorumPermission_recoverBlackListedAccount",
+                Arrays.asList(orgId, address, transaction),
+                web3jService,
+                ExecStatusInfo.class);
+    }
+
+    @Override
+    public Request<?, ExecStatusInfo> quorumPermissionApproveBlackListedAccountRecovery(
+            String orgId, String address, PrivateTransaction transaction) {
+        return new Request<>(
+                "quorumPermission_approveBlackListedAccountRecovery",
+                Arrays.asList(orgId, address, transaction),
                 web3jService,
                 ExecStatusInfo.class);
     }

@@ -62,4 +62,20 @@ public class RaftRequestTest extends RequestTester {
         verifyResult(
                 "{\"jsonrpc\":\"2.0\",\"method\":\"raft_addPeer\",\"params\":[\"enode\"],\"id\":1}");
     }
+
+    @Test
+    public void testRaftAddLearner() throws Exception {
+        web3j.raftAddLearner("enode").send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"raft_addLearner\",\"params\":[\"enode\"],\"id\":1}");
+    }
+
+    @Test
+    public void testRaftPromoteToPeer() throws Exception {
+        web3j.raftPromoteToPeer(1).send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"raft_promoteToPeer\",\"params\":[1],\"id\":1}");
+    }
 }
