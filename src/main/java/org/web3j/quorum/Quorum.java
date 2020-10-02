@@ -34,6 +34,7 @@ import org.web3j.quorum.methods.response.permissioning.PermissionRoleList;
 import org.web3j.quorum.methods.response.raft.RaftCluster;
 import org.web3j.quorum.methods.response.raft.RaftLeader;
 import org.web3j.quorum.methods.response.raft.RaftPeerId;
+import org.web3j.quorum.methods.response.raft.RaftPromote;
 import org.web3j.quorum.methods.response.raft.RaftRole;
 
 /** JSON-RPC Request object building factory for Quorum. */
@@ -69,6 +70,10 @@ public interface Quorum extends Web3j {
     Request<?, ConsensusNoResponse> raftRemovePeer(int peerId);
 
     Request<?, RaftCluster> raftGetCluster();
+
+    Request<?, RaftPeerId> raftAddLearner(String enode);
+
+    Request<?, RaftPromote> raftPromoteToPeer(int raftId);
 
     // istanbul consensus
 
@@ -156,4 +161,10 @@ public interface Quorum extends Web3j {
 
     Request<?, ExecStatusInfo> quorumPermissionApproveBlackListedNodeRecovery(
             String orgId, String enodeId, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionRecoverBlackListedAccount(
+            String orgId, String address, PrivateTransaction transaction);
+
+    Request<?, ExecStatusInfo> quorumPermissionApproveBlackListedAccountRecovery(
+            String orgId, String address, PrivateTransaction transaction);
 }

@@ -21,6 +21,7 @@ import org.web3j.quorum.methods.response.ConsensusNoResponse;
 import org.web3j.quorum.methods.response.raft.RaftCluster;
 import org.web3j.quorum.methods.response.raft.RaftLeader;
 import org.web3j.quorum.methods.response.raft.RaftPeerId;
+import org.web3j.quorum.methods.response.raft.RaftPromote;
 import org.web3j.quorum.methods.response.raft.RaftRole;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -51,13 +52,13 @@ public class RaftResponseTest extends ResponseTester {
     @Test
     public void testRaftCluster() {
         buildResponse(
-                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"ip\":\"127.0.0.1\", \"nodeId\":\"3d9ca5956b38557aba991e31cf510d4df641dce9cc26bfeb7de082f0c07abb6ede3a58410c8f249dabeecee4ad3979929ac4c7c496ad20b8cfdd061b7401b4f5\",\"p2pPort\":\"21003\", \"raftId\":\"4\", \"raftPort\":\"50404\"}]}");
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":[{\"hostname\":\"127.0.0.1\", \"nodeActive\":\"true\", \"nodeId\":\"3d9ca5956b38557aba991e31cf510d4df641dce9cc26bfeb7de082f0c07abb6ede3a58410c8f249dabeecee4ad3979929ac4c7c496ad20b8cfdd061b7401b4f5\",\"p2pPort\":\"21003\", \"raftId\":\"4\", \"raftPort\":\"50404\", \"role\":\"verifier\"}]}");
 
         RaftCluster raftCluster = deserialiseResponse(RaftCluster.class);
         assertThat(
                 raftCluster.getCluster().get().toString(),
                 is(
-                        "[RaftPeer(ip=127.0.0.1, nodeId=3d9ca5956b38557aba991e31cf510d4df641dce9cc26bfeb7de082f0c07abb6ede3a58410c8f249dabeecee4ad3979929ac4c7c496ad20b8cfdd061b7401b4f5, p2pPort=21003, raftId=4, raftPort=50404)]"));
+                        "[RaftPeer(hostname=127.0.0.1, nodeActive=true, nodeId=3d9ca5956b38557aba991e31cf510d4df641dce9cc26bfeb7de082f0c07abb6ede3a58410c8f249dabeecee4ad3979929ac4c7c496ad20b8cfdd061b7401b4f5, p2pPort=21003, raftId=4, raftPort=50404, role=verifier)]"));
     }
 
     @Test
@@ -74,5 +75,13 @@ public class RaftResponseTest extends ResponseTester {
 
         RaftPeerId raftPeerId = deserialiseResponse(RaftPeerId.class);
         assertThat(raftPeerId.getAddedPeer(), is(BigInteger.ONE));
+    }
+
+    @Test
+    public void testRaftPromoteToPeer() {
+        buildResponse("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"true\"}");
+
+        RaftPromote raftPromote = deserialiseResponse(RaftPromote.class);
+        assertThat(raftPromote.getPromotionStatus(), is(true));
     }
 }
