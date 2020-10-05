@@ -40,7 +40,7 @@ public class PrivateTransaction extends Transaction {
             String data,
             String privateFrom,
             List<String> privateFor) {
-        this(from, nonce, gasLimit, to, value, data, privateFrom, privateFor, PrivacyFlag.STANDARD_PRIVATE);
+        this(from, nonce, gasLimit, to, value, data, privateFrom, privateFor, null);
     }
 
     public PrivateTransaction(

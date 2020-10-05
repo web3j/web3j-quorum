@@ -12,6 +12,7 @@
  */
 package org.web3j.quorum.methods.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.web3j.quorum.PrivacyFlag;
 
 import java.util.List;
@@ -23,13 +24,14 @@ import java.util.List;
  * org.web3j.protocol.core.methods.request.Transaction} with the exception that it provides the
  * privateFor field and does not contain a gas price.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PrivateRawTransaction {
 
     private List<String> privateFor;
     private PrivacyFlag privacyFlag;
 
     public PrivateRawTransaction(List<String> privateFor) {
-        this(privateFor, PrivacyFlag.STANDARD_PRIVATE);
+        this(privateFor, null);
     }
     public PrivateRawTransaction(List<String> privateFor, PrivacyFlag privacyMode) {
         this.privateFor = privateFor;

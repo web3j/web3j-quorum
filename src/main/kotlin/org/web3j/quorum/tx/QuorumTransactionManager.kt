@@ -36,7 +36,8 @@ class QuorumTransactionManager(
         private val credentials: Credentials,
         private val publicKey: String,
         var privateFor: List<String> = listOf(),
-        var privacyFlag: PrivacyFlag,
+        // null privacy flag means that the privacyFlag field would not be serialized which causes the flag to default to StandardPrivate in quorum
+        var privacyFlag: PrivacyFlag?,
         val enclave: Enclave,
         attempts: Int = TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH,
         sleepDuration: Long = TransactionManager.DEFAULT_POLLING_FREQUENCY
@@ -49,7 +50,7 @@ class QuorumTransactionManager(
         publicKey: String,
         privateFor: List<String> = listOf(),
         enclave: Enclave
-    ) : this(web3j, credentials, publicKey, privateFor, PrivacyFlag.STANDARD_PRIVATE, enclave, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH, TransactionManager.DEFAULT_POLLING_FREQUENCY) {
+    ) : this(web3j, credentials, publicKey, privateFor, null, enclave, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH, TransactionManager.DEFAULT_POLLING_FREQUENCY) {
     }
 
     constructor(
@@ -60,7 +61,7 @@ class QuorumTransactionManager(
             enclave: Enclave,
             attempts: Int,
             sleepDuration: Long
-    ) : this(web3j, credentials, publicKey, privateFor, PrivacyFlag.STANDARD_PRIVATE, enclave, attempts, sleepDuration) {
+    ) : this(web3j, credentials, publicKey, privateFor, null, enclave, attempts, sleepDuration) {
     }
 
     constructor(
@@ -127,7 +128,7 @@ class QuorumTransactionManager(
     }
 
     fun sendRaw(signedTx: String, to: List<String>): EthSendTransaction {
-        return enclave.sendRawRequest(signedTx, to, PrivacyFlag.STANDARD_PRIVATE)
+        return enclave.sendRawRequest(signedTx, to, privacyFlag)
     }
 
     // If the byte array RLP decodes to a list of size >= 1 containing a list of size >= 3

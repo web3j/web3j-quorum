@@ -50,8 +50,10 @@ public interface Quorum extends Web3j {
 
     Request<?, EthSendTransaction> ethSendRawTransaction(String signedTransactionData);
 
-    Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
-            String signedTransactionData, List<String> privateFor);
+    default Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
+            String signedTransactionData, List<String> privateFor) {
+        return ethSendRawPrivateTransaction( signedTransactionData, privateFor, null);
+    }
 
     Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
             String signedTransactionData, List<String> privateFor, PrivacyFlag privacyFlag);

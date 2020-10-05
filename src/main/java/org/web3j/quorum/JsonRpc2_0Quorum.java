@@ -59,12 +59,6 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
 
     @Override
     public Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
-            String signedTransactionData, List<String> privateFor) {
-        return this.ethSendRawPrivateTransaction(signedTransactionData, privateFor, PrivacyFlag.STANDARD_PRIVATE);
-    }
-
-    @Override
-    public Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
             String signedTransactionData, List<String> privateFor, PrivacyFlag privacyFlag) {
         PrivateRawTransaction transaction = new PrivateRawTransaction(privateFor, privacyFlag);
         return new Request<>(
