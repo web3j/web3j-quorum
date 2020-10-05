@@ -72,7 +72,9 @@ public class TransactionRequestTest extends RequestTester {
     public void testSendRawPrivateTransactionPrivacyFlag() throws Exception {
         String signedTransactionData = "SignedTxData";
         web3j.ethSendRawPrivateTransaction(
-                signedTransactionData, Arrays.asList("privateFor1", "privateFor2"), PrivacyFlag.PARTY_PROTECTION)
+                        signedTransactionData,
+                        Arrays.asList("privateFor1", "privateFor2"),
+                        PrivacyFlag.PARTY_PROTECTION)
                 .send();
 
         verifyResult(

@@ -24,8 +24,8 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.quorum.methods.request.PrivateRawTransaction;
 import org.web3j.quorum.methods.request.PrivateTransaction;
 import org.web3j.quorum.methods.response.ConsensusNoResponse;
-import org.web3j.quorum.methods.response.PrivatePayload;
 import org.web3j.quorum.methods.response.ContractPrivacyMetadataInfo;
+import org.web3j.quorum.methods.response.PrivatePayload;
 import org.web3j.quorum.methods.response.istanbul.IstanbulBlockSigners;
 import org.web3j.quorum.methods.response.istanbul.IstanbulCandidates;
 import org.web3j.quorum.methods.response.istanbul.IstanbulNodeAddress;
@@ -96,7 +96,8 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
     }
 
     @Override
-    public Request<?, ContractPrivacyMetadataInfo> quorumGetContractPrivacyMetadata(String hexDigest) {
+    public Request<?, ContractPrivacyMetadataInfo> quorumGetContractPrivacyMetadata(
+            String hexDigest) {
         return new Request<>(
                 "eth_getContractPrivacyMetadata",
                 Collections.singletonList(hexDigest),

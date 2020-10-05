@@ -12,10 +12,11 @@
  */
 package org.web3j.quorum.methods.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.web3j.quorum.PrivacyFlag;
-
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import org.web3j.quorum.PrivacyFlag;
 
 /**
  * Quorum's Transaction object.
@@ -33,6 +34,7 @@ public class PrivateRawTransaction {
     public PrivateRawTransaction(List<String> privateFor) {
         this(privateFor, null);
     }
+
     public PrivateRawTransaction(List<String> privateFor, PrivacyFlag privacyMode) {
         this.privateFor = privateFor;
         this.privacyFlag = privacyMode;

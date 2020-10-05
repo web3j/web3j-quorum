@@ -46,18 +46,18 @@ public interface Quorum extends Web3j {
     Request<?, EthSendTransaction> ethSendTransaction(PrivateTransaction transaction);
 
     Request<?, PrivatePayload> quorumGetPrivatePayload(String hexDigest);
+
     Request<?, ContractPrivacyMetadataInfo> quorumGetContractPrivacyMetadata(String hexDigest);
 
     Request<?, EthSendTransaction> ethSendRawTransaction(String signedTransactionData);
 
     default Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
             String signedTransactionData, List<String> privateFor) {
-        return ethSendRawPrivateTransaction( signedTransactionData, privateFor, null);
+        return ethSendRawPrivateTransaction(signedTransactionData, privateFor, null);
     }
 
     Request<?, EthSendTransaction> ethSendRawPrivateTransaction(
             String signedTransactionData, List<String> privateFor, PrivacyFlag privacyFlag);
-
 
     Request<?, EthSendTransaction> ethSendTransactionAsync(PrivateTransaction transaction);
 

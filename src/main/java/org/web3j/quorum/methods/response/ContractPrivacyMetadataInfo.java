@@ -12,21 +12,23 @@
  */
 package org.web3j.quorum.methods.response;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.web3j.protocol.core.Response;
 import org.web3j.quorum.PrivacyFlag;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Objects;
-
 /** quorum_getPrivatePayload */
-public class ContractPrivacyMetadataInfo extends Response<ContractPrivacyMetadataInfo.ContractPrivacyMetadata> {
+public class ContractPrivacyMetadataInfo
+        extends Response<ContractPrivacyMetadataInfo.ContractPrivacyMetadata> {
     public ContractPrivacyMetadataInfo.ContractPrivacyMetadata getContractPrivacyMetadata() {
         return getResult();
     }
@@ -52,11 +54,11 @@ public class ContractPrivacyMetadataInfo extends Response<ContractPrivacyMetadat
         }
     }
 
-    public static class ContractPrivacyMetadata{
+    public static class ContractPrivacyMetadata {
         private byte[] creationTxHash;
         private PrivacyFlag privacyFlag;
 
-        public ContractPrivacyMetadata(){}
+        public ContractPrivacyMetadata() {}
 
         public ContractPrivacyMetadata(byte[] creationTxHash, PrivacyFlag privacyFlag) {
             this.creationTxHash = creationTxHash;
@@ -84,8 +86,8 @@ public class ContractPrivacyMetadataInfo extends Response<ContractPrivacyMetadat
             if (this == o) return true;
             if (!(o instanceof ContractPrivacyMetadata)) return false;
             ContractPrivacyMetadata that = (ContractPrivacyMetadata) o;
-            return Arrays.equals(creationTxHash, that.creationTxHash) &&
-                    privacyFlag == that.privacyFlag;
+            return Arrays.equals(creationTxHash, that.creationTxHash)
+                    && privacyFlag == that.privacyFlag;
         }
 
         @Override
@@ -97,10 +99,12 @@ public class ContractPrivacyMetadataInfo extends Response<ContractPrivacyMetadat
 
         @Override
         public String toString() {
-            return "ContractPrivacyMetadata{" +
-                    "creationTxHash=" + Arrays.toString(creationTxHash) +
-                    ", privacyFlag=" + privacyFlag +
-                    '}';
+            return "ContractPrivacyMetadata{"
+                    + "creationTxHash="
+                    + Arrays.toString(creationTxHash)
+                    + ", privacyFlag="
+                    + privacyFlag
+                    + '}';
         }
     }
 }

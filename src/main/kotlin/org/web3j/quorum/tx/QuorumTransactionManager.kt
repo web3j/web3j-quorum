@@ -32,15 +32,15 @@ import org.web3j.tx.TransactionManager
 import org.web3j.utils.Numeric
 
 class QuorumTransactionManager(
-        val web3j: Quorum,
-        private val credentials: Credentials,
-        private val publicKey: String,
-        var privateFor: List<String> = listOf(),
-        // null privacy flag means that the privacyFlag field would not be serialized which causes the flag to default to StandardPrivate in quorum
-        var privacyFlag: PrivacyFlag?,
-        val enclave: Enclave,
-        attempts: Int = TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH,
-        sleepDuration: Long = TransactionManager.DEFAULT_POLLING_FREQUENCY
+    val web3j: Quorum,
+    private val credentials: Credentials,
+    private val publicKey: String,
+    var privateFor: List<String> = listOf(),
+    // null privacy flag means that the privacyFlag field would not be serialized which causes the flag to default to StandardPrivate in quorum
+    var privacyFlag: PrivacyFlag?,
+    val enclave: Enclave,
+    attempts: Int = TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH,
+    sleepDuration: Long = TransactionManager.DEFAULT_POLLING_FREQUENCY
 ) : RawTransactionManager(web3j, credentials, attempts, sleepDuration.toInt()) {
 
     // add extra constructor as java does not have optional parameters
@@ -54,26 +54,25 @@ class QuorumTransactionManager(
     }
 
     constructor(
-            web3j: Quorum,
-            credentials: Credentials,
-            publicKey: String,
-            privateFor: List<String> = listOf(),
-            enclave: Enclave,
-            attempts: Int,
-            sleepDuration: Long
+        web3j: Quorum,
+        credentials: Credentials,
+        publicKey: String,
+        privateFor: List<String> = listOf(),
+        enclave: Enclave,
+        attempts: Int,
+        sleepDuration: Long
     ) : this(web3j, credentials, publicKey, privateFor, null, enclave, attempts, sleepDuration) {
     }
 
     constructor(
-            web3j: Quorum,
-            credentials: Credentials,
-            publicKey: String,
-            privateFor: List<String> = listOf(),
-            privacyFlag: PrivacyFlag,
-            enclave: Enclave
+        web3j: Quorum,
+        credentials: Credentials,
+        publicKey: String,
+        privateFor: List<String> = listOf(),
+        privacyFlag: PrivacyFlag,
+        enclave: Enclave
     ) : this(web3j, credentials, publicKey, privateFor, privacyFlag, enclave, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH, TransactionManager.DEFAULT_POLLING_FREQUENCY) {
     }
-
 
     override fun sendTransaction(
         gasPrice: BigInteger?,
