@@ -14,17 +14,6 @@ plugins {
 
 description 'web3j Quorum API'
 
-ext {
-    web3jVersion = project.property('version')
-    jacksonKotlinVersion = '2.9.0'
-
-    logbackVersion = '1.2.3'
-    junitVersion = '5.5.2'
-    mockitoVersion = '3.1.0'
-    assertjCoreVersion = '3.8.0'
-    hamcrestVersion = '2.1'
-}
-
 apply {
     [
         'bintray',
@@ -57,14 +46,14 @@ publishing {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
             "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion",
-            "org.web3j:core:$web3jVersion"
+            "org.web3j:core:$version"
 
     testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
             "org.mockito:mockito-core:$mockitoVersion",
             "org.assertj:assertj-core:$assertjCoreVersion",
-            "org.web3j:core:$web3jVersion:tests",
+            "org.web3j:core:$version:tests",
             "org.hamcrest:hamcrest-library:$hamcrestVersion"
 }
 
