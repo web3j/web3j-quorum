@@ -35,6 +35,21 @@ public class TransactionResponseTest extends ResponseTester {
     }
 
     @Test
+    public void testGetContractPrivacyMetadata() {
+        buildResponse(
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\n"
+                        + "  creationTxHash: [55, 80],\n"
+                        + "  privacyFlag: 3\n"
+                        + "}\n}");
+
+        ContractPrivacyMetadataInfo info = deserialiseResponse(ContractPrivacyMetadataInfo.class);
+        assertThat(
+                info.getContractPrivacyMetadata().getPrivacyFlag(),
+                is(PrivacyFlag.PRIVATE_STATE_VALIDATION));
+        assertThat(info.getContractPrivacyMetadata().getCreationTxHash(), is(new byte[] {55, 80}));
+    }
+
+    @Test
     public void testPrivatePayload() {
         buildResponse("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x\"}");
 
