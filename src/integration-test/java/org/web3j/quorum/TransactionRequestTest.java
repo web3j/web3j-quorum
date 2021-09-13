@@ -82,6 +82,20 @@ public class TransactionRequestTest extends RequestTester {
     }
 
     @Test
+    public void testSendRawPrivateTransactionMandatoryFor() throws Exception {
+        String signedTransactionData = "SignedTxData";
+        web3j.ethSendRawPrivateTransaction(
+                        signedTransactionData,
+                        Arrays.asList("privateFor1", "privateFor2"),
+                        PrivacyFlag.MANDATORY_FOR,
+                        Arrays.asList("privateFor2"))
+                .send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendRawPrivateTransaction\",\"params\":[\"SignedTxData\",{\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":2,\"mandatoryFor\":[\"privateFor2\"]}],\"id\":1}");
+    }
+
+    @Test
     public void testGetPrivateTransaction() throws Exception {
         web3j.quorumGetPrivatePayload("0x").send();
 

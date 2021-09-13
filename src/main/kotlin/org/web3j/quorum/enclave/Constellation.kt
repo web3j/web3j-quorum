@@ -25,7 +25,7 @@ import org.web3j.quorum.enclave.protocol.EnclaveService
  */
 class Constellation(private val ipcService: EnclaveService, private val web3: Quorum) : Enclave {
 
-    override fun sendRawRequest(payload: String, privateFor: List<String>, privacyFlag: PrivacyFlag?): EthSendTransaction {
+    override fun sendRawRequest(payload: String, privateFor: List<String>, privacyFlag: PrivacyFlag?, mandatoryFor: List<String>?): EthSendTransaction {
         return web3.ethSendRawTransaction(payload).send()
     }
 

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum PrivacyFlag {
     STANDARD_PRIVATE(0),
     PARTY_PROTECTION(1),
+    MANDATORY_FOR(2),
     PRIVATE_STATE_VALIDATION(3);
 
     private final int value;

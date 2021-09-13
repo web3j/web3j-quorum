@@ -22,13 +22,20 @@ interface Enclave {
     /**
      * Send a new raw payload to the quorum node for signing and storing
      */
-    fun sendRawRequest(payload: String, privateFor: List<String>, privacyFlag: PrivacyFlag?): EthSendTransaction
+    fun sendRawRequest(payload: String, privateFor: List<String>, privacyFlag: PrivacyFlag?, mandatoryFor: List<String>?): EthSendTransaction
+
+    /**
+     * overloaded sendRawRequest with the privacyFlag and mandatoryFor set to null (API backward compatibility)
+     */
+    fun sendRawRequest(payload: String, privateFor: List<String>): EthSendTransaction {
+        return sendRawRequest(payload, privateFor, null, null)
+    }
 
     /**
      * overloaded sendRawRequest with the privacyFlag set to null (API backward compatibility)
      */
-    fun sendRawRequest(payload: String, privateFor: List<String>): EthSendTransaction {
-        return sendRawRequest(payload, privateFor, null)
+    fun sendRawRequest(payload: String, privateFor: List<String>, privacyFlag: PrivacyFlag): EthSendTransaction {
+        return sendRawRequest(payload, privateFor, privacyFlag, null)
     }
 
     /**
