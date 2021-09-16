@@ -22,6 +22,7 @@ import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthCall;
 import org.web3j.protocol.core.methods.response.EthGetCode;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.quorum.PrivacyFlag;
 import org.web3j.quorum.Quorum;
 import org.web3j.quorum.methods.request.PrivateTransaction;
 import org.web3j.tx.ContractErrorUtil;
@@ -37,12 +38,16 @@ public class ClientTransactionManager extends TransactionManager {
     private final String fromAddress;
     private final String privateFrom;
     private List<String> privateFor;
+    private PrivacyFlag privacyFlag;
+    private List<String> mandatoryFor;
 
     public ClientTransactionManager(
             Web3j web3j,
             String fromAddress,
             String privateFrom,
             List<String> privateFor,
+            PrivacyFlag privacyFlag,
+            List<String> mandatoryFor,
             int attempts,
             int sleepDuration) {
         super(web3j, attempts, sleepDuration, fromAddress);
@@ -53,6 +58,38 @@ public class ClientTransactionManager extends TransactionManager {
         this.fromAddress = fromAddress;
         this.privateFrom = privateFrom;
         this.privateFor = privateFor;
+        this.privacyFlag = privacyFlag;
+        this.mandatoryFor = mandatoryFor;
+    }
+
+    public ClientTransactionManager(
+            Web3j web3j,
+            String fromAddress,
+            String privateFrom,
+            List<String> privateFor,
+            PrivacyFlag privacyFlag,
+            int attempts,
+            int sleepDuration) {
+        this(
+                web3j,
+                fromAddress,
+                privateFrom,
+                privateFor,
+                privacyFlag,
+                null,
+                attempts,
+                sleepDuration);
+    }
+
+    // For backward compatibility
+    public ClientTransactionManager(
+            Web3j web3j,
+            String fromAddress,
+            String privateFrom,
+            List<String> privateFor,
+            int attempts,
+            int sleepDuration) {
+        this(web3j, fromAddress, privateFrom, privateFor, null, null, attempts, sleepDuration);
     }
 
     public ClientTransactionManager(
@@ -94,7 +131,16 @@ public class ClientTransactionManager extends TransactionManager {
 
         PrivateTransaction transaction =
                 new PrivateTransaction(
-                        fromAddress, null, gasLimit, to, value, data, privateFrom, privateFor);
+                        fromAddress,
+                        null,
+                        gasLimit,
+                        to,
+                        value,
+                        data,
+                        privateFrom,
+                        privateFor,
+                        privacyFlag,
+                        mandatoryFor);
 
         return quorum.ethSendTransaction(transaction).send();
     }
