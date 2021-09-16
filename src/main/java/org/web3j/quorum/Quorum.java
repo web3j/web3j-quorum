@@ -17,7 +17,9 @@ import java.util.List;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.core.Request;
+import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.core.methods.response.EthTransaction;
 import org.web3j.quorum.methods.request.*;
 import org.web3j.quorum.methods.response.*;
 import org.web3j.quorum.methods.response.istanbul.IstanbulBlockSigners;
@@ -66,6 +68,24 @@ public interface Quorum extends Web3j {
             List<String> mandatoryFor);
 
     Request<?, EthSendTransaction> ethSendTransactionAsync(PrivateTransaction transaction);
+
+    Request<?, EthSendTransaction> ethDistributePrivateTransaction(
+            String signedTransactionData, List<String> privateFor);
+
+    Request<?, EthSendTransaction> ethDistributePrivateTransaction(
+            String signedTransactionData, List<String> privateFor, PrivacyFlag privacyFlag);
+
+    Request<?, EthSendTransaction> ethDistributePrivateTransaction(
+            String signedTransactionData,
+            List<String> privateFor,
+            PrivacyFlag privacyFlag,
+            List<String> mandatoryFor);
+
+    Request<?, EthAddress> ethGetPrivacyPrecompileAddress();
+
+    Request<?, EthTransaction> ethGetPrivateTransactionByHash(String hexDigest);
+
+    Request<?, EthGetTransactionReceipt> ethGetPrivateTransactionReceipt(String hexDigest);
 
     // raft consensus
 

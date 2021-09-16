@@ -20,11 +20,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.core.JsonRpc2_0Web3j;
 import org.web3j.protocol.core.Request;
+import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.core.methods.response.EthTransaction;
 import org.web3j.quorum.methods.request.PrivateRawTransaction;
 import org.web3j.quorum.methods.request.PrivateTransaction;
 import org.web3j.quorum.methods.response.ConsensusNoResponse;
 import org.web3j.quorum.methods.response.ContractPrivacyMetadataInfo;
+import org.web3j.quorum.methods.response.EthAddress;
 import org.web3j.quorum.methods.response.PrivatePayload;
 import org.web3j.quorum.methods.response.istanbul.IstanbulBlockSigners;
 import org.web3j.quorum.methods.response.istanbul.IstanbulCandidates;
@@ -127,6 +130,58 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
                 Collections.singletonList(transaction),
                 web3jService,
                 EthSendTransaction.class);
+    }
+
+    @Override
+    public Request<?, EthSendTransaction> ethDistributePrivateTransaction(
+            String signedTransactionData,
+            List<String> privateFor,
+            PrivacyFlag privacyFlag,
+            List<String> mandatoryFor) {
+        PrivateRawTransaction transaction =
+                new PrivateRawTransaction(privateFor, privacyFlag, mandatoryFor);
+        return new Request<>(
+                "eth_distributePrivateTransaction",
+                Arrays.asList(signedTransactionData, transaction),
+                web3jService,
+                EthSendTransaction.class);
+    }
+
+    @Override
+    public Request<?, EthSendTransaction> ethDistributePrivateTransaction(
+            String signedTransactionData, List<String> privateFor, PrivacyFlag privacyFlag) {
+        return ethDistributePrivateTransaction(
+                signedTransactionData, privateFor, privacyFlag, null);
+    }
+
+    @Override
+    public Request<?, EthSendTransaction> ethDistributePrivateTransaction(
+            String signedTransactionData, List<String> privateFor) {
+        return ethDistributePrivateTransaction(signedTransactionData, privateFor, null, null);
+    }
+
+    @Override
+    public Request<?, EthAddress> ethGetPrivacyPrecompileAddress() {
+        return new Request<>(
+                "eth_getPrivacyPrecompileAddress", Arrays.asList(), web3jService, EthAddress.class);
+    }
+
+    @Override
+    public Request<?, EthTransaction> ethGetPrivateTransactionByHash(String hexDigest) {
+        return new Request<>(
+                "eth_getPrivateTransactionByHash",
+                Collections.singletonList(hexDigest),
+                web3jService,
+                EthTransaction.class);
+    }
+
+    @Override
+    public Request<?, EthGetTransactionReceipt> ethGetPrivateTransactionReceipt(String hexDigest) {
+        return new Request<>(
+                "eth_getPrivateTransactionReceipt",
+                Collections.singletonList(hexDigest),
+                web3jService,
+                EthGetTransactionReceipt.class);
     }
 
     // raft consensus
