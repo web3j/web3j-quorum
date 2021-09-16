@@ -30,6 +30,7 @@ public class PrivateTransaction extends Transaction {
     private String privateFrom;
     private List<String> privateFor;
     private PrivacyFlag privacyFlag;
+    private List<String> mandatoryFor;
 
     public PrivateTransaction(
             String from,
@@ -40,7 +41,7 @@ public class PrivateTransaction extends Transaction {
             String data,
             String privateFrom,
             List<String> privateFor) {
-        this(from, nonce, gasLimit, to, value, data, privateFrom, privateFor, null);
+        this(from, nonce, gasLimit, to, value, data, privateFrom, privateFor, null, null);
     }
 
     public PrivateTransaction(
@@ -53,10 +54,25 @@ public class PrivateTransaction extends Transaction {
             String privateFrom,
             List<String> privateFor,
             PrivacyFlag privacyFlag) {
+        this(from, nonce, gasLimit, to, value, data, privateFrom, privateFor, privacyFlag, null);
+    }
+
+    public PrivateTransaction(
+            String from,
+            BigInteger nonce,
+            BigInteger gasLimit,
+            String to,
+            BigInteger value,
+            String data,
+            String privateFrom,
+            List<String> privateFor,
+            PrivacyFlag privacyFlag,
+            List<String> mandatoryFor) {
         super(from, nonce, null, gasLimit, to, value, data);
         this.privateFrom = privateFrom;
         this.privateFor = privateFor;
         this.privacyFlag = privacyFlag;
+        this.mandatoryFor = mandatoryFor;
     }
 
     public String getPrivateFrom() {
@@ -81,5 +97,13 @@ public class PrivateTransaction extends Transaction {
 
     public void setPrivacyFlag(PrivacyFlag privacyFlag) {
         this.privacyFlag = privacyFlag;
+    }
+
+    public List<String> getMandatoryFor() {
+        return mandatoryFor;
+    }
+
+    public void setMandatoryFor(List<String> mandatoryFor) {
+        this.mandatoryFor = mandatoryFor;
     }
 }
