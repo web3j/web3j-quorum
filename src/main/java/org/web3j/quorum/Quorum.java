@@ -85,6 +85,8 @@ public interface Quorum extends Web3j {
 
     Request<?, EthTransaction> ethGetPrivateTransactionByHash(String hexDigest);
 
+    Request<?, EthGetQuorumTransactionReceipt> ethGetQuorumTransactionReceipt(String hexDigest);
+
     Request<?, EthGetTransactionReceipt> ethGetPrivateTransactionReceipt(String hexDigest);
 
     // raft consensus
