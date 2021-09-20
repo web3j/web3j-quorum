@@ -39,17 +39,8 @@ public class EthGetQuorumTransactionReceipt extends Response<QuorumTransactionRe
         public QuorumTransactionReceipt deserialize(
                 JsonParser jsonParser, DeserializationContext deserializationContext)
                 throws IOException {
-            System.out.printf("######### EthGetQuorumTransactionReceipt::deserialize() ENTERED\n");
             if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
-                // TODO: restore the next line and remove the code below, added to facilitate
-                // debugging
-                // return objectReader.readValue(jsonParser, QuorumTransactionReceipt.class);
-                QuorumTransactionReceipt receipt =
-                        objectReader.readValue(jsonParser, QuorumTransactionReceipt.class);
-                System.out.printf(
-                        "######### EthGetQuorumTransactionReceipt::deserialize() Created QuorumTransactionReceipt: %s\n",
-                        receipt.toString());
-                return receipt;
+                return objectReader.readValue(jsonParser, QuorumTransactionReceipt.class);
             } else {
                 return null; // null is wrapped by Optional in above getter
             }

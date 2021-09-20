@@ -63,12 +63,12 @@ public class QuorumTransactionReceipt extends TransactionReceipt {
         this.isPrivacyMarkerTransaction = isPrivacyMarkerTransaction;
     }
 
-    public Boolean getPrivacyMarkerTransaction() {
+    public Boolean getIsPrivacyMarkerTransaction() {
         return isPrivacyMarkerTransaction;
     }
 
-    public void setPrivacyMarkerTransaction(Boolean privacyMarkerTransaction) {
-        isPrivacyMarkerTransaction = privacyMarkerTransaction;
+    public void setIsPrivacyMarkerTransaction(Boolean isPrivacyMarkerTransaction) {
+        this.isPrivacyMarkerTransaction = isPrivacyMarkerTransaction;
     }
 
     public boolean isPrivacyMarkerTransaction() {

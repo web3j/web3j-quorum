@@ -88,14 +88,6 @@ public class QuorumPollingTransactionReceiptProcessor extends PollingTransaction
                     "Error processing request: " + transactionReceipt.getError().getMessage());
         }
 
-        // TODO: reinstate the next line and remove the code added below to faciliate debugging.
-        // return transactionReceipt.getTransactionReceipt();
-        Optional<? extends QuorumTransactionReceipt> receipt =
-                transactionReceipt.getTransactionReceipt();
-
-        System.out.printf(
-                "######### QuorumPollingTransactionReceiptProcessor::sendTransactionReceiptRequest() got receipt %s\n",
-                receipt.toString());
-        return receipt;
+        return transactionReceipt.getTransactionReceipt();
     }
 }

@@ -129,35 +129,15 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
                 EthSendTransaction.class);
     }
 
-    /*
-     * TODO: Remove override (just duplicated here so that I can check it's never called)
-     */
-    @Override
-    public Request<?, EthGetTransactionReceipt> ethGetTransactionReceipt(String transactionHash) {
-        System.out.printf(
-                "######### QuorumPollingTransactionReceiptProcessor::ethGetTransactionReceipt() PROBLEM - ethGetTransactionReceipt() should not be called!!\n");
-        return new Request<>(
-                "eth_getTransactionReceipt",
-                Arrays.asList(transactionHash),
-                web3jService,
-                EthGetTransactionReceipt.class);
-    }
-
     @Override
     public Request<?, EthGetQuorumTransactionReceipt> ethGetQuorumTransactionReceipt(
             String transactionHash) {
 
-        // TODO: just return Request object, and remove the debug code below
-        Request<?, EthGetQuorumTransactionReceipt> request =
-                new Request(
-                        "eth_getTransactionReceipt",
-                        Arrays.asList(transactionHash),
-                        this.web3jService,
-                        EthGetQuorumTransactionReceipt.class);
-
-        System.out.printf(
-                "######### QuorumPollingTransactionReceiptProcessor::ethGetQuorumTransactionReceipt() Created EthGetQuorumTransactionReceipt request\n");
-        return request;
+        return new Request(
+                "eth_getTransactionReceipt",
+                Arrays.asList(transactionHash),
+                this.web3jService,
+                EthGetQuorumTransactionReceipt.class);
     }
 
     @Override
