@@ -133,12 +133,14 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
     public Request<?, EthGetQuorumTransactionReceipt> ethGetQuorumTransactionReceipt(
             String transactionHash) {
 
-        return new Request(
+        return new Request<>(
                 "eth_getTransactionReceipt",
                 Arrays.asList(transactionHash),
                 this.web3jService,
                 EthGetQuorumTransactionReceipt.class);
     }
+
+    // privacy marker transactions
 
     @Override
     public Request<?, EthSendTransaction> ethDistributePrivateTransaction(

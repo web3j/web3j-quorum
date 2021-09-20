@@ -69,6 +69,10 @@ public interface Quorum extends Web3j {
 
     Request<?, EthSendTransaction> ethSendTransactionAsync(PrivateTransaction transaction);
 
+    Request<?, EthGetQuorumTransactionReceipt> ethGetQuorumTransactionReceipt(String hexDigest);
+
+    // privacy marker transactions
+
     Request<?, EthSendTransaction> ethDistributePrivateTransaction(
             String signedTransactionData, List<String> privateFor);
 
@@ -84,8 +88,6 @@ public interface Quorum extends Web3j {
     Request<?, EthAddress> ethGetPrivacyPrecompileAddress();
 
     Request<?, EthTransaction> ethGetPrivateTransactionByHash(String hexDigest);
-
-    Request<?, EthGetQuorumTransactionReceipt> ethGetQuorumTransactionReceipt(String hexDigest);
 
     Request<?, EthGetTransactionReceipt> ethGetPrivateTransactionReceipt(String hexDigest);
 

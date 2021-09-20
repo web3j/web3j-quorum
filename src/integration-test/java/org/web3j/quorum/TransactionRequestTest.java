@@ -120,4 +120,74 @@ public class TransactionRequestTest extends RequestTester {
         verifyResult(
                 "{\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransactionAsync\",\"params\":[{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
     }
+
+    @Test
+    public void testGetQuorumTransactionReceipt() throws Exception {
+        web3j.ethGetQuorumTransactionReceipt("0x").send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getTransactionReceipt\",\"params\":[\"0x\"],\"id\":1}");
+    }
+
+    @Test
+    public void testDistributePrivateTransactionWithMandatoryFor() throws Exception {
+        String signedTransactionData = "SignedTxData";
+        web3j.ethDistributePrivateTransaction(
+                        signedTransactionData,
+                        Arrays.asList("privateFor1", "privateFor2"),
+                        PrivacyFlag.MANDATORY_FOR,
+                        Arrays.asList("privateFor2"))
+                .send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_distributePrivateTransaction\",\"params\":[\"SignedTxData\",{\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":2,\"mandatoryFor\":[\"privateFor2\"]}],\"id\":1}");
+    }
+
+    @Test
+    public void testDistributePrivateTransactionWithPrivacyFlag() throws Exception {
+        String signedTransactionData = "SignedTxData";
+        web3j.ethDistributePrivateTransaction(
+                        signedTransactionData,
+                        Arrays.asList("privateFor1", "privateFor2"),
+                        PrivacyFlag.PARTY_PROTECTION)
+                .send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_distributePrivateTransaction\",\"params\":[\"SignedTxData\",{\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":1}],\"id\":1}");
+    }
+
+    @Test
+    public void testDistributePrivateTransaction() throws Exception {
+        String signedTransactionData = "SignedTxData";
+        web3j.ethDistributePrivateTransaction(
+                        signedTransactionData, Arrays.asList("privateFor1", "privateFor2"))
+                .send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_distributePrivateTransaction\",\"params\":[\"SignedTxData\",{\"privateFor\":[\"privateFor1\",\"privateFor2\"]}],\"id\":1}");
+    }
+
+    @Test
+    public void testGetPrivacyPrecompileAddress() throws Exception {
+        web3j.ethGetPrivacyPrecompileAddress().send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getPrivacyPrecompileAddress\",\"params\":[],\"id\":1}");
+    }
+
+    @Test
+    public void testGetPrivateTransactionByHash() throws Exception {
+        web3j.ethGetPrivateTransactionByHash("0x").send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getPrivateTransactionByHash\",\"params\":[\"0x\"],\"id\":1}");
+    }
+
+    @Test
+    public void testGetPrivateTransactionReceipt() throws Exception {
+        web3j.ethGetPrivateTransactionReceipt("0x").send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getPrivateTransactionReceipt\",\"params\":[\"0x\"],\"id\":1}");
+    }
 }
