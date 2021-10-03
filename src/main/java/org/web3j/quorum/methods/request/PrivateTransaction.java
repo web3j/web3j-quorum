@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.quorum.PrivacyFlag;
 
 /**
  * Quorum's Transaction object.
@@ -28,6 +29,8 @@ public class PrivateTransaction extends Transaction {
 
     private String privateFrom;
     private List<String> privateFor;
+    private PrivacyFlag privacyFlag;
+    private List<String> mandatoryFor;
 
     public PrivateTransaction(
             String from,
@@ -38,9 +41,38 @@ public class PrivateTransaction extends Transaction {
             String data,
             String privateFrom,
             List<String> privateFor) {
+        this(from, nonce, gasLimit, to, value, data, privateFrom, privateFor, null, null);
+    }
+
+    public PrivateTransaction(
+            String from,
+            BigInteger nonce,
+            BigInteger gasLimit,
+            String to,
+            BigInteger value,
+            String data,
+            String privateFrom,
+            List<String> privateFor,
+            PrivacyFlag privacyFlag) {
+        this(from, nonce, gasLimit, to, value, data, privateFrom, privateFor, privacyFlag, null);
+    }
+
+    public PrivateTransaction(
+            String from,
+            BigInteger nonce,
+            BigInteger gasLimit,
+            String to,
+            BigInteger value,
+            String data,
+            String privateFrom,
+            List<String> privateFor,
+            PrivacyFlag privacyFlag,
+            List<String> mandatoryFor) {
         super(from, nonce, null, gasLimit, to, value, data);
         this.privateFrom = privateFrom;
         this.privateFor = privateFor;
+        this.privacyFlag = privacyFlag;
+        this.mandatoryFor = mandatoryFor;
     }
 
     public String getPrivateFrom() {
@@ -57,5 +89,21 @@ public class PrivateTransaction extends Transaction {
 
     public void setPrivateFor(List<String> privateFor) {
         this.privateFor = privateFor;
+    }
+
+    public PrivacyFlag getPrivacyFlag() {
+        return privacyFlag;
+    }
+
+    public void setPrivacyFlag(PrivacyFlag privacyFlag) {
+        this.privacyFlag = privacyFlag;
+    }
+
+    public List<String> getMandatoryFor() {
+        return mandatoryFor;
+    }
+
+    public void setMandatoryFor(List<String> mandatoryFor) {
+        this.mandatoryFor = mandatoryFor;
     }
 }

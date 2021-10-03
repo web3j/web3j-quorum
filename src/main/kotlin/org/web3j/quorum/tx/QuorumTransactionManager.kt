@@ -17,6 +17,7 @@ import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.response.EthSendTransaction
+import org.web3j.quorum.PrivacyFlag
 import org.web3j.quorum.Quorum
 import org.web3j.quorum.enclave.Enclave
 import org.web3j.quorum.enclave.SendResponse
@@ -35,6 +36,10 @@ class QuorumTransactionManager(
     private val credentials: Credentials,
     private val publicKey: String,
     var privateFor: List<String> = listOf(),
+    // null privacy flag means that the privacyFlag field would not be serialized which causes the flag to default to StandardPrivate in quorum
+    var privacyFlag: PrivacyFlag?,
+    // null mandatory for means that the mandatoryFor field would not be serialized which causes the flag to default to nil in quorum
+    var mandatoryFor: List<String>?,
     val enclave: Enclave,
     attempts: Int = TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH,
     sleepDuration: Long = TransactionManager.DEFAULT_POLLING_FREQUENCY
@@ -47,7 +52,39 @@ class QuorumTransactionManager(
         publicKey: String,
         privateFor: List<String> = listOf(),
         enclave: Enclave
-    ) : this(web3j, credentials, publicKey, privateFor, enclave, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH, TransactionManager.DEFAULT_POLLING_FREQUENCY) {
+    ) : this(web3j, credentials, publicKey, privateFor, null, null, enclave, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH, TransactionManager.DEFAULT_POLLING_FREQUENCY) {
+    }
+
+    constructor(
+        web3j: Quorum,
+        credentials: Credentials,
+        publicKey: String,
+        privateFor: List<String> = listOf(),
+        enclave: Enclave,
+        attempts: Int,
+        sleepDuration: Long
+    ) : this(web3j, credentials, publicKey, privateFor, null, null, enclave, attempts, sleepDuration) {
+    }
+
+    constructor(
+        web3j: Quorum,
+        credentials: Credentials,
+        publicKey: String,
+        privateFor: List<String> = listOf(),
+        privacyFlag: PrivacyFlag,
+        enclave: Enclave
+    ) : this(web3j, credentials, publicKey, privateFor, privacyFlag, null, enclave, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH, TransactionManager.DEFAULT_POLLING_FREQUENCY) {
+    }
+
+    constructor(
+        web3j: Quorum,
+        credentials: Credentials,
+        publicKey: String,
+        privateFor: List<String> = listOf(),
+        privacyFlag: PrivacyFlag,
+        mandatoryFor: List<String> = listOf(),
+        enclave: Enclave
+    ) : this(web3j, credentials, publicKey, privateFor, privacyFlag, mandatoryFor, enclave, TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH, TransactionManager.DEFAULT_POLLING_FREQUENCY) {
     }
 
     override fun sendTransaction(
@@ -99,11 +136,11 @@ class QuorumTransactionManager(
             signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials)
         }
         val hexValue = Numeric.toHexString(signedMessage)
-        return enclave.sendRawRequest(hexValue, privateFor)
+        return enclave.sendRawRequest(hexValue, privateFor, privacyFlag, mandatoryFor)
     }
 
     fun sendRaw(signedTx: String, to: List<String>): EthSendTransaction {
-        return enclave.sendRawRequest(signedTx, to)
+        return enclave.sendRawRequest(signedTx, to, privacyFlag, mandatoryFor)
     }
 
     // If the byte array RLP decodes to a list of size >= 1 containing a list of size >= 3

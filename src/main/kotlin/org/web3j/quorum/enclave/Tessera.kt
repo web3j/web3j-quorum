@@ -13,6 +13,7 @@
 package org.web3j.quorum.enclave
 
 import org.web3j.protocol.core.methods.response.EthSendTransaction
+import org.web3j.quorum.PrivacyFlag
 import org.web3j.quorum.Quorum
 import org.web3j.quorum.enclave.protocol.EnclaveService
 
@@ -22,8 +23,8 @@ import org.web3j.quorum.enclave.protocol.EnclaveService
  */
 class Tessera(private val service: EnclaveService, private val web3: Quorum) : Enclave {
 
-    override fun sendRawRequest(payload: String, privateFor: List<String>): EthSendTransaction {
-        return web3.ethSendRawPrivateTransaction(payload, privateFor).send()
+    override fun sendRawRequest(payload: String, privateFor: List<String>, privacyFlag: PrivacyFlag?, mandatoryFor: List<String>?): EthSendTransaction {
+        return web3.ethSendRawPrivateTransaction(payload, privateFor, privacyFlag, mandatoryFor).send()
     }
 
     // payload is hex encoded bytes

@@ -12,4 +12,4 @@
  */
 package org.web3j.quorum.methods.response.raft
 
-public data class RaftPeer(var hostname: String, var nodeId: String, var nodeActive: Boolean, var p2pPort: String, var raftId: String, var raftPort: String)
+public data class RaftPeer(var hostname: String, var nodeId: String, var nodeActive: Boolean, var p2pPort: String, var raftId: String, var raftPort: String, var role: String)
