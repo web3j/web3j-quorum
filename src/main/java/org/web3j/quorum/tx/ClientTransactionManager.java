@@ -16,15 +16,15 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.request.Transaction;
-import org.web3j.protocol.core.methods.response.EthCall;
-import org.web3j.protocol.core.methods.response.EthGetCode;
-import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.core.methods.response.*;
+import org.web3j.protocol.exceptions.TransactionException;
 import org.web3j.quorum.PrivacyFlag;
 import org.web3j.quorum.Quorum;
 import org.web3j.quorum.methods.request.PrivateTransaction;
+import org.web3j.quorum.methods.response.QuorumTransactionReceipt;
+import org.web3j.quorum.tx.response.QuorumPollingTransactionReceiptProcessor;
 import org.web3j.tx.ContractErrorUtil;
 import org.web3j.tx.TransactionManager;
 
@@ -42,7 +42,7 @@ public class ClientTransactionManager extends TransactionManager {
     private List<String> mandatoryFor;
 
     public ClientTransactionManager(
-            Web3j web3j,
+            Quorum quorum,
             String fromAddress,
             String privateFrom,
             List<String> privateFor,
@@ -50,11 +50,10 @@ public class ClientTransactionManager extends TransactionManager {
             List<String> mandatoryFor,
             int attempts,
             int sleepDuration) {
-        super(web3j, attempts, sleepDuration, fromAddress);
-        if (!(web3j instanceof Quorum)) {
-            throw new UnsupportedOperationException("Quorum quorum instance must be used");
-        }
-        this.quorum = (Quorum) web3j;
+        super(
+                new QuorumPollingTransactionReceiptProcessor(quorum, sleepDuration, attempts),
+                fromAddress);
+        this.quorum = quorum;
         this.fromAddress = fromAddress;
         this.privateFrom = privateFrom;
         this.privateFor = privateFor;
@@ -63,7 +62,7 @@ public class ClientTransactionManager extends TransactionManager {
     }
 
     public ClientTransactionManager(
-            Web3j web3j,
+            Quorum quorum,
             String fromAddress,
             String privateFrom,
             List<String> privateFor,
@@ -71,7 +70,7 @@ public class ClientTransactionManager extends TransactionManager {
             int attempts,
             int sleepDuration) {
         this(
-                web3j,
+                quorum,
                 fromAddress,
                 privateFrom,
                 privateFor,
@@ -83,33 +82,33 @@ public class ClientTransactionManager extends TransactionManager {
 
     // For backward compatibility
     public ClientTransactionManager(
-            Web3j web3j,
+            Quorum quorum,
             String fromAddress,
             String privateFrom,
             List<String> privateFor,
             int attempts,
             int sleepDuration) {
-        this(web3j, fromAddress, privateFrom, privateFor, null, null, attempts, sleepDuration);
+        this(quorum, fromAddress, privateFrom, privateFor, null, null, attempts, sleepDuration);
     }
 
     public ClientTransactionManager(
-            Web3j web3j, String fromAddress, String privateFrom, List<String> privateFor) {
-        this(web3j, fromAddress, privateFrom, privateFor, ATTEMPTS, SLEEP_DURATION);
+            Quorum quorum, String fromAddress, String privateFrom, List<String> privateFor) {
+        this(quorum, fromAddress, privateFrom, privateFor, ATTEMPTS, SLEEP_DURATION);
     }
 
     @Deprecated
     public ClientTransactionManager(
-            Web3j web3j,
+            Quorum quorum,
             String fromAddress,
             List<String> privateFor,
             int attempts,
             int sleepDuration) {
-        this(web3j, fromAddress, null, privateFor, attempts, sleepDuration);
+        this(quorum, fromAddress, null, privateFor, attempts, sleepDuration);
     }
 
     @Deprecated
-    public ClientTransactionManager(Web3j web3j, String fromAddress, List<String> privateFor) {
-        this(web3j, fromAddress, null, privateFor);
+    public ClientTransactionManager(Quorum quorum, String fromAddress, List<String> privateFor) {
+        this(quorum, fromAddress, null, privateFor);
     }
 
     public String getPrivateFrom() {
@@ -187,5 +186,30 @@ public class ClientTransactionManager extends TransactionManager {
     public EthGetCode getCode(String contractAddress, DefaultBlockParameter defaultBlockParameter)
             throws IOException {
         return quorum.ethGetCode(contractAddress, defaultBlockParameter).send();
+    }
+
+    /*
+     * Override, so that we can retrieve QuorumTransactionReceipt which has extra fields.
+     * Also provides support for Privacy Marker Transactions.
+     */
+    @Override
+    protected TransactionReceipt processResponse(EthSendTransaction transactionResponse)
+            throws IOException, TransactionException {
+        TransactionReceipt transactionReceipt = super.processResponse(transactionResponse);
+        if (transactionReceipt instanceof QuorumTransactionReceipt) {
+            QuorumTransactionReceipt quorumTransactionReceipt =
+                    (QuorumTransactionReceipt) transactionReceipt;
+
+            // If this was a Privacy Marker Transaction, then need to retrieve the receipt for the
+            // internal private transaction
+            if (quorumTransactionReceipt.isPrivacyMarkerTransaction()) {
+                String transactionHash = transactionResponse.getTransactionHash();
+                EthGetTransactionReceipt privateTransactionReceipt =
+                        quorum.ethGetPrivateTransactionReceipt(transactionHash).send();
+                return privateTransactionReceipt.getTransactionReceipt().get();
+            }
+        }
+
+        return transactionReceipt;
     }
 }
