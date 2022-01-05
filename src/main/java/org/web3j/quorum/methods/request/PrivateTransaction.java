@@ -22,8 +22,8 @@ import org.web3j.quorum.PrivacyFlag;
  * Quorum's Transaction object.
  *
  * <p>This is almost identical to the Ethereum {@link
- * org.web3j.protocol.core.methods.request.Transaction} with the exception that it provides the
- * privateFor field and does not contain a gas price.
+ * org.web3j.protocol.core.methods.request.Transaction} with the exception that it provides
+ * additional fields specific to GoQuorum
  */
 public class PrivateTransaction extends Transaction {
 
@@ -91,8 +91,12 @@ public class PrivateTransaction extends Transaction {
         this.privateFor = privateFor;
     }
 
-    public PrivacyFlag getPrivacyFlag() {
-        return privacyFlag;
+    public int getPrivacyFlag() {
+        if (privacyFlag != null) {
+            return privacyFlag.getValue();
+        }
+
+        return PrivacyFlag.STANDARD_PRIVATE.getValue();
     }
 
     public void setPrivacyFlag(PrivacyFlag privacyFlag) {
