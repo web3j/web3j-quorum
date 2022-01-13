@@ -34,8 +34,8 @@ interface Enclave {
     /**
      * overloaded sendRawRequest with the privacyFlag set to null (API backward compatibility)
      */
-    fun sendRawRequest(payload: String, privateFor: List<String>, PrivacyFlag: PrivacyFlag): EthSendTransaction {
-        return sendRawRequest(payload, privateFor, PrivacyFlag, null)
+    fun sendRawRequest(payload: String, privateFor: List<String>, privacyFlag: PrivacyFlag): EthSendTransaction {
+        return sendRawRequest(payload, privateFor, privacyFlag, null)
     }
 
     /**

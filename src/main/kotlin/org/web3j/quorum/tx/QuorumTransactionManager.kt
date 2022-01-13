@@ -37,7 +37,7 @@ open class QuorumTransactionManager(
     private val publicKey: String,
     private var privateFor: List<String> = listOf(),
     // null privacy flag means that the privacyFlag field would not be serialized which causes the flag to default to StandardPrivate in quorum
-    private var PrivacyFlag: PrivacyFlag?,
+    private var privacyFlag: PrivacyFlag?,
     // null mandatory for means that the mandatoryFor field would not be serialized which causes the flag to default to nil in quorum
     private var mandatoryFor: List<String>?,
     chainId: Long = -1L,
@@ -61,8 +61,8 @@ open class QuorumTransactionManager(
         credentials: Credentials,
         publicKey: String,
         privateFor: List<String>,
-        PrivacyFlag: PrivacyFlag
-    ) : this(web3j, enclave, credentials, publicKey, privateFor, PrivacyFlag, null) {
+        privacyFlag: PrivacyFlag
+    ) : this(web3j, enclave, credentials, publicKey, privateFor, privacyFlag, null) {
     }
 
     constructor(
@@ -71,9 +71,9 @@ open class QuorumTransactionManager(
         credentials: Credentials,
         publicKey: String,
         privateFor: List<String>,
-        PrivacyFlag: PrivacyFlag,
+        privacyFlag: PrivacyFlag,
         mandatoryFor: List<String>
-    ) : this(web3j, enclave, credentials, publicKey, privateFor, PrivacyFlag, mandatoryFor, -1) {
+    ) : this(web3j, enclave, credentials, publicKey, privateFor, privacyFlag, mandatoryFor, -1) {
     }
 
     fun storeRawRequest(payload: String, from: String, to: List<String>): SendResponse {
@@ -82,7 +82,7 @@ open class QuorumTransactionManager(
     }
 
     fun sendRaw(signedTx: String, to: List<String>): EthSendTransaction {
-        return enclave.sendRawRequest(signedTx, to, PrivacyFlag, mandatoryFor)
+        return enclave.sendRawRequest(signedTx, to, privacyFlag, mandatoryFor)
     }
 
     override fun sign(rawTransaction: RawTransaction): String {
@@ -113,7 +113,7 @@ open class QuorumTransactionManager(
             signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials)
         }
         val hexValue = Numeric.toHexString(signedMessage)
-        return enclave.sendRawRequest(hexValue, privateFor, PrivacyFlag, mandatoryFor)
+        return enclave.sendRawRequest(hexValue, privateFor, privacyFlag, mandatoryFor)
     }
 
     // If the byte array RLP decodes to a list of size >= 1 containing a list of size >= 3
