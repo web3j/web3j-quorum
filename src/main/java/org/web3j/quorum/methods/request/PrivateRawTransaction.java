@@ -63,7 +63,7 @@ public class PrivateRawTransaction {
         return PrivacyFlag.STANDARD_PRIVATE.getValue();
     }
 
-    public void setPrivacyFlag(PrivacyFlag PrivacyFlag) {
+    public void setPrivacyFlag(PrivacyFlag privacyFlag) {
         this.privacyFlag = privacyFlag;
     }
 

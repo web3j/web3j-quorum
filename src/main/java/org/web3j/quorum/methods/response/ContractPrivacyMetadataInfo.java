@@ -77,7 +77,7 @@ public class ContractPrivacyMetadataInfo
             return privacyFlag;
         }
 
-        public void setPrivacyFlag(PrivacyFlag PrivacyFlag) {
+        public void setPrivacyFlag(PrivacyFlag privacyFlag) {
             this.privacyFlag = privacyFlag;
         }
 
