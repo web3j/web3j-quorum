@@ -29,8 +29,8 @@ import org.web3j.quorum.tx.QuorumTransactionManager
 import org.web3j.tx.gas.DefaultGasProvider
 
 /**
-* Helper class that implements methods of the tests
-* */
+ * Helper class that implements methods of the tests
+ * */
 open class Helper {
 
     @Throws(Exception::class)
@@ -47,19 +47,21 @@ open class Helper {
         val credentials = WalletUtils.loadCredentials("", File(classLoader.getResource(keyFile)!!.file))
 
         val transactionManager = QuorumTransactionManager(
-                quorum,
-                credentials,
-                sourceNode.publicKeys[0],
-                destNode.publicKeys,
-                enclave)
+            quorum,
+            enclave,
+            credentials,
+            sourceNode.publicKeys[0],
+            destNode.publicKeys
+        )
 
         val greeting = "Hello Quorum world!"
 
         val contract = Greeter.deploy(
-                quorum,
-                transactionManager,
-                BigInteger.ZERO, DefaultGasProvider.GAS_LIMIT,
-                greeting).send()
+            quorum,
+            transactionManager,
+            BigInteger.ZERO, DefaultGasProvider.GAS_LIMIT,
+            greeting
+        ).send()
 
         assertThat<String>(contract.greet().send(), `is`<String>(greeting))
     }
@@ -78,71 +80,100 @@ open class Helper {
         val credentials = WalletUtils.loadCredentials("", File(classLoader.getResource(keyFile)!!.file))
 
         val transactionManager = QuorumTransactionManager(
-                quorum,
-                credentials,
-                sourceNode.publicKeys[0],
-                destNode.publicKeys,
-                enclave)
+            quorum,
+            enclave,
+            credentials,
+            sourceNode.publicKeys[0],
+            destNode.publicKeys
+        )
 
         var aliceQty = BigInteger.valueOf(1000000)
         val aliceAddress = sourceNode.address
         val bobAddress = destNode.address
 
-        val contract = HumanStandardToken.deploy(quorum, transactionManager,
-                BigInteger.ZERO, DefaultGasProvider.GAS_LIMIT,
-                aliceQty, "web3j tokens",
-                BigInteger.valueOf(18), "w3j$").send()
+        val contract = HumanStandardToken.deploy(
+            quorum, transactionManager,
+            BigInteger.ZERO, DefaultGasProvider.GAS_LIMIT,
+            aliceQty, "web3j tokens",
+            BigInteger.valueOf(18), "w3j$"
+        ).send()
 
         assertTrue(contract.isValid)
 
         assertThat(contract.totalSupply().send(), equalTo<BigInteger>(aliceQty))
 
-        assertThat(contract.balanceOf(sourceNode.address).send(),
-                equalTo<BigInteger>(aliceQty))
+        assertThat(
+            contract.balanceOf(sourceNode.address).send(),
+            equalTo<BigInteger>(aliceQty)
+        )
 
         var transferQuantity = BigInteger.valueOf(100000)
 
         val aliceTransferReceipt = contract.transfer(
-                destNode.address, transferQuantity).send()
+            destNode.address, transferQuantity
+        ).send()
 
         val aliceTransferEventValues = contract.getTransferEvents(aliceTransferReceipt)[0]
 
-        assertThat(aliceTransferEventValues._from,
-                equalTo<String>(aliceAddress))
-        assertThat(aliceTransferEventValues._to,
-                equalTo<String>(bobAddress))
-        assertThat(aliceTransferEventValues._value,
-                equalTo<BigInteger>(transferQuantity))
+        assertThat(
+            aliceTransferEventValues._from,
+            equalTo<String>(aliceAddress)
+        )
+        assertThat(
+            aliceTransferEventValues._to,
+            equalTo<String>(bobAddress)
+        )
+        assertThat(
+            aliceTransferEventValues._value,
+            equalTo<BigInteger>(transferQuantity)
+        )
 
         aliceQty = aliceQty.subtract(transferQuantity)
 
         var bobQty = BigInteger.ZERO
         bobQty = bobQty.add(transferQuantity)
 
-        assertThat(contract.balanceOf(sourceNode.address).send(),
-                equalTo<BigInteger>(aliceQty))
-        assertThat(contract.balanceOf(destNode.address).send(),
-                equalTo<BigInteger>(bobQty))
+        assertThat(
+            contract.balanceOf(sourceNode.address).send(),
+            equalTo<BigInteger>(aliceQty)
+        )
+        assertThat(
+            contract.balanceOf(destNode.address).send(),
+            equalTo<BigInteger>(bobQty)
+        )
 
-        assertThat(contract.allowance(
-                aliceAddress, bobAddress).send(),
-                equalTo<BigInteger>(BigInteger.ZERO))
+        assertThat(
+            contract.allowance(
+                aliceAddress, bobAddress
+            ).send(),
+            equalTo<BigInteger>(BigInteger.ZERO)
+        )
 
         transferQuantity = BigInteger.valueOf(50)
         val approveReceipt = contract.approve(
-                destNode.address, transferQuantity).send()
+            destNode.address, transferQuantity
+        ).send()
 
         val approvalEventValues = contract.getApprovalEvents(approveReceipt)[0]
 
-        assertThat(approvalEventValues._owner,
-                equalTo<String>(aliceAddress))
-        assertThat(approvalEventValues._spender,
-                equalTo<String>(bobAddress))
-        assertThat(approvalEventValues._value,
-                equalTo<BigInteger>(transferQuantity))
+        assertThat(
+            approvalEventValues._owner,
+            equalTo<String>(aliceAddress)
+        )
+        assertThat(
+            approvalEventValues._spender,
+            equalTo<String>(bobAddress)
+        )
+        assertThat(
+            approvalEventValues._value,
+            equalTo<BigInteger>(transferQuantity)
+        )
 
-        assertThat(contract.allowance(
-                aliceAddress, bobAddress).send(),
-                equalTo<BigInteger>(transferQuantity))
+        assertThat(
+            contract.allowance(
+                aliceAddress, bobAddress
+            ).send(),
+            equalTo<BigInteger>(transferQuantity)
+        )
     }
 }

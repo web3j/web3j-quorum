@@ -36,14 +36,14 @@ public class PrivateRawTransaction {
         this(privateFor, null, null);
     }
 
-    public PrivateRawTransaction(List<String> privateFor, PrivacyFlag privacyMode) {
-        this(privateFor, privacyMode, null);
+    public PrivateRawTransaction(List<String> privateFor, PrivacyFlag privacyFlag) {
+        this(privateFor, privacyFlag, null);
     }
 
     public PrivateRawTransaction(
-            List<String> privateFor, PrivacyFlag privacyMode, List<String> mandatoryFor) {
+            List<String> privateFor, PrivacyFlag privacyFlag, List<String> mandatoryFor) {
         this.privateFor = privateFor;
-        this.privacyFlag = privacyMode;
+        this.privacyFlag = privacyFlag;
         this.mandatoryFor = mandatoryFor;
     }
 
@@ -55,8 +55,12 @@ public class PrivateRawTransaction {
         this.privateFor = privateFor;
     }
 
-    public PrivacyFlag getPrivacyFlag() {
-        return privacyFlag;
+    public int getPrivacyFlag() {
+        if (privacyFlag != null) {
+            return privacyFlag.getValue();
+        }
+
+        return PrivacyFlag.STANDARD_PRIVATE.getValue();
     }
 
     public void setPrivacyFlag(PrivacyFlag privacyFlag) {

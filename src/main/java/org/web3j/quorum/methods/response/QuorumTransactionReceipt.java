@@ -59,7 +59,9 @@ public class QuorumTransactionReceipt extends TransactionReceipt {
                 to,
                 logs,
                 logsBloom,
-                revertReason);
+                revertReason,
+                null,
+                null);
         this.isPrivacyMarkerTransaction = isPrivacyMarkerTransaction;
     }
 

@@ -31,8 +31,8 @@ import org.web3j.tx.TransactionManager;
 /** TransactionManager implementation for using a Quorum node to transact. */
 public class ClientTransactionManager extends TransactionManager {
 
-    private static final int SLEEP_DURATION = 1000;
-    private static final int ATTEMPTS = 20;
+    static final int SLEEP_DURATION = 1000;
+    static final int ATTEMPTS = 20;
 
     private final Quorum quorum;
     private final String fromAddress;
@@ -78,6 +78,41 @@ public class ClientTransactionManager extends TransactionManager {
                 null,
                 attempts,
                 sleepDuration);
+    }
+
+    public ClientTransactionManager(
+            Quorum quorum,
+            String fromAddress,
+            String privateFrom,
+            List<String> privateFor,
+            PrivacyFlag privacyFlag) {
+        this(
+                quorum,
+                fromAddress,
+                privateFrom,
+                privateFor,
+                privacyFlag,
+                null,
+                ATTEMPTS,
+                SLEEP_DURATION);
+    }
+
+    public ClientTransactionManager(
+            Quorum quorum,
+            String fromAddress,
+            String privateFrom,
+            List<String> privateFor,
+            PrivacyFlag privacyFlag,
+            List<String> mandatoryFor) {
+        this(
+                quorum,
+                fromAddress,
+                privateFrom,
+                privateFor,
+                privacyFlag,
+                mandatoryFor,
+                ATTEMPTS,
+                SLEEP_DURATION);
     }
 
     // For backward compatibility
