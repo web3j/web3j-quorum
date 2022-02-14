@@ -48,7 +48,6 @@ public final class UnixDomainSocketFactory extends SocketFactory {
                 connect(endpoint, Integer.valueOf(timeout));
             }
 
-            @Override
             public void connect(SocketAddress endpoint, Integer timeout) throws IOException {
                 this.inetSocketAddress = (InetSocketAddress) endpoint;
                 super.connect(new UnixSocketAddress(path), timeout);
