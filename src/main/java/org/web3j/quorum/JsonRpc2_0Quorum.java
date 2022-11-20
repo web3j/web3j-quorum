@@ -26,6 +26,7 @@ import org.web3j.protocol.core.methods.response.EthTransaction;
 import org.web3j.quorum.methods.request.PrivateRawTransaction;
 import org.web3j.quorum.methods.request.PrivateTransaction;
 import org.web3j.quorum.methods.response.*;
+import org.web3j.quorum.methods.response.extension.*;
 import org.web3j.quorum.methods.response.istanbul.IstanbulBlockSigners;
 import org.web3j.quorum.methods.response.istanbul.IstanbulCandidates;
 import org.web3j.quorum.methods.response.istanbul.IstanbulNodeAddress;
@@ -568,5 +569,57 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
                 Arrays.asList(orgId, address, transaction),
                 web3jService,
                 ExecStatusInfo.class);
+    }
+
+    @Override
+    public Request<?, ActiveExtensionList> quorumExtensionActiveExtensionContracts() {
+        return new Request<>(
+                "quorumExtension_activeExtensionContracts",
+                Collections.emptyList(),
+                web3jService,
+                ActiveExtensionList.class);
+    }
+
+    @Override
+    public Request<?, ApproveExtensionInfo> quorumExtensionApproveExtension(
+            String addressToVoteOn, boolean vote, PrivateTransaction transaction) {
+        return new Request<>(
+                "quorumExtension_approveExtension",
+                Arrays.asList(addressToVoteOn, vote, transaction),
+                web3jService,
+                ApproveExtensionInfo.class);
+    }
+
+    @Override
+    public Request<?, CancelExtensionInfo> quorumExtensionCancelExtension(
+            String extensionContract, PrivateTransaction transaction) {
+        return new Request<>(
+                "quorumExtension_cancelExtension",
+                Arrays.asList(extensionContract, transaction),
+                web3jService,
+                CancelExtensionInfo.class);
+    }
+
+    @Override
+    public Request<?, ExtendContractInfo> quorumExtensionExtendContract(
+            String toExtend,
+            String newRecipientPtmPublicKey,
+            String recipientAddress,
+            PrivateTransaction transaction) {
+        return new Request<>(
+                "quorumExtension_extendContract",
+                Arrays.asList(toExtend, newRecipientPtmPublicKey, recipientAddress, transaction),
+                web3jService,
+                ExtendContractInfo.class);
+    }
+
+    @Override
+    public Request<?, ExtensionStatusInfo> quorumExtensionGetExtensionStatus(
+            String managementContractAddress, PrivateTransaction transaction) {
+        return new Request<>(
+                "quorumExtension_getExtensionStatus",
+                Arrays.asList(managementContractAddress, transaction),
+                web3jService,
+                ExtensionStatusInfo.class);
     }
 }
