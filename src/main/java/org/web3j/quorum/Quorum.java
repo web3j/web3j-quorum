@@ -216,5 +216,5 @@ public interface Quorum extends Web3j {
             PrivateTransaction transaction);
 
     Request<?, ExtensionStatusInfo> quorumExtensionGetExtensionStatus(
-            String managementContractAddress, PrivateTransaction transaction);
+            String managementContractAddress);
 }

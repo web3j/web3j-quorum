@@ -615,10 +615,10 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
 
     @Override
     public Request<?, ExtensionStatusInfo> quorumExtensionGetExtensionStatus(
-            String managementContractAddress, PrivateTransaction transaction) {
+            String managementContractAddress) {
         return new Request<>(
                 "quorumExtension_getExtensionStatus",
-                Arrays.asList(managementContractAddress, transaction),
+                Arrays.asList(managementContractAddress),
                 web3jService,
                 ExtensionStatusInfo.class);
     }

@@ -100,20 +100,9 @@ public class ExtensionRequestTest extends RequestTester {
 
     @Test
     public void testExtensionStatus() throws Exception {
-        web3j.quorumExtensionGetExtensionStatus(
-                        "managementContractAddress",
-                        new PrivateTransaction(
-                                "FROM",
-                                BigInteger.ONE,
-                                BigInteger.TEN,
-                                "TO",
-                                BigInteger.TEN,
-                                "DATA",
-                                "privateFrom",
-                                Arrays.asList("privateFor1", "privateFor2")))
-                .send();
+        web3j.quorumExtensionGetExtensionStatus("managementContractAddress").send();
 
         verifyResult(
-                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumExtension_getExtensionStatus\",\"params\":[\"managementContractAddress\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":0}");
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumExtension_getExtensionStatus\",\"params\":[\"managementContractAddress\"],\"id\":0}");
     }
 }
