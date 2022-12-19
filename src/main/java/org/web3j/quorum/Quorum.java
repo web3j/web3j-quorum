@@ -22,6 +22,7 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.EthTransaction;
 import org.web3j.quorum.methods.request.*;
 import org.web3j.quorum.methods.response.*;
+import org.web3j.quorum.methods.response.extension.*;
 import org.web3j.quorum.methods.response.istanbul.IstanbulBlockSigners;
 import org.web3j.quorum.methods.response.istanbul.IstanbulCandidates;
 import org.web3j.quorum.methods.response.istanbul.IstanbulNodeAddress;
@@ -199,4 +200,21 @@ public interface Quorum extends Web3j {
 
     Request<?, ExecStatusInfo> quorumPermissionApproveBlackListedAccountRecovery(
             String orgId, String address, PrivateTransaction transaction);
+
+    Request<?, ActiveExtensionList> quorumExtensionActiveExtensionContracts();
+
+    Request<?, ApproveExtensionInfo> quorumExtensionApproveExtension(
+            String addressToVoteOn, boolean vote, PrivateTransaction transaction);
+
+    Request<?, CancelExtensionInfo> quorumExtensionCancelExtension(
+            String extensionContract, PrivateTransaction transaction);
+
+    Request<?, ExtendContractInfo> quorumExtensionExtendContract(
+            String toExtend,
+            String newRecipientPtmPublicKey,
+            String recipientAddress,
+            PrivateTransaction transaction);
+
+    Request<?, ExtensionStatusInfo> quorumExtensionGetExtensionStatus(
+            String managementContractAddress);
 }
