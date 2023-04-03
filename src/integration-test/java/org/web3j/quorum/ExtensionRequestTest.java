@@ -107,7 +107,7 @@ public class ExtensionRequestTest extends RequestTester {
     }
 
     @Test
-    public void testgenerateApproveUuid() throws Exception {
+    public void testquorumExtensionGenerateExtensionApprovalUuid() throws Exception {
         web3j.quorumExtensionGenerateExtensionApprovalUuid(
                         "managementContractAddress",
                         "externalSigner",
@@ -125,6 +125,4 @@ public class ExtensionRequestTest extends RequestTester {
         verifyResult(
                 "{\"jsonrpc\":\"2.0\",\"method\":\"quorumExtension_generateExtensionApprovalUuid\",\"params\":[\"managementContractAddress\",\"externalSigner\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":0}");
     }
-
-
 }
