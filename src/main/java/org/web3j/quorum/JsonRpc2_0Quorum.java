@@ -624,7 +624,7 @@ public class JsonRpc2_0Quorum extends JsonRpc2_0Web3j implements Quorum {
     }
 
     @Override
-    public Request<?, ApproveUuid> quorumExtensionGetApprovalUuid(
+    public Request<?, ApproveUuid> quorumExtensionGenerateExtensionApprovalUuid(
             String addressToVoteOn,
             String externalSignerAddress,
             PrivateTransaction transaction) {

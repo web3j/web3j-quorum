@@ -218,7 +218,7 @@ public interface Quorum extends Web3j {
     Request<?, ExtensionStatusInfo> quorumExtensionGetExtensionStatus(
             String managementContractAddress);
 
-    Request<?, ApproveUuid> quorumExtensionGetApprovalUuid(
+    Request<?, ApproveUuid> quorumExtensionGenerateExtensionApprovalUuid(
             String addressToVoteOn,
             String externalSignerAddress,
             PrivateTransaction transaction);
