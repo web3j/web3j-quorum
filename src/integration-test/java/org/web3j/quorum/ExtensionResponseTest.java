@@ -98,7 +98,7 @@ public class ExtensionResponseTest extends ResponseTester {
     }
 
     @Test
-    public void testgenerateApproveUuid() {
+    public void testgquorumExtensionGenerateExtensionApprovalUuid() {
         buildResponse(
                 "{\n"
                         + "  \"jsonrpc\":\"2.0\",\n"
@@ -106,7 +106,8 @@ public class ExtensionResponseTest extends ResponseTester {
                         + "  \"result\":\"UUID\"\n"
                         + "}");
 
-        ApproveUuid approveUuid = deserialiseResponse(ApproveUuid.class);
-        assertThat(approveUuid.getApproveUuid(), is("UUID"));
+        ExtensionApprovalUuid extensionApprovalUuid =
+                deserialiseResponse(ExtensionApprovalUuid.class);
+        assertThat(extensionApprovalUuid.getExtensionApprovalUuid(), is("UUID"));
     }
 }

@@ -14,9 +14,9 @@ package org.web3j.quorum.methods.response.extension;
 
 import org.web3j.protocol.core.Response;
 
-public class ApproveUuid extends Response<String> {
+public class ExtensionApprovalUuid extends Response<String> {
 
-    public String getApproveUuid() {
+    public String getExtensionApprovalUuid() {
         return getResult();
     }
 }
