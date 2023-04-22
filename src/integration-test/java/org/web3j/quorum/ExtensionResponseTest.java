@@ -96,4 +96,18 @@ public class ExtensionResponseTest extends ResponseTester {
         ExtensionStatusInfo extensionStatusInfo = deserialiseResponse(ExtensionStatusInfo.class);
         assertThat(extensionStatusInfo.getExtensionStatus(), is("DONE"));
     }
+
+    @Test
+    public void testQuorumExtensionGenerateExtensionApprovalUuid() {
+        buildResponse(
+                "{\n"
+                        + "  \"jsonrpc\":\"2.0\",\n"
+                        + "  \"id\":10,\n"
+                        + "  \"result\":\"UUID\"\n"
+                        + "}");
+
+        ExtensionApprovalUuid extensionApprovalUuid =
+                deserialiseResponse(ExtensionApprovalUuid.class);
+        assertThat(extensionApprovalUuid.getExtensionApprovalUuid(), is("UUID"));
+    }
 }

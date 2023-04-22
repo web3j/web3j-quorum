@@ -105,4 +105,24 @@ public class ExtensionRequestTest extends RequestTester {
         verifyResult(
                 "{\"jsonrpc\":\"2.0\",\"method\":\"quorumExtension_getExtensionStatus\",\"params\":[\"managementContractAddress\"],\"id\":0}");
     }
+
+    @Test
+    public void testQuorumExtensionGenerateExtensionApprovalUuid() throws Exception {
+        web3j.quorumExtensionGenerateExtensionApprovalUuid(
+                        "managementContractAddress",
+                        "externalSigner",
+                        new PrivateTransaction(
+                                "FROM",
+                                BigInteger.ONE,
+                                BigInteger.TEN,
+                                "TO",
+                                BigInteger.TEN,
+                                "DATA",
+                                "privateFrom",
+                                Arrays.asList("privateFor1", "privateFor2")))
+                .send();
+
+        verifyResult(
+                "{\"jsonrpc\":\"2.0\",\"method\":\"quorumExtension_generateExtensionApprovalUuid\",\"params\":[\"managementContractAddress\",\"externalSigner\",{\"from\":\"FROM\",\"to\":\"TO\",\"gas\":\"0xa\",\"value\":\"0xa\",\"data\":\"0xDATA\",\"nonce\":\"0x1\",\"privateFrom\":\"privateFrom\",\"privateFor\":[\"privateFor1\",\"privateFor2\"],\"privacyFlag\":0}],\"id\":0}");
+    }
 }
