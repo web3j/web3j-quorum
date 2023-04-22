@@ -98,7 +98,7 @@ public class ExtensionResponseTest extends ResponseTester {
     }
 
     @Test
-    public void testquorumExtensionGenerateExtensionApprovalUuid() {
+    public void testQuorumExtensionGenerateExtensionApprovalUuid() {
         buildResponse(
                 "{\n"
                         + "  \"jsonrpc\":\"2.0\",\n"

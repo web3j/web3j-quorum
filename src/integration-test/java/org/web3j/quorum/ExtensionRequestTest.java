@@ -107,7 +107,7 @@ public class ExtensionRequestTest extends RequestTester {
     }
 
     @Test
-    public void testquorumExtensionGenerateExtensionApprovalUuid() throws Exception {
+    public void testQuorumExtensionGenerateExtensionApprovalUuid() throws Exception {
         web3j.quorumExtensionGenerateExtensionApprovalUuid(
                         "managementContractAddress",
                         "externalSigner",
