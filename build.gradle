@@ -44,14 +44,14 @@ publishing {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
             "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion",
-            "org.web3j:core:$version"
+            "org.web3j:core:$web3jCoreVersion"
 
     testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion",
             "ch.qos.logback:logback-core:$logbackVersion",
             "ch.qos.logback:logback-classic:$logbackVersion",
             "org.mockito:mockito-core:$mockitoVersion",
             "org.assertj:assertj-core:$assertjCoreVersion",
-            "org.web3j:core:$version:tests",
+            "org.web3j:core:$web3jCoreVersion:tests",
             "org.hamcrest:hamcrest-library:$hamcrestVersion"
 }
 

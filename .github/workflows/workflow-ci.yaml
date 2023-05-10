@@ -1,0 +1,14 @@
+name: SMC CI
+on:
+  pull_request:
+    branches: [ main, release/**, hotfix/** ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:  
+jobs:
+  smc-ci-pipeline:
+    uses: partior-libs/controller-3p-pipelines/.github/workflows/pipeline-template-gradle-ci.yaml@main
+    with:
+      CONTROLLER-REPO: partior-libs/controller-3p-pipelines
+      PROJECT-REPO: ${{ github.repository }}
+    secrets: inherit
