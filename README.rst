@@ -34,24 +34,24 @@ Add the relevant dependency to your project:
 Maven
 -----
 
-Java 8:
+Java 17:
 
 .. code-block:: xml
 
    <dependency>
      <groupId>org.web3j</groupId>
      <artifactId>quorum</artifactId>
-     <version>4.8.4</version>
+     <version>4.10.0</version>
    </dependency>
 
 Gradle
 ------
 
-Java 8:
+Java 17:
 
 .. code-block:: groovy
 
-   compile ('org.web3j:quorum:4.8.4')
+   compile ('org.web3j:quorum:4.10.0')
 
 
 Run Quorum
